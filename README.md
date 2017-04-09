@@ -3,7 +3,7 @@
 
 This program is a Plataform to translate scripts, you need setup your build to your engine.
 
-###Compatible with:
+#### Compatible with:
 - SiglusSceneManager - in my git
 
 - KrKrZSceneManager - in my git
@@ -16,7 +16,7 @@ This program is a Plataform to translate scripts, you need setup your build to y
 
 This program needs the LEC Power Transaltor 15 installed to works well offline.
 
-### Build Flags
+#### Build Flags
 KiriKiri = PSB String Editor (KrKrZSceneManager)
 Eushully = BIN String Editor (EushullyEditor)
 ExHIBIT = RLD String Editor (RLDManager)
