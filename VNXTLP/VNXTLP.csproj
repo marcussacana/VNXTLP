@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EC793E77-78E1-4D05-A723-C6F5FF3BFA0D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VNXTLP</RootNamespace>
+    <AssemblyName>VNXTLP</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+    <AssemblyVersionSettings>IncrementOnDemand.Increment.DayOfYearStamp.None</AssemblyVersionSettings>
+    <AssemblyFileVersionSettings>IncrementOnDemand.Increment.None.None</AssemblyFileVersionSettings>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;KrKrFate</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;Sankai Eushully VNX</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>VNXTLP.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Reference Include="NHunspell">
+      <HintPath>lib\NHunspell.dll</HintPath>
+    </Reference>
+    <Reference Include="PopupControl">
+      <HintPath>lib\PopupControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TLIB, Version=2.22.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\GitHub\TLIB\bin\Debug\TLIB.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Account.cs" />
+    <Compile Include="Backup.cs" />
+    <Compile Include="BallonToolTip.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BallonToolTip.Designer.cs">
+      <DependentUpon>BallonToolTip.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Configs.cs" />
+    <Compile Include="Custom.cs" />
+    <Compile Include="Engine.cs" />
+    <Compile Include="Input.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Input.Designer.cs">
+      <DependentUpon>Input.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Script.cs" />
+    <Compile Include="HLCP.cs" />
+    <Compile Include="NewStyle\StyleBackup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewStyle\StyleBackup.Designer.cs">
+      <DependentUpon>StyleBackup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewStyle\StyleLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewStyle\StyleLogin.Designer.cs">
+      <DependentUpon>StyleLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewStyle\StyleProgram.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewStyle\StyleProgram.Designer.cs">
+      <DependentUpon>StyleProgram.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewStyle\StyleRegister.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewStyle\StyleRegister.Designer.cs">
+      <DependentUpon>StyleRegister.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NoStyle - Backup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NoStyle - Backup.Designer.cs">
+      <DependentUpon>NoStyle - Backup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NoStyle - Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NoStyle - Login.Designer.cs">
+      <DependentUpon>NoStyle - Login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SearchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SearchForm.Designer.cs">
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NoStyle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NoStyle.Designer.cs">
+      <DependentUpon>NoStyle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CheckUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CheckUpdate.Designer.cs">
+      <DependentUpon>CheckUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Search.cs" />
+    <Compile Include="SpellTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Style\Base.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Style\Theme.cs" />
+    <Compile Include="KRKR.cs" />
+    <Compile Include="SubClass.cs" />
+    <Compile Include="TextRecognition.cs" />
+    <Compile Include="Variables.cs" />
+    <Compile Include="WordAPI.cs" />
+    <EmbeddedResource Include="BallonToolTip.resx">
+      <DependentUpon>BallonToolTip.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Input.resx">
+      <DependentUpon>Input.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewStyle\StyleBackup.resx">
+      <DependentUpon>StyleBackup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewStyle\StyleLogin.resx">
+      <DependentUpon>StyleLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewStyle\StyleProgram.resx">
+      <DependentUpon>StyleProgram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewStyle\StyleRegister.resx">
+      <DependentUpon>StyleRegister.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NoStyle - Backup.resx">
+      <DependentUpon>NoStyle - Backup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NoStyle - Login.resx">
+      <DependentUpon>NoStyle - Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchForm.resx">
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NoStyle.resx">
+      <DependentUpon>NoStyle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="CheckUpdate.resx">
+      <DependentUpon>CheckUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Dictionary.aff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Dictionary.dic">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="Settings.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Translation.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Hunspellx64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Hunspellx86.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="icon.ico" />
+    <None Include="Resources\InfoIco.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\GitHub\EushullyEditor\EushullyEditor\EushullyEditor.csproj">
+      <Project>{fbcdf704-ddd5-43fe-bb18-4a058c6b4914}</Project>
+      <Name>EushullyEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kamidori\Sankai.csproj">
+      <Project>{9bb5b92f-f1e2-4d2a-9936-e9905b3e8a46}</Project>
+      <Name>Sankai</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
