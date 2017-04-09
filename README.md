@@ -17,12 +17,20 @@ This program is a Plataform to translate scripts, you need setup your build to y
 This program needs the LEC Power Transaltor 15 installed to works well offline.
 
 #### Build Flags
+
 KiriKiri = PSB String Editor (KrKrZSceneManager)
+
 Eushully = BIN String Editor (EushullyEditor)
+
 ExHIBIT = RLD String Editor (RLDManager)
+
 SteinsGate = Script Filter
+
 KrKrFate = Script Filter
+
 Umineko = Script Filter
+
+
 VNX = Enable my custom algorithms to specifed games
 - Kamidori = Kamidori algorithm build
 - KNR = Kami no Rhapsody algorithm build
