@@ -7,6 +7,8 @@ namespace VNXTLP {
         Engine.RadioToolStrip RadioEngine;
         Engine.RadioToolStrip ThemeEngine;
         Engine.RadioToolStrip TLEngine;
+        Engine.RadioToolStrip SelEngine;
+
         Engine.OverTimerEvent OVE;
         internal bool FileOpen = false;
         internal bool FileSaved = true;
@@ -34,10 +36,11 @@ namespace VNXTLP {
             TLBox.Anchor = ((AnchorStyles.Bottom | AnchorStyles.Left) | AnchorStyles.Right);
             TLBox.Enabled = false;
             TLBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            TLBox.Location = new System.Drawing.Point(Scroll.Location.X, Scroll.Location.Y - (Scroll.Size.Height + 5 ));
+            TLBox.Location = new System.Drawing.Point(Scroll.Location.X, Scroll.Location.Y - (Scroll.Size.Height + 5));
             TLBox.Margin = new Padding(3, 2, 3, 2);
             TLBox.Multiline = false;
             TLBox.Size = new System.Drawing.Size(Scroll.Size.Width, 26);
+
             TLBox.SizeChanged += new EventHandler(TLBox_SizeChanged);
             Engine.Append(ref TLBox.TextChanged, TLBox_TextChanged);
             TLBox.KeyDown += new KeyEventHandler(TLBox_KeyDown);
@@ -53,6 +56,10 @@ namespace VNXTLP {
             ToolStripMenuItem[] TLCLients = new ToolStripMenuItem[] { lECToolStripMenuItem, googleToolStripMenuItem };
             TLEngine = new Engine.RadioToolStrip(ref TLCLients, 1);
             TLEngine.CheckedChange += TLEngine_CheckedChange;
+
+            ToolStripMenuItem[] SelItems = new ToolStripMenuItem[] { AutomaticoToolStripMenuItem, asiaticaToolStripMenuItem, latimToolStripMenuItem };
+            SelEngine = new Engine.RadioToolStrip(ref SelItems, 0);
+            SelEngine.CheckedChange += SelEngine_CheckedChange;
 
             //Initialize DeleyedMouseOver Event
             OVE = new Engine.OverTimerEvent();
@@ -81,6 +88,11 @@ namespace VNXTLP {
             int Val;
             if (int.TryParse(cfg, out Val))
                 RadioEngine.SelectedIndex = Val;
+
+            //get int
+            cfg = Engine.GetConfig("VNXTLP", "SelMode", false);
+            if (int.TryParse(cfg, out Val))
+                SelEngine.SelectedIndex = Val;
 
             //get int
             cfg = Engine.GetConfig("VNXTLP", "TLClient", false);
@@ -121,11 +133,20 @@ namespace VNXTLP {
             RefScriptMenuItem.Text = Engine.LoadTranslation(68);
             altoContrasteToolStripMenuItem.Text = Engine.LoadTranslation(70);
             altaResoluçãoToolStripMenuItem.Text = Engine.LoadTranslation(71);
+            SelecaoAutomaticaMenuItem1.Text = Engine.LoadTranslation(101);
+            AutomaticoToolStripMenuItem.Text = Engine.LoadTranslation(102);
+            asiaticaToolStripMenuItem.Text = Engine.LoadTranslation(103);
+            latimToolStripMenuItem.Text = Engine.LoadTranslation(104);
 
             //Special Items
             foreach (ToolStripMenuItem item in Engine.CustomResources(ref TLBox))
                 MainMenu.Items.Add(item);
 #endif
+        }
+
+        private void SelEngine_CheckedChange(object sender, EventArgs e) {
+            Engine.SetConfig("VNXTLP", "SelMode", SelEngine.SelectedIndex.ToString());
+            Engine.AutoSelect();
         }
 
         private void TLEngine_CheckedChange(object sender, EventArgs e) {
@@ -143,7 +164,7 @@ namespace VNXTLP {
 
         private void SaveItem_Click(object sender, EventArgs e) {
             if (!FileOpen) {
-                MessageBox.Show(Engine.LoadTranslation(34), "VNX+ Translaation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(34), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             SaveScript.ShowDialog();
@@ -359,7 +380,7 @@ namespace VNXTLP {
 
         private void ZScriptRef_Click(object sender, EventArgs e) {
             if (!FileOpen) {
-                MessageBox.Show(Engine.LoadTranslation(34), "VNX+ Translaation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(34), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             RefScriptMenuItem.Checked = !RefScriptMenuItem.Checked;

@@ -1,72 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
-
-#region BuildImport
-#if Eushully
-using VNX.EushullyEditor;
-#endif
-#if KiriKiri
-using KrKrSceneManager;
-#endif
-#if SteinsGate
-using SGFilter;
-#endif
-#if ExHIBIT
-using RLDManager;
-#endif
-#if KrKrFate
-using KrKrFateFilter;
-#endif
-#endregion
+using SacanaWrapper;
 
 namespace VNXTLP {
     internal static partial class Engine {
-#region Variables
-#if Eushully
-        internal static string Filter = "Todos os Scripts da Eushully|*.bin";
-        private static EushullyEditor Editor;
-#if Sankai
-        private static FormatOptions EditorConfig = new FormatOptions() {
-            BruteValidator = true,
-            ClearOldStrings = true
-        };
-#else
-        private static FormatOptions EditorConfig = new FormatOptions();
-#endif
-        internal static string UpdateScript = "Eushully.cs";
-#endif
-#if KiriKiri
-        internal static string Filter = "Todos os arquivos suportados da KiriKiri|*.scn;*.psb;*.tjs";
-        private static PSBStringManager Editor;
-        private static PSBStringManager.PackgetStatus Status;
 
-        private static Sector[] Sectors;
-        private static int MainSector;
-        internal static string UpdateScript = "KRKR.cs";
-#endif
-#if SteinsGate
-        internal static string Filter = "Todos os Arquivos de Texto|*.txt";
-        internal static FullFilter Editor;
-        internal static FullFilter.FilterLevel Level;
-        internal static string UpdateScript = "SG.cs";
-#endif
-#if ExHIBIT
-        internal static string Filter = "All ExHIBIT Files|*.rld";
-        internal static RLD Editor;
-        internal static string UpdateScript = "EHKS.cs";
-#endif
-#if Umineko
-        internal static string Filter = "All Umineko Scripts|*.utf";
-        internal static Umineko Editor;
-        internal static string UpdateScript = "Umnk.cs";
-        private static bool ENG;
-#endif
-#if KrKrFate
-        internal static string Filter = "All KiriKiri Scripts|*.ks";
-        internal static KSFilter Editor;
-        internal static string UpdateScript = "KrKrFate.cs";
-#endif
+        internal static string Filter = "Todos os Arquivos|*.*";
+        internal static Wrapper Editor;
+
+        internal static string UpdateScript = "VNXTLP.cs";
+
+        internal static Dictionary<uint, uint> StrMap = new Dictionary<uint, uint>();
+        internal static uint StringCount;
+
+        internal static Dictionary<uint, string> Prefix = new Dictionary<uint, string>();
+        internal static Dictionary<uint, string> Sufix = new Dictionary<uint, string>();
+
         internal static dynamic BackupEditor;
+        internal static dynamic RemapBackup;
+        internal static dynamic StringCountBackup;
+        internal static dynamic PrefixBackup;
+        internal static dynamic SufixBackup;
         internal static string UserDir {
             get
             {
@@ -92,10 +46,10 @@ namespace VNXTLP {
         //Variable Redirections
         private static int Index { get { return Program.UsingTheme ? Program.StyleForm.Index : Program.NoStyleForm.Index; } set { if (Program.UsingTheme) Program.StyleForm.Index = value; else Program.NoStyleForm.Index = value; } }
         internal static SpellTextBox TextBox { get { return Program.UsingTheme ? Program.StyleForm.TLBox : Program.NoStyleForm.TLBox; } }
-        internal static CheckedListBox StrList { get { return Program.UsingTheme ? Program.StyleForm.StrList : Program.NoStyleForm.StrList; } }
+        internal static CheckedListBox StrList { get { try { return Program.UsingTheme ? Program.StyleForm.StrList : Program.NoStyleForm.StrList; } catch { return null; } } }
 
         internal static Form MainForm { get { return Program.UsingTheme ? Program.StyleForm as Form: Program.NoStyleForm as Form; } }
         internal static bool FileOpen { get { return Program.UsingTheme ? Program.StyleForm.FileOpen : Program.NoStyleForm.FileOpen; } }
-#endregion
+
     }
 }

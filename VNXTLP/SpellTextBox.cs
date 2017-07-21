@@ -45,9 +45,7 @@ internal class SpellTextBox : RichTextBox {
     internal new Action[] TextChanged = new Action[0];
     
     private bool CustomDic = false;
-
-    internal SpellTextBox() {
-    }
+    
     
     private struct Suggestion {
         internal string Word;
@@ -309,115 +307,118 @@ internal class SpellTextBox : RichTextBox {
     }
     protected override void OnMouseUp(MouseEventArgs e) {
         if (e.Button == MouseButtons.Right && SpellCheckEnable) {
-            int index = GetCharIndexFromPosition((e).Location);
-            while (index < Text.Length && !char.IsLetter(Text[index]))
-                index++;//Fix Rigth
-            while (index - 1 >= 0 && char.IsLetter(Text[index - 1]))
-                index--;//Fix Left
+            try {
+                int index = GetCharIndexFromPosition((e).Location);
+                while (index < Text.Length && !char.IsLetter(Text[index]))
+                    index++;//Fix Rigth
+                while (index - 1 >= 0 && char.IsLetter(Text[index - 1]))
+                    index--;//Fix Left
 
-            if (index < Text.Length) {
-                string Word = string.Empty;
-                int len = 0;
-                while (index + len < Text.Length && char.IsLetter(Text[index + len])) {
-                    Word += Text[index + len];
-                    len++;
-                }
-                bool isWrong = false;
-                //Get Manual Suggestion, Tl Suggestion
-                bool Syounym = false;
-                List<string> Suggestions = null;
-                if (WordTL.ContainsKey(Word.ToLower())) {
-                    Suggestions = new List<string>();
-                    string[] TLS = WordTL[Word.ToLower()];
-                    if (TLS.Length > 0 && TLS[0] == IGNORE)
-                        return;
-                    foreach (string TL in TLS)
-                        Suggestions.Add(TL);
-                } else {
-                    bool Contains = false;
-                    foreach (string Phrase in PhraseCache.Keys)
-                        if (Text.ToLower().Contains(Phrase)) {
-                            int PhraseIndex = Text.ToLower().IndexOf(Phrase);
-                            if (PhraseIndex <= index && index <= PhraseIndex + Phrase.Length) {
-                                Contains = true;
-                                index = PhraseIndex;
-                                len = Phrase.Length;
-                                Word = Phrase;
-                                Suggestions = new List<string>();
-                                foreach (string sugg in PhraseCache[Word])
-                                    Suggestions.Add(sugg);
-                                break;
-                            }
-                        }
-                    if (!Contains) {
-                        string TL = DownloadTranslation(Word);
-                        if (TL != null && TL != Word) {
-                            string[] Synounyms = new string[0];
-                            if (GetOnlineSynonyms)
-                                Synounyms = WordAPI.DownloadSynonyms(Word);
-                            WordTL.Add(Word, new string[] { TL });
-                            Suggestions = new List<string>();
+                if (index < Text.Length) {
+                    string Word = string.Empty;
+                    int len = 0;
+                    while (index + len < Text.Length && char.IsLetter(Text[index + len])) {
+                        Word += Text[index + len];
+                        len++;
+                    }
+                    bool isWrong = false;
+                    //Get Manual Suggestion, Tl Suggestion
+                    bool Syounym = false;
+                    List<string> Suggestions = null;
+                    if (WordTL.ContainsKey(Word.ToLower())) {
+                        Suggestions = new List<string>();
+                        string[] TLS = WordTL[Word.ToLower()];
+                        if (TLS.Length > 0 && TLS[0] == IGNORE)
+                            return;
+                        foreach (string TL in TLS)
                             Suggestions.Add(TL);
-                        } else
-                            Syounym = (TL != null && TL == Word && TargetLang == "EN");
-                    }
-                }
-
-                //Get Dic suggestions
-                if (Suggestions == null)
-                    if (SuggestionLoaded) {
-                        foreach (Suggestion Suggestion in TextSuggestions)
-                            if (Suggestion.Word == Word)
-                                Suggestions = Suggestion.Suggestions;
-                        if (Suggestions == null && !Syounym)
-                            return;
-                        isWrong = true;
                     } else {
-                        if (SpellChecker.Spell(Word) && !Syounym)
-                            return;
-                        Suggestions = SpellChecker.Suggest(Word);
-                        isWrong = true;
+                        bool Contains = false;
+                        foreach (string Phrase in PhraseCache.Keys)
+                            if (Text.ToLower().Contains(Phrase)) {
+                                int PhraseIndex = Text.ToLower().IndexOf(Phrase);
+                                if (PhraseIndex <= index && index <= PhraseIndex + Phrase.Length) {
+                                    Contains = true;
+                                    index = PhraseIndex;
+                                    len = Phrase.Length;
+                                    Word = Phrase;
+                                    Suggestions = new List<string>();
+                                    foreach (string sugg in PhraseCache[Word])
+                                        Suggestions.Add(sugg);
+                                    break;
+                                }
+                            }
+                        if (!Contains) {
+                            string TL = DownloadTranslation(Word);
+                            if (TL != null && TL != Word) {
+                                string[] Synounyms = new string[0];
+                                if (GetOnlineSynonyms)
+                                    Synounyms = WordAPI.DownloadSynonyms(Word);
+                                WordTL.Add(Word, new string[] { TL });
+                                Suggestions = new List<string>();
+                                Suggestions.Add(TL);
+                            } else
+                                Syounym = (TL != null && TL == Word && TargetLang == "EN");
+                        }
                     }
 
-                CMS = new ContextMenuStrip();
-                if (!Syounym) {
-                    for (int i = 0; i < Suggestions.Count; i++) {
-                        WordMeuItem MI = new WordMeuItem();
-                        MI.Word = Word;
-                        MI.Text = Suggestions[i];
-                        MI.Index = index;
-                        MI.Length = len;
-                        MI.Click += MenuItem_Click;
-                        CMS.Items.Add(MI);
+                    //Get Dic suggestions
+                    if (Suggestions == null)
+                        if (SuggestionLoaded) {
+                            foreach (Suggestion Suggestion in TextSuggestions)
+                                if (Suggestion.Word == Word)
+                                    Suggestions = Suggestion.Suggestions;
+                            if (Suggestions == null && !Syounym)
+                                return;
+                            isWrong = true;
+                        } else {
+                            if (SpellChecker.Spell(Word) && !Syounym)
+                                return;
+                            Suggestions = SpellChecker.Suggest(Word);
+                            isWrong = true;
+                        }
+
+                    CMS = new ContextMenuStrip();
+                    if (!Syounym) {
+                        for (int i = 0; i < Suggestions.Count; i++) {
+                            WordMeuItem MI = new WordMeuItem();
+                            MI.Word = Word;
+                            MI.Text = Suggestions[i];
+                            MI.Index = index;
+                            MI.Length = len;
+                            MI.Click += MenuItem_Click;
+                            CMS.Items.Add(MI);
+                        }
+
+                        if (CMS.Items.Count == 0)
+                            //CMS.Items.Add(new ToolStripMenuItem("Sem Sugestões") { Enabled = false });
+                            CMS.Items.Add(new ToolStripMenuItem(Engine.LoadTranslation(56)) { Enabled = false });
+
+                        if (isWrong) {
+                            CMS.Items.Add(new ToolStripSeparator());
+                            ToolStripMenuItem NWItem = new ToolStripMenuItem();
+                            //NWItem.Text = "Adicionar ao Dicionário";
+                            NWItem.Text = Engine.LoadTranslation(57);
+                            NWItem.Name = Word;
+                            NWItem.Click += AddToDic;
+                            CMS.Items.Add(NWItem);
+                        }
+                    }
+                    WordMeuItem SSM = new WordMeuItem();
+                    //SSM.Text = "Mostrar Sinônimos";
+                    SSM.Text = Engine.LoadTranslation(87);
+                    SSM.Word = Word;
+                    SSM.Location = e.Location;
+                    SSM.Click += ShowSynounyms;
+                    if (GetOnlineSynonyms) {
+                        if (!isWrong)
+                            CMS.Items.Add(new ToolStripSeparator());
+                        CMS.Items.Add(SSM);
                     }
 
-                    if (CMS.Items.Count == 0)
-                        //CMS.Items.Add(new ToolStripMenuItem("Sem Sugestões") { Enabled = false });
-                        CMS.Items.Add(new ToolStripMenuItem(Engine.LoadTranslation(56)) { Enabled = false });
-
-                    if (isWrong) {
-                        CMS.Items.Add(new ToolStripSeparator());
-                        ToolStripMenuItem NWItem = new ToolStripMenuItem();
-                        //NWItem.Text = "Adicionar ao Dicionário";
-                        NWItem.Text = Engine.LoadTranslation(57);
-                        NWItem.Name = Word;
-                        NWItem.Click += AddToDic;
-                        CMS.Items.Add(NWItem);
-                    }
+                    CMS.Show(this, e.Location);
                 }
-                WordMeuItem SSM = new WordMeuItem();
-                //SSM.Text = "Mostrar Sinônimos";
-                SSM.Text = Engine.LoadTranslation(87);
-                SSM.Word = Word;
-                SSM.Location = e.Location;
-                SSM.Click += ShowSynounyms;
-                if (GetOnlineSynonyms) {
-                    if (!isWrong)
-                        CMS.Items.Add(new ToolStripSeparator());
-                    CMS.Items.Add(SSM);
-                }
-
-                CMS.Show(this, e.Location);
+            } catch {
             }
         }
         base.OnMouseUp(e);

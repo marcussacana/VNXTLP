@@ -8,7 +8,10 @@ namespace VNXTLP.NewStyle {
         Engine.RadioToolStrip RadioEngine;
         Engine.RadioToolStrip ThemeEngine;
         Engine.RadioToolStrip TLEngine;
+        Engine.RadioToolStrip SelEngine;
         Engine.OverTimerEvent OVE;
+
+        public SpellTextBox TLBox;
 
         internal bool FileOpen = false;
         internal bool FileSaved = true;
@@ -28,13 +31,22 @@ namespace VNXTLP.NewStyle {
         private int Changes = 0;
         internal string[] RefScript;
         internal StyleProgram() {
-            Controls.Clear();
-#if !DEBUG
-            TLBox = new SpellTextBox();
-#endif
             InitializeComponent();
 
-#if !DEBUG
+            //Create TLBox
+            TLBox = new SpellTextBox();
+            ZSKN.Controls.Add(TLBox);
+            TLBox.Anchor = ((AnchorStyles.Bottom | AnchorStyles.Left) | AnchorStyles.Right);
+            TLBox.BorderStyle = BorderStyle.None;
+            TLBox.Location = new System.Drawing.Point(13, 296);
+            TLBox.Name = "TLBox";
+            TLBox.Size = new System.Drawing.Size(620, 20);
+            TLBox.TabIndex = 13;
+            TLBox.Visible = true;
+            TLBox.Enabled = false;
+            TLBox.Multiline = false;
+            TLBox.BringToFront();
+
             //Initialize Events
             Engine.Append(ref TLBox.TextChanged, TLBox_TextChanged);
             TLBox.KeyDown += new KeyEventHandler(TLBox_KeyDown);
@@ -52,6 +64,10 @@ namespace VNXTLP.NewStyle {
             ToolStripMenuItem[] TLCLients = new ToolStripMenuItem[] { ZLEC, ZGoogle };
             TLEngine = new Engine.RadioToolStrip(ref TLCLients, 1);
             TLEngine.CheckedChange += TLEngine_CheckedChange;
+
+            ToolStripMenuItem[] SelItems = new ToolStripMenuItem[] { ZAutoSelMode, ZAsianSel, ZLatimSel };
+            SelEngine = new Engine.RadioToolStrip(ref SelItems, 0);
+            SelEngine.CheckedChange += SelEngine_CheckedChange;
 
             //Initialize DeleyedMouseOver Event
             OVE = new Engine.OverTimerEvent();
@@ -80,6 +96,11 @@ namespace VNXTLP.NewStyle {
             int Val;
             if (int.TryParse(cfg, out Val))
                 RadioEngine.SelectedIndex = Val;
+
+            //get int
+            cfg = Engine.GetConfig("VNXTLP", "SelMode", false);
+            if (int.TryParse(cfg, out Val))
+                SelEngine.SelectedIndex = Val;
 
             //get int
             cfg = Engine.GetConfig("VNXTLP", "TLClient", false);
@@ -120,11 +141,19 @@ namespace VNXTLP.NewStyle {
             ZScriptRef.Text = Engine.LoadTranslation(68);
             ZAltoContraste.Text = Engine.LoadTranslation(70);
             ZAltaRel.Text = Engine.LoadTranslation(71);
+            ZSelMode.Text = Engine.LoadTranslation(101);
+            ZAutoSelMode.Text = Engine.LoadTranslation(102);
+            ZAsianSel.Text = Engine.LoadTranslation(103);
+            ZLatimSel.Text = Engine.LoadTranslation(104);
 
             //Load Custom Resources from a VNXTL Build
             foreach (ToolStripMenuItem item in Engine.CustomResources(ref TLBox))
                 ZMenu.Items.Add(item);
-#endif
+        }
+
+        private void SelEngine_CheckedChange(object sender, EventArgs e) {
+            Engine.SetConfig("VNXTLP", "SelMode", SelEngine.SelectedIndex.ToString());
+            Engine.AutoSelect();
         }
 
         private void TLEngine_CheckedChange(object sender, EventArgs e) {
@@ -142,7 +171,7 @@ namespace VNXTLP.NewStyle {
 
         private void ZSalvar_Click(object sender, EventArgs e) {
             if (!FileOpen) {
-                MessageBox.Show(Engine.LoadTranslation(34), "VNX+ Translaation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(34), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             SaveScript.ShowDialog();
@@ -318,6 +347,8 @@ namespace VNXTLP.NewStyle {
         int Widht;
 
         private void TLBox_TextChanged() {
+            if (TLBox == null)
+                return;
             //Update the ScrollBox Values;
             Widht = Engine.TextWidth(TLBox.Text, TLBox.Font);
             Scroll.Visible = Widht > TLBox.Width;
@@ -327,6 +358,8 @@ namespace VNXTLP.NewStyle {
         }
 
         private void ScrollChange(object sender) {
+            if (TLBox == null)
+                return;
             int i = 0;
             while (i < TLBox.Text.Length && Engine.TextWidth(TLBox.Text.Substring(0, i++), TLBox.Font) < Scroll.Value)
                 continue;
@@ -364,7 +397,7 @@ namespace VNXTLP.NewStyle {
 
         private void ZScriptRef_Click(object sender, EventArgs e) {
             if (!FileOpen) {
-                MessageBox.Show(Engine.LoadTranslation(34), "VNX+ Translaation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(34), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             ZScriptRef.Checked = !ZScriptRef.Checked;

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace VNXTLP {
     internal static partial class Engine {
@@ -44,11 +45,62 @@ namespace VNXTLP {
             return Booleans;
         }
         internal static void AutoSelect() {
+            if (StrList == null)
+                return;
+            string Conf = GetConfig("VNXTLP", "SelMode", false);
+            if (string.IsNullOrWhiteSpace(Conf) || Conf == "0")
+                AutoDetectMode();
+            else {
+                bool Asian = Conf == "1";
+                for (int i = 0; i < StrList.Items.Count; i++) {
+                    string text = StrList.Items[i].ToString().ToLower();
+                    bool Status = true;
+                    int Process = 0;
+                    while (Status) {
+                        switch (Process) {
+                            default:
+                                goto ExitWhile;
+                            case 0:
+                                Status = !ContainsOR(text, GetConfig("AutoSelectionEngine", "Deny-Chars"));
+                                break;
+                            case 1:
+                                Status = NumberLimiter(text, text.Length / 2);
+                                break;
+                            case 2:
+                                Status = text.Length >= 3;
+                                break;
+                            case 3:
+                                if (Asian)
+                                    Status = MinimiumFound(text, Properties.Resources.JapCommon, text.Length / 4);
+                                else
+                                    Status = text.Contains(((char)32).ToString()) || ContainsOR(text.Substring(text.Length - 2, 2), GetConfig("AutoSelectionEngine", "Marks"));
+                                break;
+                            case 4:
+                                if (!Asian)
+                                    break;
+                                Status = ContainsOR(text, GetConfig("AutoSelectionEngine", "Allowed-Chars"));
+                                break;
+                            case 5:
+                                if (Asian)
+                                    break;
+                                Status = !ContainsOR(text, Properties.Resources.JapCommon);
+                                break;
+                        }
+                        Process++;
+                    }
+                    ExitWhile:
+                    ;
+                    StrList.SetItemChecked(i, Status);
+                }
+            }
+        }
+
+        private static void AutoDetectMode() {
             int trie = 0;
             uint count = 0;
             uint NonAsian = 0;
             uint Asian = 0;
-        again:
+            again:
             ;
             for (int i = 0; i < StrList.Items.Count; i++) {
                 string text = StrList.Items[i].ToString().ToLower();
@@ -81,7 +133,7 @@ namespace VNXTLP {
                     }
                     Process++;
                 }
-            ExitWhile:
+                ExitWhile:
                 ;
                 if (Status)
                     count++;
@@ -103,6 +155,7 @@ namespace VNXTLP {
                 goto again;
             }
         }
+
         private static bool MinimiumFound(string text, string MASK, int min) {
             string[] Entries = MASK.Split(',');
             int found = 0;
