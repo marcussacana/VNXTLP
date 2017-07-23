@@ -14,6 +14,10 @@ namespace VNXTLP {
 
         #region LabelInfoEngine
         internal static void UpdateInfo(int value, ref Label InfoLbl, int BackupFreq, ref int Changes, bool TestIndex) {
+            if (value < 0) {
+                InfoLbl.Text = LoadTranslation(105);
+                return;
+            }
             bool CanJump = true;
             if (value == StrList.Items.Count) {
                 Changes = 0;
@@ -54,27 +58,7 @@ namespace VNXTLP {
                 //Multi-Thread Backup
                 (new System.Threading.Thread((arg) => { Backup((string[])arg); })).Start(Strs);
             }
-#if VNX && !Sankai
-#if Kamidori
-            InfoLbl.Text = string.Format(LoadTranslation(47), Editor.Strings[Index].EndLine ? Pos + " && " + (Pos + 1) : ( Index > 0 && Editor.Strings[Index - 1].EndLine ? (Pos - 1) + " && " + Pos: Pos.ToString()), Total, Progress, Freq);
-#endif
-#if KNR
-            int Start = Pos;
-            for (; Start > 0 && Editor.Strings[Pos].IsString; Start--)
-                if (Editor.Strings[Start].IsString && !Editor.Strings[Start].EndText)
-                    break;
-            int Ends = Start;
-            for (; Ends < Editor.Strings.Length && Editor.Strings[Pos].IsString; Ends++)
-                if (Editor.Strings[Ends].IsString && Editor.Strings[Ends].EndText)
-                    break;
-            string Links = string.Empty;
-            for (int i = Start; i <= Ends; i++)
-                Links += i + 1 <= Ends ? i + " && " : i.ToString();
-            InfoLbl.Text = string.Format(LoadTranslation(47), Links, Total, Progress, Freq);
-#endif
-#else
             InfoLbl.Text = string.Format(LoadTranslation(47), Pos, Total, Progress, Freq);
-#endif
         }
         #endregion
 

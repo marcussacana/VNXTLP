@@ -26,8 +26,21 @@ namespace VNXTLP {
         }
 
         internal static class FTP {
-            private static NetworkCredential ServerAcess = new NetworkCredential(GetConfig("FTP", "Login"), ParsePass(GetConfig("FTP", "Pass")));
-            private static string Server = string.Format("ftp://{0}/", GetConfig("FTP", "Host"));
+            private static NetworkCredential ServerAcess { get {
+                    string User = GetConfig("FTP", "Login", false);
+                    if (string.IsNullOrWhiteSpace(User))
+                        throw new UnauthorizedAccessException();
+                    string Pass = ParsePass(GetConfig("FTP", "Pass"));
+                    return new NetworkCredential(User, Pass);
+                } }
+            private static string Server  {
+                get {
+                    string Ip = GetConfig("FTP", "Host", false);
+                    if (string.IsNullOrWhiteSpace(Ip))
+                        throw new Exception();
+                    return string.Format("ftp://{0}/", Ip);
+                }
+            }
             internal static byte[] Download(string file) {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create(Server + file.Replace("\\", "/"));
                 request.Method = WebRequestMethods.Ftp.DownloadFile;

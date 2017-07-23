@@ -28,10 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             Tema.ControlRenderer controlRenderer1 = new Tema.ControlRenderer();
             Tema.MSColorTable msColorTable1 = new Tema.MSColorTable();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StyleProgram));
-            this.ZSKN = new Tema.Tema_ThemeContainer();            
+            this.ZSKN = new Tema.Tema_ThemeContainer();
             this.Scroll = new Tema.Tema_HorizontalScrollBar();
             this.ZControl = new Tema.Thema_ControlBox();
             this.InfoLbl = new System.Windows.Forms.Label();
@@ -42,7 +43,8 @@
             this.ZMenu = new Tema.Tema_MenuStrip();
             this.ZArquivo = new System.Windows.Forms.ToolStripMenuItem();
             this.ZAbrir = new System.Windows.Forms.ToolStripMenuItem();
-            this.ZSalvar = new System.Windows.Forms.ToolStripMenuItem();
+            this.ZSaveItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ZSaveAsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.ZMinhaConta = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -79,6 +81,7 @@
             this.ZValidar = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenScript = new System.Windows.Forms.OpenFileDialog();
             this.SaveScript = new System.Windows.Forms.SaveFileDialog();
+            this.SkipDelay = new System.Windows.Forms.Timer(this.components);
             this.ZSKN.SuspendLayout();
             this.ZMenu.SuspendLayout();
             this.SuspendLayout();
@@ -86,7 +89,6 @@
             // ZSKN
             // 
             this.ZSKN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
-            
             this.ZSKN.Controls.Add(this.Scroll);
             this.ZSKN.Controls.Add(this.ZControl);
             this.ZSKN.Controls.Add(this.InfoLbl);
@@ -245,7 +247,8 @@
             // 
             this.ZArquivo.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ZAbrir,
-            this.ZSalvar,
+            this.ZSaveItem,
+            this.ZSaveAsItem,
             this.toolStripSeparator4,
             this.ZMinhaConta,
             this.toolStripSeparator5,
@@ -261,37 +264,46 @@
             // 
             this.ZAbrir.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZAbrir.Name = "ZAbrir";
-            this.ZAbrir.ShortcutKeyDisplayString = "CTRL + O";
-            this.ZAbrir.Size = new System.Drawing.Size(246, 30);
+            this.ZAbrir.ShortcutKeyDisplayString = "Ctrl + O";
+            this.ZAbrir.Size = new System.Drawing.Size(326, 30);
             this.ZAbrir.Text = "Abrir";
             this.ZAbrir.Click += new System.EventHandler(this.ZAbrir_Click);
             // 
-            // ZSalvar
+            // ZSaveItem
             // 
-            this.ZSalvar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.ZSalvar.Name = "ZSalvar";
-            this.ZSalvar.ShortcutKeyDisplayString = "CTRL + S";
-            this.ZSalvar.Size = new System.Drawing.Size(246, 30);
-            this.ZSalvar.Text = "Salvar";
-            this.ZSalvar.Click += new System.EventHandler(this.ZSalvar_Click);
+            this.ZSaveItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.ZSaveItem.Name = "ZSaveItem";
+            this.ZSaveItem.ShortcutKeyDisplayString = "Ctrl + S";
+            this.ZSaveItem.Size = new System.Drawing.Size(326, 30);
+            this.ZSaveItem.Text = "Salvar";
+            this.ZSaveItem.Click += new System.EventHandler(this.FastSave);
+            // 
+            // ZSaveAsItem
+            // 
+            this.ZSaveAsItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.ZSaveAsItem.Name = "ZSaveAsItem";
+            this.ZSaveAsItem.ShortcutKeyDisplayString = "Ctrl + Shift + S";
+            this.ZSaveAsItem.Size = new System.Drawing.Size(326, 30);
+            this.ZSaveAsItem.Text = "Salvar Como";
+            this.ZSaveAsItem.Click += new System.EventHandler(this.ZSalvar_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(243, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(323, 6);
             // 
             // ZMinhaConta
             // 
             this.ZMinhaConta.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZMinhaConta.Name = "ZMinhaConta";
-            this.ZMinhaConta.Size = new System.Drawing.Size(246, 30);
+            this.ZMinhaConta.Size = new System.Drawing.Size(326, 30);
             this.ZMinhaConta.Text = "Minha Conta";
             this.ZMinhaConta.Click += new System.EventHandler(this.ZMinhaConta_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(243, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(323, 6);
             // 
             // ZSelecao
             // 
@@ -301,7 +313,7 @@
             this.ZSelecaoAutomatica});
             this.ZSelecao.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZSelecao.Name = "ZSelecao";
-            this.ZSelecao.Size = new System.Drawing.Size(246, 30);
+            this.ZSelecao.Size = new System.Drawing.Size(326, 30);
             this.ZSelecao.Text = "Seleção";
             // 
             // ZSelecionarTodos
@@ -332,8 +344,8 @@
             // 
             this.ZPesquisa.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZPesquisa.Name = "ZPesquisa";
-            this.ZPesquisa.ShortcutKeyDisplayString = "CTRL + F";
-            this.ZPesquisa.Size = new System.Drawing.Size(246, 30);
+            this.ZPesquisa.ShortcutKeyDisplayString = "Ctrl + F";
+            this.ZPesquisa.Size = new System.Drawing.Size(326, 30);
             this.ZPesquisa.Text = "Pesquisa";
             this.ZPesquisa.Click += new System.EventHandler(this.ZPesquisa_Click);
             // 
@@ -341,7 +353,7 @@
             // 
             this.ZScriptRef.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZScriptRef.Name = "ZScriptRef";
-            this.ZScriptRef.Size = new System.Drawing.Size(246, 30);
+            this.ZScriptRef.Size = new System.Drawing.Size(326, 30);
             this.ZScriptRef.Text = "Script Referencial";
             this.ZScriptRef.Click += new System.EventHandler(this.ZScriptRef_Click);
             // 
@@ -578,6 +590,11 @@
             // 
             this.SaveScript.FileOk += new System.ComponentModel.CancelEventHandler(this.SaveScript_FileOk);
             // 
+            // SkipDelay
+            // 
+            this.SkipDelay.Interval = 1000;
+            this.SkipDelay.Tick += new System.EventHandler(this.DelayEnd);
+            // 
             // StyleProgram
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -612,7 +629,7 @@
         private System.Windows.Forms.ToolStripMenuItem ZArquivo;
         private System.Windows.Forms.ToolStripMenuItem ZOpcoes;
         private System.Windows.Forms.ToolStripMenuItem ZAbrir;
-        private System.Windows.Forms.ToolStripMenuItem ZSalvar;
+        private System.Windows.Forms.ToolStripMenuItem ZSaveAsItem;
         private System.Windows.Forms.ToolStripMenuItem ZMinhaConta;
         private System.Windows.Forms.ToolStripMenuItem ZTema;
         private System.Windows.Forms.ToolStripMenuItem ZBasico;
@@ -655,5 +672,7 @@
         private System.Windows.Forms.ToolStripMenuItem ZAutoSelMode;
         private System.Windows.Forms.ToolStripMenuItem ZAsianSel;
         private System.Windows.Forms.ToolStripMenuItem ZLatimSel;
+        private System.Windows.Forms.Timer SkipDelay;
+        private System.Windows.Forms.ToolStripMenuItem ZSaveItem;
     }
 }

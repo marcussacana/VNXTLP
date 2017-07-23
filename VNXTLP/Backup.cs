@@ -35,7 +35,7 @@ namespace VNXTLP {
             try {
                 if (GetConfig("VNXTLP", "OfflineBackup", false) == "true") {
                     string Path = ScriptPath;
-                    Save(System.IO.Path.GetDirectoryName(Path) + "\\" + System.IO.Path.GetFileNameWithoutExtension(Path) + "_backup" + System.IO.Path.GetExtension(Path), Strings);
+                    Save(System.IO.Path.GetDirectoryName(Path) + "\\" + System.IO.Path.GetFileNameWithoutExtension(Path) + "_backup" + System.IO.Path.GetExtension(Path), Strings, true);
                     ScriptPath = Path;
                 }
 

@@ -20,6 +20,7 @@ namespace VNXTLP.NewStyle {
         internal int Index {
             get
             {
+                SkipDelay.Enabled = true;
                 return StrList.SelectedIndex < 0 ? 0 : StrList.SelectedIndex;
             }
             set
@@ -45,6 +46,7 @@ namespace VNXTLP.NewStyle {
             TLBox.Visible = true;
             TLBox.Enabled = false;
             TLBox.Multiline = false;
+            TLBox.KeyDown += TLBox_KeyDown;
             TLBox.BringToFront();
 
             //Initialize Events
@@ -114,7 +116,7 @@ namespace VNXTLP.NewStyle {
             ZReturn.Text = Engine.LoadTranslation(12);
             ZArquivo.Text = Engine.LoadTranslation(13);
             ZAbrir.Text = Engine.LoadTranslation(14);
-            ZSalvar.Text = Engine.LoadTranslation(15);
+            ZSaveAsItem.Text = Engine.LoadTranslation(15);
             ZMinhaConta.Text = Engine.LoadTranslation(5);
             ZSelecao.Text = Engine.LoadTranslation(16);
             ZSelecionarTodos.Text = Engine.LoadTranslation(17);
@@ -145,6 +147,7 @@ namespace VNXTLP.NewStyle {
             ZAutoSelMode.Text = Engine.LoadTranslation(102);
             ZAsianSel.Text = Engine.LoadTranslation(103);
             ZLatimSel.Text = Engine.LoadTranslation(104);
+            ZSaveAsItem.Text = Engine.LoadTranslation(106);
 
             //Load Custom Resources from a VNXTL Build
             foreach (ToolStripMenuItem item in Engine.CustomResources(ref TLBox))
@@ -232,8 +235,9 @@ namespace VNXTLP.NewStyle {
         }
 
         private void ZContinue_Click(object sender, EventArgs e) {
-            if (FileOpen)
-                Index++;
+            if (!FileOpen)
+                return;
+            Index++;
         }
 
         private void StrList_SelectedIndexChanged(object sender, EventArgs e) {
@@ -328,6 +332,9 @@ namespace VNXTLP.NewStyle {
         }
         internal void TLBox_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Enter) {
+                if (SkipDelay.Enabled)
+                    return;
+
                 //Stop "Ding" Sound
                 e.Handled = true;
                 e.SuppressKeyPress = true;
@@ -452,6 +459,10 @@ namespace VNXTLP.NewStyle {
                     break;
                 case Keys.Control | Keys.S:
                     e.SuppressKeyPress = true;
+                    FastSave(null, null);
+                    break;
+                case Keys.Control | Keys.Shift | Keys.S:
+                    e.SuppressKeyPress = true;
                     ZSalvar_Click(null, null);
                     break;
                 case Keys.Control | Keys.F:
@@ -470,8 +481,8 @@ namespace VNXTLP.NewStyle {
                 string File = cfg.Split('|')[0];
                 string Index = cfg.Split('|')[1];
 
-                if (System.IO.File.Exists(cfg)) {
-                    OpenScript.FileName = cfg;
+                if (System.IO.File.Exists(File)) {
+                    OpenScript.FileName = File;
                     OpenScript_FileOk(null, null);
                     this.Index = int.Parse(Index);
                 }
@@ -487,6 +498,17 @@ namespace VNXTLP.NewStyle {
 
         private void Resized(object sender, EventArgs e) {
             TLBox_TextChanged();
+        }
+
+        private void DelayEnd(object sender, EventArgs e) {
+            SkipDelay.Enabled = false;
+        }
+
+        private void FastSave(object sender, EventArgs e) {
+            if (!FileOpen)
+                return;
+            SaveScript.FileName = Engine.ScriptPath;
+            SaveScript_FileOk(null, null);
         }
     }
 }

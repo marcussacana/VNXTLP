@@ -15,6 +15,7 @@ namespace VNXTLP {
         internal int Index {
             get
             {
+                SkipDelay.Enabled = true;
                 return StrList.SelectedIndex < 0 ? 0 : StrList.SelectedIndex;
             }
             set
@@ -35,7 +36,7 @@ namespace VNXTLP {
             MainPanel.Controls.Add(TLBox);
             TLBox.Anchor = ((AnchorStyles.Bottom | AnchorStyles.Left) | AnchorStyles.Right);
             TLBox.Enabled = false;
-            TLBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            TLBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
             TLBox.Location = new System.Drawing.Point(Scroll.Location.X, Scroll.Location.Y - (Scroll.Size.Height + 5));
             TLBox.Margin = new Padding(3, 2, 3, 2);
             TLBox.Multiline = false;
@@ -106,7 +107,7 @@ namespace VNXTLP {
             RetBnt.Text = Engine.LoadTranslation(12);
             arquivoToolStripMenuItem.Text = Engine.LoadTranslation(13);
             OpenItem.Text = Engine.LoadTranslation(14);
-            SaveItem.Text = Engine.LoadTranslation(15);
+            SaveAsItem.Text = Engine.LoadTranslation(15);
             TLAccMenuItem.Text = Engine.LoadTranslation(5);
             seleçãoToolStripMenuItem.Text = Engine.LoadTranslation(16);
             SelectAll.Text = Engine.LoadTranslation(17);
@@ -226,6 +227,9 @@ namespace VNXTLP {
 
         internal void TLBox_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Enter) {
+                if (SkipDelay.Enabled)
+                    return;
+
                 //Stop "Ding" Sound
                 e.Handled = true;
                 e.SuppressKeyPress = true;
@@ -257,11 +261,13 @@ namespace VNXTLP {
         }
 
         private void SkipBnt_Click(object sender, EventArgs e) {
-            Index++;
+            if (FileOpen)
+                Index++;
         }
 
         private void RetBnt_Click(object sender, EventArgs e) {
-            Index--;
+            if (FileOpen)
+                Index--;
         }
 
         private void StrList_SelectedIndexChanged(object sender, EventArgs e) {
@@ -436,6 +442,10 @@ namespace VNXTLP {
                     break;
                 case Keys.Control | Keys.S:
                     e.SuppressKeyPress = true;
+                    FastSave(null, null);
+                    break;
+                case Keys.Control | Keys.Shift| Keys.S:
+                    e.SuppressKeyPress = true;
                     SaveItem_Click(null, null);
                     break;
                 case Keys.Control | Keys.F:
@@ -450,13 +460,24 @@ namespace VNXTLP {
                 string File = cfg.Split('|')[0];
                 string Index = cfg.Split('|')[1];
 
-                if (System.IO.File.Exists(cfg)) {
-                    OpenScript.FileName = cfg;
+                if (System.IO.File.Exists(File)) {
+                    OpenScript.FileName = File;
                     OpenScript_FileOk(null, null);
                     this.Index = int.Parse(Index);
                 }
             }
             catch { }
+        }
+
+        private void DelayEnd(object sender, EventArgs e) {
+            SkipDelay.Enabled = false;
+        }
+
+        private void FastSave(object sender, EventArgs e) {
+            if (!FileOpen)
+                return;
+            SaveScript.FileName = Engine.ScriptPath;
+            SaveScript_FileOk(null, null);
         }
     }
 

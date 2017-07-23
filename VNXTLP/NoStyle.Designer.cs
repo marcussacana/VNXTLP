@@ -23,11 +23,12 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NoStyle));
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.arquivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SaveItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveAsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.TLAccMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
@@ -70,6 +71,8 @@
             this.InfoLbl = new System.Windows.Forms.Label();
             this.Scroll = new System.Windows.Forms.HScrollBar();
             this.MainPanel = new System.Windows.Forms.Panel();
+            this.SkipDelay = new System.Windows.Forms.Timer(this.components);
+            this.SaveItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.MainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -90,6 +93,7 @@
             this.arquivoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.OpenItem,
             this.SaveItem,
+            this.SaveAsItem,
             this.toolStripSeparator4,
             this.TLAccMenuItem,
             this.toolStripSeparator5,
@@ -104,34 +108,34 @@
             // 
             this.OpenItem.Name = "OpenItem";
             this.OpenItem.ShortcutKeyDisplayString = "Ctrl + O";
-            this.OpenItem.Size = new System.Drawing.Size(246, 30);
+            this.OpenItem.Size = new System.Drawing.Size(326, 30);
             this.OpenItem.Text = "Abrir";
             this.OpenItem.Click += new System.EventHandler(this.OpenItem_Click);
             // 
-            // SaveItem
+            // SaveAsItem
             // 
-            this.SaveItem.Name = "SaveItem";
-            this.SaveItem.ShortcutKeyDisplayString = "Ctrl + S";
-            this.SaveItem.Size = new System.Drawing.Size(246, 30);
-            this.SaveItem.Text = "Salvar";
-            this.SaveItem.Click += new System.EventHandler(this.SaveItem_Click);
+            this.SaveAsItem.Name = "SaveAsItem";
+            this.SaveAsItem.ShortcutKeyDisplayString = "Ctrl + Shift + S";
+            this.SaveAsItem.Size = new System.Drawing.Size(326, 30);
+            this.SaveAsItem.Text = "Salvar Como";
+            this.SaveAsItem.Click += new System.EventHandler(this.SaveItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(243, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(323, 6);
             // 
             // TLAccMenuItem
             // 
             this.TLAccMenuItem.Name = "TLAccMenuItem";
-            this.TLAccMenuItem.Size = new System.Drawing.Size(246, 30);
+            this.TLAccMenuItem.Size = new System.Drawing.Size(326, 30);
             this.TLAccMenuItem.Text = "Minha Conta";
             this.TLAccMenuItem.Click += new System.EventHandler(this.TLAccMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(243, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(323, 6);
             // 
             // seleçãoToolStripMenuItem
             // 
@@ -140,7 +144,7 @@
             this.UnselectAll,
             this.AutoSelect});
             this.seleçãoToolStripMenuItem.Name = "seleçãoToolStripMenuItem";
-            this.seleçãoToolStripMenuItem.Size = new System.Drawing.Size(246, 30);
+            this.seleçãoToolStripMenuItem.Size = new System.Drawing.Size(326, 30);
             this.seleçãoToolStripMenuItem.Text = "Seleção";
             // 
             // SelectAll
@@ -167,15 +171,15 @@
             // pesquisaToolStripMenuItem
             // 
             this.pesquisaToolStripMenuItem.Name = "pesquisaToolStripMenuItem";
-            this.pesquisaToolStripMenuItem.ShortcutKeyDisplayString = "CTRL + F";
-            this.pesquisaToolStripMenuItem.Size = new System.Drawing.Size(246, 30);
+            this.pesquisaToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl + F";
+            this.pesquisaToolStripMenuItem.Size = new System.Drawing.Size(326, 30);
             this.pesquisaToolStripMenuItem.Text = "Pesquisa";
             this.pesquisaToolStripMenuItem.Click += new System.EventHandler(this.pesquisaToolStripMenuItem_Click);
             // 
             // RefScriptMenuItem
             // 
             this.RefScriptMenuItem.Name = "RefScriptMenuItem";
-            this.RefScriptMenuItem.Size = new System.Drawing.Size(246, 30);
+            this.RefScriptMenuItem.Size = new System.Drawing.Size(326, 30);
             this.RefScriptMenuItem.Text = "Script Referencial";
             this.RefScriptMenuItem.Click += new System.EventHandler(this.ZScriptRef_Click);
             // 
@@ -319,19 +323,19 @@
             this.AutomaticoToolStripMenuItem.Checked = true;
             this.AutomaticoToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.AutomaticoToolStripMenuItem.Name = "AutomaticoToolStripMenuItem";
-            this.AutomaticoToolStripMenuItem.Size = new System.Drawing.Size(210, 30);
+            this.AutomaticoToolStripMenuItem.Size = new System.Drawing.Size(206, 30);
             this.AutomaticoToolStripMenuItem.Text = "Auto Detectar";
             // 
             // asiaticaToolStripMenuItem
             // 
             this.asiaticaToolStripMenuItem.Name = "asiaticaToolStripMenuItem";
-            this.asiaticaToolStripMenuItem.Size = new System.Drawing.Size(210, 30);
+            this.asiaticaToolStripMenuItem.Size = new System.Drawing.Size(206, 30);
             this.asiaticaToolStripMenuItem.Text = "Asiática";
             // 
             // latimToolStripMenuItem
             // 
             this.latimToolStripMenuItem.Name = "latimToolStripMenuItem";
-            this.latimToolStripMenuItem.Size = new System.Drawing.Size(210, 30);
+            this.latimToolStripMenuItem.Size = new System.Drawing.Size(206, 30);
             this.latimToolStripMenuItem.Text = "Latim";
             // 
             // toolStripSeparator1
@@ -469,6 +473,19 @@
             this.MainPanel.Size = new System.Drawing.Size(910, 600);
             this.MainPanel.TabIndex = 3;
             // 
+            // SkipDelay
+            // 
+            this.SkipDelay.Interval = 1000;
+            this.SkipDelay.Tick += new System.EventHandler(this.DelayEnd);
+            // 
+            // SaveItem
+            // 
+            this.SaveItem.Name = "SaveItem";
+            this.SaveItem.ShortcutKeyDisplayString = "Ctrl + S";
+            this.SaveItem.Size = new System.Drawing.Size(326, 30);
+            this.SaveItem.Text = "Salvar";
+            this.SaveItem.Click += new System.EventHandler(this.FastSave);
+            // 
             // NoStyle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -499,7 +516,7 @@
         private System.Windows.Forms.MenuStrip MainMenu;
         private System.Windows.Forms.ToolStripMenuItem arquivoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem OpenItem;
-        private System.Windows.Forms.ToolStripMenuItem SaveItem;
+        private System.Windows.Forms.ToolStripMenuItem SaveAsItem;
         private System.Windows.Forms.OpenFileDialog OpenScript;
         private System.Windows.Forms.SaveFileDialog SaveScript;
         private System.Windows.Forms.ToolStripMenuItem TLAccMenuItem;
@@ -542,6 +559,8 @@
         private System.Windows.Forms.ToolStripMenuItem AutomaticoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem asiaticaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem latimToolStripMenuItem;
+        private System.Windows.Forms.Timer SkipDelay;
+        private System.Windows.Forms.ToolStripMenuItem SaveItem;
     }
 }
 

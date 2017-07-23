@@ -15,20 +15,19 @@ namespace VNXTLP {
             }
         }
         internal static void UpdateSelection() {
-            int Count = StrList.Items.Count / 8;
-            while (Count * 8 < StrList.Items.Count)
-                Count++;
+            int Count = (StrList.Items.Count / 8) + (StrList.Items.Count % 8);
+            
             byte[] Booleans = new byte[Count];
             for (int i = 0, b = 0; i < Booleans.Length; i++, b += 8) {
-                int Byt = 0;
+                byte Byt = 0;
                 /*1, 2, 4, 8, 16, 32, 64, 128*/
-                for (int loop = 0, multiple = 1; loop < 7; loop++) {
-                    if (b + loop < StrList.Items.Count)
-                        Byt |= StrList.GetItemChecked(b + loop) ? multiple : 0;
+                for (int loop = 0, multiple = 1; loop < 8; loop++) {
+                    if (b + loop < StrList.Items.Count && StrList.GetItemChecked(b + loop))
+                        Byt |= (byte)multiple;
                     multiple *= 2;
                 }
 
-                Booleans[i] = (byte)Byt;
+                Booleans[i] = Byt;
             }
             File.WriteAllBytes(TableName, Booleans);
         }
@@ -37,7 +36,7 @@ namespace VNXTLP {
             bool[] Booleans = new bool[Bin.Length * 8];
             for (int i = 0, b = 0; i < Bin.Length; i++, b += 8) {
                 /*1, 2, 4, 8, 16, 32, 64, 128*/
-                for (int loop = 0, multiple = 1; loop < 7; loop++) {
+                for (int loop = 0, multiple = 1; loop < 8; loop++) {
                     Booleans[b + loop] = (Bin[i] & multiple) != 0;
                     multiple *= 2;
                 }

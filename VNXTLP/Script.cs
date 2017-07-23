@@ -41,10 +41,14 @@ namespace VNXTLP {
 
        
 
-        internal static void Save(string Path, string[] Content) {
+        internal static void Save(string Path, string[] Content, bool Temp = false) {
+            string bkp = ScriptPath;
             if (Path != ScriptPath) {
                 if (File.Exists(ScriptPath + ".map")) {
                     File.Copy(ScriptPath + ".map", Path + ".map", true);
+                }
+                if (File.Exists(ScriptPath + "-checks.bol")) {
+                    File.Copy(ScriptPath + "-Checks.bol", Path + "-Checks.bol", true);
                 }
             }
             ScriptPath = Path;
@@ -58,6 +62,9 @@ namespace VNXTLP {
 
             byte[] Output = Editor.Export(Content);
             File.WriteAllBytes(ScriptPath, Output);
+
+            if (Temp)
+                ScriptPath = bkp;
         }
 
         private static void ClearStrings(ref string[] Strings) {
