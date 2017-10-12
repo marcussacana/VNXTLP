@@ -99,7 +99,8 @@ namespace VNXTLP.NewStyle {
 
             //get int
             string cfg = Engine.GetConfig("VNXTLP", "BackupSpeed", false);
-            if (int.TryParse(cfg, out int Val))
+            int Val = 0;
+            if (int.TryParse(cfg, out Val))
                 RadioEngine.SelectedIndex = Val;
 
             //get int
@@ -129,6 +130,7 @@ namespace VNXTLP.NewStyle {
             ZTema.Text = Engine.LoadTranslation(21);
             ZBasico.Text = Engine.LoadTranslation(22);
             ZModerno.Text = Engine.LoadTranslation(23);
+
             ZPeriodo.Text = Engine.LoadTranslation(24);
             ZAoSalvar.Text = Engine.LoadTranslation(25);
             Z50Dialogos.Text = Engine.LoadTranslation(26);

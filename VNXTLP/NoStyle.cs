@@ -90,7 +90,8 @@ namespace VNXTLP {
 
             //get int
             string cfg = Engine.GetConfig("VNXTLP", "BackupSpeed", false);
-            if (int.TryParse(cfg, out int Val))
+            int Val = 0;
+            if (int.TryParse(cfg, out Val))
                 RadioEngine.SelectedIndex = Val;
 
             //get int
