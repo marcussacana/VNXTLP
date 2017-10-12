@@ -7,7 +7,7 @@ using System.Web;
 using System.Linq;
 
 namespace TLIB {
-    public static class LEC {
+    public class LEC {
         public enum Gender {
             Male, Female
         }
