@@ -1,5 +1,5 @@
 ### VNXTLP - VNX+ Translate Plataform
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/marcussacana/VNXTLP?branch=master&retina=true)](http://katawa.uvnworks.com)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/marcussacana/VNXTLP?branch=master&retina=true)](https://ci.appveyor.com/project/marcussacana/vnxtlp)
 
 This program is a Plataform to translate scripts, you need setup your build to your engine.
 
