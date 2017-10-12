@@ -39,8 +39,9 @@ namespace TLIB {
             SourceLang = SourceLang.Contains("-") ? SourceLang.Split('-')[0].ToLower() : SourceLang.ToLower();
             TargetLang = TargetLang.Contains("-") ? TargetLang.Split('-')[0].ToLower() : TargetLang.ToLower();
 
+            const string FORMBASE = "<t:Translate> <t:sourceLang>{0}</t:sourceLang> <t:targetLang>{1}</t:targetLang> <t:Options> <t:OptionName=\"CorrespondingWord\">0</t:Option> <t:OptionName=\"Gender\">{2}</t:Option> <t:OptionName=\"Formality\">{3}</t:Option> <t:OptionName=\"UseHybridEngines\">1</t:Option> </t:Options> <t:sourceText>{4}</t:sourceText> </t:Translate>";
             //Prepare XML Request Data
-            string XMLBASE = string.Format(Properties.Resources.XML, SourceLang, TargetLang, gender, formality, Text);
+            string XMLBASE = string.Format(FORMBASE, SourceLang, TargetLang, gender, formality, Text);
             byte[] XML = Encoding.UTF8.GetBytes(XMLBASE);
 
             //Initalize and Send Request

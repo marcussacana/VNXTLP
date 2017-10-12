@@ -1,11 +1,9 @@
 ﻿using System;
-using System.CodeDom;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Web.Helpers;
 
 namespace TLIB {
 
@@ -78,10 +76,10 @@ namespace TLIB {
         }
 
         private static string Encode(object Data) {
-            return System.Web.Helpers.Json.Encode(Data);
+            return Json.Encode(Data);
         }
-        private static T Decode<T>(string Json) {
-            return System.Web.Helpers.Json.Decode(Json, typeof(T));
+        private static T Decode<T>(string Data) {
+            return Json.Decode(Data, typeof(T));
         }
 
         private static Cookie[] Cookies = null;
