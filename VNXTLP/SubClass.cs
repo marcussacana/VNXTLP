@@ -176,8 +176,9 @@ namespace VNXTLP {
             internal void Initialize() {
                 if (sender == null)
                     throw new Exception("Need define the sender");
-                Timer t = new Timer();
-                t.Interval = 500;
+                Timer t = new Timer() {
+                    Interval = 500
+                };
 
                 //MouseOver more than 500ms
                 t.Tick += (s, e) => {

@@ -12,6 +12,8 @@ namespace VNXTLP {
         Engine.OverTimerEvent OVE;
         internal bool FileOpen = false;
         internal bool FileSaved = true;
+
+        internal int SelectedIndex = -1;
         internal int Index {
             get
             {
@@ -21,6 +23,7 @@ namespace VNXTLP {
             set
             {
                 Engine.UpdateInfo(value, ref InfoLbl, GetBackupFrequence(), ref Changes, IndexTestEnableMenuItem.Checked);
+                SelectedIndex = StrList.SelectedIndex;
             }
         }
 
@@ -54,7 +57,7 @@ namespace VNXTLP {
             ThemeEngine = new Engine.RadioToolStrip(ref ThemeItems, 1);
             ThemeEngine.CheckedChange += ChangeTheme;
 
-            ToolStripMenuItem[] TLCLients = new ToolStripMenuItem[] { lECToolStripMenuItem, googleToolStripMenuItem };
+            ToolStripMenuItem[] TLCLients = new ToolStripMenuItem[] { lECToolStripMenuItem, googleToolStripMenuItem, zBingToolStripMenuItem };
             TLEngine = new Engine.RadioToolStrip(ref TLCLients, 1);
             TLEngine.CheckedChange += TLEngine_CheckedChange;
 
@@ -63,8 +66,9 @@ namespace VNXTLP {
             SelEngine.CheckedChange += SelEngine_CheckedChange;
 
             //Initialize DeleyedMouseOver Event
-            OVE = new Engine.OverTimerEvent();
-            OVE.sender = StrList;
+            OVE = new Engine.OverTimerEvent() {
+                sender = StrList
+            };
             OVE.MouseStopOver += StrList_MouseStopOver;
             OVE.Initialize();
 
@@ -86,8 +90,7 @@ namespace VNXTLP {
 
             //get int
             string cfg = Engine.GetConfig("VNXTLP", "BackupSpeed", false);
-            int Val;
-            if (int.TryParse(cfg, out Val))
+            if (int.TryParse(cfg, out int Val))
                 RadioEngine.SelectedIndex = Val;
 
             //get int
@@ -138,6 +141,7 @@ namespace VNXTLP {
             AutomaticoToolStripMenuItem.Text = Engine.LoadTranslation(102);
             asiaticaToolStripMenuItem.Text = Engine.LoadTranslation(103);
             latimToolStripMenuItem.Text = Engine.LoadTranslation(104);
+            SaveItem.Text = Engine.LoadTranslation(106);
 
             //Special Items
             foreach (ToolStripMenuItem item in Engine.CustomResources(ref TLBox))
@@ -235,10 +239,10 @@ namespace VNXTLP {
                 e.SuppressKeyPress = true;
                 
                 //Update translation and get next string
-                StrList.Items[Index] = TLBox.Text;
+                StrList.Items[SelectedIndex] = TLBox.Text;
                 FileSaved = false;
                 Changes++;
-                Index++;
+                Index = SelectedIndex + 1;
             }
         }
 
@@ -408,7 +412,7 @@ namespace VNXTLP {
             }
         }
 
-        private void altoContrasteToolStripMenuItem_CheckedChanged(object sender, EventArgs e) {
+        private void AltoContrasteToolStripMenuItem_CheckedChanged(object sender, EventArgs e) {
             if (altoContrasteToolStripMenuItem.Checked) {
                 StrList.BackColor = System.Drawing.Color.Black;
                 StrList.ForeColor = System.Drawing.Color.Green;
@@ -419,7 +423,7 @@ namespace VNXTLP {
             }
         }
 
-        private void altaResoluçãoToolStripMenuItem_CheckedChanged(object sender, EventArgs e) {
+        private void AltaResoluçãoToolStripMenuItem_CheckedChanged(object sender, EventArgs e) {
             if (altaResoluçãoToolStripMenuItem.Checked) {
                 StrList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12f);
             } else {
@@ -427,7 +431,7 @@ namespace VNXTLP {
             }
         }
 
-        private void pesquisaToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void PesquisaToolStripMenuItem_Click(object sender, EventArgs e) {
             if (Program.SearchOpen)
                 return;
             Program.SearchForm = new Search();
@@ -449,7 +453,7 @@ namespace VNXTLP {
                     SaveItem_Click(null, null);
                     break;
                 case Keys.Control | Keys.F:
-                    pesquisaToolStripMenuItem_Click(null, null);
+                    PesquisaToolStripMenuItem_Click(null, null);
                     break;
             }
         }

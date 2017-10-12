@@ -24,7 +24,7 @@ namespace EndUpdate {
                     NewExe = OriginalFile;
                 //Try-Force Delete
                 int noproctries = 0;
-                if (!OriginalFile.EndsWith(".ini"))
+                if (!OriginalFile.ToLower().EndsWith(".ini"))
                     while (System.IO.File.Exists(OriginalFile) || noproctries < 0)
                         try {
                             System.IO.File.Delete(OriginalFile);
@@ -46,9 +46,9 @@ namespace EndUpdate {
                                 break;
                             }
                         }
-                if (System.IO.File.Exists(OriginalFile) && !OriginalFile.EndsWith(".ini"))
+                if (System.IO.File.Exists(OriginalFile) && !OriginalFile.ToLower().EndsWith(".ini"))
                     return;
-                if (File.EndsWith(".ini")) {
+                if (File.ToLower().EndsWith(".ini")) {
                     UpdateIni(OriginalFile, File);
                     System.IO.File.Delete(File);
                 }

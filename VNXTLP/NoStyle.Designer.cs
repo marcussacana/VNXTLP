@@ -28,6 +28,7 @@
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.arquivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveAsItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.TLAccMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,7 +73,7 @@
             this.Scroll = new System.Windows.Forms.HScrollBar();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.SkipDelay = new System.Windows.Forms.Timer(this.components);
-            this.SaveItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.zBingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.MainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -85,7 +86,8 @@
             this.opçõesToolStripMenuItem});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(924, 33);
+            this.MainMenu.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
+            this.MainMenu.Size = new System.Drawing.Size(616, 24);
             this.MainMenu.TabIndex = 0;
             // 
             // arquivoToolStripMenuItem
@@ -101,41 +103,49 @@
             this.pesquisaToolStripMenuItem,
             this.RefScriptMenuItem});
             this.arquivoToolStripMenuItem.Name = "arquivoToolStripMenuItem";
-            this.arquivoToolStripMenuItem.Size = new System.Drawing.Size(87, 29);
+            this.arquivoToolStripMenuItem.Size = new System.Drawing.Size(61, 22);
             this.arquivoToolStripMenuItem.Text = "Arquivo";
             // 
             // OpenItem
             // 
             this.OpenItem.Name = "OpenItem";
             this.OpenItem.ShortcutKeyDisplayString = "Ctrl + O";
-            this.OpenItem.Size = new System.Drawing.Size(326, 30);
+            this.OpenItem.Size = new System.Drawing.Size(225, 22);
             this.OpenItem.Text = "Abrir";
             this.OpenItem.Click += new System.EventHandler(this.OpenItem_Click);
+            // 
+            // SaveItem
+            // 
+            this.SaveItem.Name = "SaveItem";
+            this.SaveItem.ShortcutKeyDisplayString = "Ctrl + S";
+            this.SaveItem.Size = new System.Drawing.Size(225, 22);
+            this.SaveItem.Text = "Salvar";
+            this.SaveItem.Click += new System.EventHandler(this.FastSave);
             // 
             // SaveAsItem
             // 
             this.SaveAsItem.Name = "SaveAsItem";
             this.SaveAsItem.ShortcutKeyDisplayString = "Ctrl + Shift + S";
-            this.SaveAsItem.Size = new System.Drawing.Size(326, 30);
+            this.SaveAsItem.Size = new System.Drawing.Size(225, 22);
             this.SaveAsItem.Text = "Salvar Como";
             this.SaveAsItem.Click += new System.EventHandler(this.SaveItem_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(323, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(222, 6);
             // 
             // TLAccMenuItem
             // 
             this.TLAccMenuItem.Name = "TLAccMenuItem";
-            this.TLAccMenuItem.Size = new System.Drawing.Size(326, 30);
+            this.TLAccMenuItem.Size = new System.Drawing.Size(225, 22);
             this.TLAccMenuItem.Text = "Minha Conta";
             this.TLAccMenuItem.Click += new System.EventHandler(this.TLAccMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(323, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(222, 6);
             // 
             // seleçãoToolStripMenuItem
             // 
@@ -144,27 +154,27 @@
             this.UnselectAll,
             this.AutoSelect});
             this.seleçãoToolStripMenuItem.Name = "seleçãoToolStripMenuItem";
-            this.seleçãoToolStripMenuItem.Size = new System.Drawing.Size(326, 30);
+            this.seleçãoToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.seleçãoToolStripMenuItem.Text = "Seleção";
             // 
             // SelectAll
             // 
             this.SelectAll.Name = "SelectAll";
-            this.SelectAll.Size = new System.Drawing.Size(257, 30);
+            this.SelectAll.Size = new System.Drawing.Size(181, 22);
             this.SelectAll.Text = "Selecionar Todos";
             this.SelectAll.Click += new System.EventHandler(this.SelectAll_Click);
             // 
             // UnselectAll
             // 
             this.UnselectAll.Name = "UnselectAll";
-            this.UnselectAll.Size = new System.Drawing.Size(257, 30);
+            this.UnselectAll.Size = new System.Drawing.Size(181, 22);
             this.UnselectAll.Text = "Desselecionar Todos";
             this.UnselectAll.Click += new System.EventHandler(this.UnselectAll_Click);
             // 
             // AutoSelect
             // 
             this.AutoSelect.Name = "AutoSelect";
-            this.AutoSelect.Size = new System.Drawing.Size(257, 30);
+            this.AutoSelect.Size = new System.Drawing.Size(181, 22);
             this.AutoSelect.Text = "Seleção Automatica";
             this.AutoSelect.Click += new System.EventHandler(this.AutoSelect_Click);
             // 
@@ -172,14 +182,14 @@
             // 
             this.pesquisaToolStripMenuItem.Name = "pesquisaToolStripMenuItem";
             this.pesquisaToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl + F";
-            this.pesquisaToolStripMenuItem.Size = new System.Drawing.Size(326, 30);
+            this.pesquisaToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.pesquisaToolStripMenuItem.Text = "Pesquisa";
-            this.pesquisaToolStripMenuItem.Click += new System.EventHandler(this.pesquisaToolStripMenuItem_Click);
+            this.pesquisaToolStripMenuItem.Click += new System.EventHandler(this.PesquisaToolStripMenuItem_Click);
             // 
             // RefScriptMenuItem
             // 
             this.RefScriptMenuItem.Name = "RefScriptMenuItem";
-            this.RefScriptMenuItem.Size = new System.Drawing.Size(326, 30);
+            this.RefScriptMenuItem.Size = new System.Drawing.Size(225, 22);
             this.RefScriptMenuItem.Text = "Script Referencial";
             this.RefScriptMenuItem.Click += new System.EventHandler(this.ZScriptRef_Click);
             // 
@@ -197,7 +207,7 @@
             this.SpellCheckEnableMenuItem,
             this.IndexTestEnableMenuItem});
             this.opçõesToolStripMenuItem.Name = "opçõesToolStripMenuItem";
-            this.opçõesToolStripMenuItem.Size = new System.Drawing.Size(85, 29);
+            this.opçõesToolStripMenuItem.Size = new System.Drawing.Size(59, 22);
             this.opçõesToolStripMenuItem.Text = "Opções";
             // 
             // temaToolStripMenuItem
@@ -206,7 +216,7 @@
             this.BasicThemeMenuItem,
             this.ModernThemeMenuItem});
             this.temaToolStripMenuItem.Name = "temaToolStripMenuItem";
-            this.temaToolStripMenuItem.Size = new System.Drawing.Size(275, 30);
+            this.temaToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.temaToolStripMenuItem.Text = "Tema";
             // 
             // BasicThemeMenuItem
@@ -215,14 +225,14 @@
             this.BasicThemeMenuItem.CheckOnClick = true;
             this.BasicThemeMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.BasicThemeMenuItem.Name = "BasicThemeMenuItem";
-            this.BasicThemeMenuItem.Size = new System.Drawing.Size(170, 30);
+            this.BasicThemeMenuItem.Size = new System.Drawing.Size(123, 22);
             this.BasicThemeMenuItem.Text = "Básico";
             // 
             // ModernThemeMenuItem
             // 
             this.ModernThemeMenuItem.CheckOnClick = true;
             this.ModernThemeMenuItem.Name = "ModernThemeMenuItem";
-            this.ModernThemeMenuItem.Size = new System.Drawing.Size(170, 30);
+            this.ModernThemeMenuItem.Size = new System.Drawing.Size(123, 22);
             this.ModernThemeMenuItem.Text = "Moderno";
             // 
             // períodoDeBackupToolStripMenuItem
@@ -236,33 +246,33 @@
             this.BackupOn10Item,
             this.NeverBackupItem});
             this.períodoDeBackupToolStripMenuItem.Name = "períodoDeBackupToolStripMenuItem";
-            this.períodoDeBackupToolStripMenuItem.Size = new System.Drawing.Size(275, 30);
+            this.períodoDeBackupToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.períodoDeBackupToolStripMenuItem.Text = "Período de Backup";
             // 
             // BackupOnSaveItem
             // 
             this.BackupOnSaveItem.CheckOnClick = true;
             this.BackupOnSaveItem.Name = "BackupOnSaveItem";
-            this.BackupOnSaveItem.Size = new System.Drawing.Size(202, 30);
+            this.BackupOnSaveItem.Size = new System.Drawing.Size(152, 22);
             this.BackupOnSaveItem.Text = "Ao Salvar";
             // 
             // BackupOn200MenuItem
             // 
             this.BackupOn200MenuItem.Name = "BackupOn200MenuItem";
-            this.BackupOn200MenuItem.Size = new System.Drawing.Size(202, 30);
+            this.BackupOn200MenuItem.Size = new System.Drawing.Size(152, 22);
             this.BackupOn200MenuItem.Text = "200 Diálogos";
             // 
             // BackupOn100MenuItem
             // 
             this.BackupOn100MenuItem.Name = "BackupOn100MenuItem";
-            this.BackupOn100MenuItem.Size = new System.Drawing.Size(202, 30);
+            this.BackupOn100MenuItem.Size = new System.Drawing.Size(152, 22);
             this.BackupOn100MenuItem.Text = "100 Diálogos";
             // 
             // BackupOn50Item
             // 
             this.BackupOn50Item.CheckOnClick = true;
             this.BackupOn50Item.Name = "BackupOn50Item";
-            this.BackupOn50Item.Size = new System.Drawing.Size(202, 30);
+            this.BackupOn50Item.Size = new System.Drawing.Size(152, 22);
             this.BackupOn50Item.Text = "50 Diálogos";
             // 
             // BackupOn25Item
@@ -270,42 +280,43 @@
             this.BackupOn25Item.Checked = true;
             this.BackupOn25Item.CheckState = System.Windows.Forms.CheckState.Checked;
             this.BackupOn25Item.Name = "BackupOn25Item";
-            this.BackupOn25Item.Size = new System.Drawing.Size(202, 30);
+            this.BackupOn25Item.Size = new System.Drawing.Size(152, 22);
             this.BackupOn25Item.Text = "25 Diálogos";
             // 
             // BackupOn10Item
             // 
             this.BackupOn10Item.CheckOnClick = true;
             this.BackupOn10Item.Name = "BackupOn10Item";
-            this.BackupOn10Item.Size = new System.Drawing.Size(202, 30);
+            this.BackupOn10Item.Size = new System.Drawing.Size(152, 22);
             this.BackupOn10Item.Text = "10 Diálogos";
             // 
             // NeverBackupItem
             // 
             this.NeverBackupItem.CheckOnClick = true;
             this.NeverBackupItem.Name = "NeverBackupItem";
-            this.NeverBackupItem.Size = new System.Drawing.Size(202, 30);
+            this.NeverBackupItem.Size = new System.Drawing.Size(152, 22);
             this.NeverBackupItem.Text = "Nunca";
             // 
             // sistemaDeTraduçãoToolStripMenuItem
             // 
             this.sistemaDeTraduçãoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lECToolStripMenuItem,
-            this.googleToolStripMenuItem});
+            this.googleToolStripMenuItem,
+            this.zBingToolStripMenuItem});
             this.sistemaDeTraduçãoToolStripMenuItem.Name = "sistemaDeTraduçãoToolStripMenuItem";
-            this.sistemaDeTraduçãoToolStripMenuItem.Size = new System.Drawing.Size(275, 30);
+            this.sistemaDeTraduçãoToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.sistemaDeTraduçãoToolStripMenuItem.Text = "Sistema De Tradução";
             // 
             // lECToolStripMenuItem
             // 
             this.lECToolStripMenuItem.Name = "lECToolStripMenuItem";
-            this.lECToolStripMenuItem.Size = new System.Drawing.Size(154, 30);
+            this.lECToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.lECToolStripMenuItem.Text = "LEC";
             // 
             // googleToolStripMenuItem
             // 
             this.googleToolStripMenuItem.Name = "googleToolStripMenuItem";
-            this.googleToolStripMenuItem.Size = new System.Drawing.Size(154, 30);
+            this.googleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.googleToolStripMenuItem.Text = "Google";
             // 
             // SelecaoAutomaticaMenuItem1
@@ -315,7 +326,7 @@
             this.asiaticaToolStripMenuItem,
             this.latimToolStripMenuItem});
             this.SelecaoAutomaticaMenuItem1.Name = "SelecaoAutomaticaMenuItem1";
-            this.SelecaoAutomaticaMenuItem1.Size = new System.Drawing.Size(275, 30);
+            this.SelecaoAutomaticaMenuItem1.Size = new System.Drawing.Size(194, 22);
             this.SelecaoAutomaticaMenuItem1.Text = "Seleção Automática";
             // 
             // AutomaticoToolStripMenuItem
@@ -323,46 +334,46 @@
             this.AutomaticoToolStripMenuItem.Checked = true;
             this.AutomaticoToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.AutomaticoToolStripMenuItem.Name = "AutomaticoToolStripMenuItem";
-            this.AutomaticoToolStripMenuItem.Size = new System.Drawing.Size(206, 30);
+            this.AutomaticoToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.AutomaticoToolStripMenuItem.Text = "Auto Detectar";
             // 
             // asiaticaToolStripMenuItem
             // 
             this.asiaticaToolStripMenuItem.Name = "asiaticaToolStripMenuItem";
-            this.asiaticaToolStripMenuItem.Size = new System.Drawing.Size(206, 30);
+            this.asiaticaToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.asiaticaToolStripMenuItem.Text = "Asiática";
             // 
             // latimToolStripMenuItem
             // 
             this.latimToolStripMenuItem.Name = "latimToolStripMenuItem";
-            this.latimToolStripMenuItem.Size = new System.Drawing.Size(206, 30);
+            this.latimToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.latimToolStripMenuItem.Text = "Latim";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(272, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(191, 6);
             // 
             // altoContrasteToolStripMenuItem
             // 
             this.altoContrasteToolStripMenuItem.CheckOnClick = true;
             this.altoContrasteToolStripMenuItem.Name = "altoContrasteToolStripMenuItem";
-            this.altoContrasteToolStripMenuItem.Size = new System.Drawing.Size(275, 30);
+            this.altoContrasteToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.altoContrasteToolStripMenuItem.Text = "Alto Contraste";
-            this.altoContrasteToolStripMenuItem.CheckedChanged += new System.EventHandler(this.altoContrasteToolStripMenuItem_CheckedChanged);
+            this.altoContrasteToolStripMenuItem.CheckedChanged += new System.EventHandler(this.AltoContrasteToolStripMenuItem_CheckedChanged);
             // 
             // altaResoluçãoToolStripMenuItem
             // 
             this.altaResoluçãoToolStripMenuItem.CheckOnClick = true;
             this.altaResoluçãoToolStripMenuItem.Name = "altaResoluçãoToolStripMenuItem";
-            this.altaResoluçãoToolStripMenuItem.Size = new System.Drawing.Size(275, 30);
+            this.altaResoluçãoToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.altaResoluçãoToolStripMenuItem.Text = "Alta Resolução";
-            this.altaResoluçãoToolStripMenuItem.CheckedChanged += new System.EventHandler(this.altaResoluçãoToolStripMenuItem_CheckedChanged);
+            this.altaResoluçãoToolStripMenuItem.CheckedChanged += new System.EventHandler(this.AltaResoluçãoToolStripMenuItem_CheckedChanged);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(272, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(191, 6);
             // 
             // SpellCheckEnableMenuItem
             // 
@@ -371,7 +382,7 @@
             this.SpellCheckEnableMenuItem.CheckOnClick = true;
             this.SpellCheckEnableMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.SpellCheckEnableMenuItem.Name = "SpellCheckEnableMenuItem";
-            this.SpellCheckEnableMenuItem.Size = new System.Drawing.Size(275, 30);
+            this.SpellCheckEnableMenuItem.Size = new System.Drawing.Size(194, 22);
             this.SpellCheckEnableMenuItem.Text = "Verificação Ortográfica";
             this.SpellCheckEnableMenuItem.CheckedChanged += new System.EventHandler(this.SpellCheck_Changed);
             // 
@@ -381,7 +392,7 @@
             this.IndexTestEnableMenuItem.CheckOnClick = true;
             this.IndexTestEnableMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.IndexTestEnableMenuItem.Name = "IndexTestEnableMenuItem";
-            this.IndexTestEnableMenuItem.Size = new System.Drawing.Size(275, 30);
+            this.IndexTestEnableMenuItem.Size = new System.Drawing.Size(194, 22);
             this.IndexTestEnableMenuItem.Text = "Validar Índice";
             // 
             // OpenScript
@@ -400,10 +411,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.StrList.FormattingEnabled = true;
             this.StrList.HorizontalScrollbar = true;
-            this.StrList.Location = new System.Drawing.Point(6, 2);
-            this.StrList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.StrList.Location = new System.Drawing.Point(4, 1);
+            this.StrList.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.StrList.Name = "StrList";
-            this.StrList.Size = new System.Drawing.Size(892, 424);
+            this.StrList.Size = new System.Drawing.Size(596, 274);
             this.StrList.TabIndex = 1;
             this.StrList.SelectedIndexChanged += new System.EventHandler(this.StrList_SelectedIndexChanged);
             this.StrList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.StrList_KeyPress);
@@ -415,10 +426,10 @@
             // 
             this.RetBnt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.RetBnt.Enabled = false;
-            this.RetBnt.Location = new System.Drawing.Point(10, 529);
-            this.RetBnt.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.RetBnt.Location = new System.Drawing.Point(7, 344);
+            this.RetBnt.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.RetBnt.Name = "RetBnt";
-            this.RetBnt.Size = new System.Drawing.Size(163, 38);
+            this.RetBnt.Size = new System.Drawing.Size(109, 25);
             this.RetBnt.TabIndex = 3;
             this.RetBnt.Text = "<= Retornar";
             this.RetBnt.UseVisualStyleBackColor = true;
@@ -428,10 +439,10 @@
             // 
             this.SkipBnt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.SkipBnt.Enabled = false;
-            this.SkipBnt.Location = new System.Drawing.Point(793, 529);
-            this.SkipBnt.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.SkipBnt.Location = new System.Drawing.Point(529, 344);
+            this.SkipBnt.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.SkipBnt.Name = "SkipBnt";
-            this.SkipBnt.Size = new System.Drawing.Size(107, 38);
+            this.SkipBnt.Size = new System.Drawing.Size(71, 25);
             this.SkipBnt.TabIndex = 4;
             this.SkipBnt.Text = "Avançar =>";
             this.SkipBnt.UseVisualStyleBackColor = true;
@@ -441,18 +452,19 @@
             // 
             this.InfoLbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.InfoLbl.Location = new System.Drawing.Point(6, 569);
+            this.InfoLbl.Location = new System.Drawing.Point(4, 370);
+            this.InfoLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.InfoLbl.Name = "InfoLbl";
-            this.InfoLbl.Size = new System.Drawing.Size(894, 25);
+            this.InfoLbl.Size = new System.Drawing.Size(596, 16);
             this.InfoLbl.TabIndex = 5;
             // 
             // Scroll
             // 
             this.Scroll.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Scroll.Location = new System.Drawing.Point(6, 492);
+            this.Scroll.Location = new System.Drawing.Point(4, 320);
             this.Scroll.Name = "Scroll";
-            this.Scroll.Size = new System.Drawing.Size(894, 21);
+            this.Scroll.Size = new System.Drawing.Size(596, 21);
             this.Scroll.TabIndex = 6;
             this.Scroll.Visible = false;
             this.Scroll.ValueChanged += new System.EventHandler(this.Sroll_ValueChanged);
@@ -467,10 +479,10 @@
             this.MainPanel.Controls.Add(this.SkipBnt);
             this.MainPanel.Controls.Add(this.RetBnt);
             this.MainPanel.Controls.Add(this.StrList);
-            this.MainPanel.Location = new System.Drawing.Point(14, 39);
-            this.MainPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MainPanel.Location = new System.Drawing.Point(9, 25);
+            this.MainPanel.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(910, 600);
+            this.MainPanel.Size = new System.Drawing.Size(607, 390);
             this.MainPanel.TabIndex = 3;
             // 
             // SkipDelay
@@ -478,25 +490,23 @@
             this.SkipDelay.Interval = 1000;
             this.SkipDelay.Tick += new System.EventHandler(this.DelayEnd);
             // 
-            // SaveItem
+            // zBingToolStripMenuItem
             // 
-            this.SaveItem.Name = "SaveItem";
-            this.SaveItem.ShortcutKeyDisplayString = "Ctrl + S";
-            this.SaveItem.Size = new System.Drawing.Size(326, 30);
-            this.SaveItem.Text = "Salvar";
-            this.SaveItem.Click += new System.EventHandler(this.FastSave);
+            this.zBingToolStripMenuItem.Name = "zBingToolStripMenuItem";
+            this.zBingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.zBingToolStripMenuItem.Text = "ZBing";
             // 
             // NoStyle
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(924, 654);
+            this.ClientSize = new System.Drawing.Size(616, 425);
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.MainMenu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MainMenuStrip = this.MainMenu;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.Name = "NoStyle";
             this.ShowIcon = false;
             this.Text = "VNX+ Translation Plataform";
@@ -561,6 +571,7 @@
         private System.Windows.Forms.ToolStripMenuItem latimToolStripMenuItem;
         private System.Windows.Forms.Timer SkipDelay;
         private System.Windows.Forms.ToolStripMenuItem SaveItem;
+        private System.Windows.Forms.ToolStripMenuItem zBingToolStripMenuItem;
     }
 }
 

@@ -53,9 +53,9 @@ namespace VNXTLP {
             }
             ScriptPath = Path;
             SetConfig("VNXTLP", "LastScript", ScriptPath);
-
-            UndoRemap(ref Content);
+            
             RestoreStrings(ref Content);
+            UndoRemap(ref Content);
 
             if (File.Exists(ScriptPath))
                 File.Delete(ScriptPath);
@@ -93,6 +93,7 @@ namespace VNXTLP {
                 Engine.Prefix.Add(i, Prefix);
                 Engine.Sufix.Add(i, Sufix);
             }
+            
         }
 
         private static void RestoreStrings(ref string[] Strings) {
@@ -143,7 +144,8 @@ namespace VNXTLP {
                 for (uint ri = 0; ri < Repeats; ri++) {
                     uint Pos = Reader.ReadUInt32();
                     Result[Pos] = Strings[oi];
-                    StrMap.Add(Pos, oi);
+                    if (!StrMap.ContainsKey(Pos))
+                        StrMap.Add(Pos, oi);
                 }
             }
             Strings = Result;

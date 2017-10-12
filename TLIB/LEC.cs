@@ -4,9 +4,10 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
+using System.Linq;
 
 namespace TLIB {
-    public class LEC {
+    public static class LEC {
         public enum Gender {
             Male, Female
         }
@@ -110,97 +111,4 @@ namespace TLIB {
         }
     }
 
-    public class Google {
-        public static string Translate(string Text, string SourceLang, string TargetLang) {
-            const string REQ = "http://translate.googleapis.com/translate_a/single";
-            const string TAG = "],[\"";
-            SourceLang = SourceLang.Contains("-") ? SourceLang.Split('-')[0] : SourceLang;
-            TargetLang = TargetLang.Contains("-") ? TargetLang.Split('-')[0] : TargetLang;
-            int tries = 0;
-        again:;
-            try {
-                WebClient Client = new WebClient();
-                Client.Encoding = Encoding.UTF8;
-                Client.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)");
-                Client.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
-                Client.QueryString.Add("client", "gtx");
-                Client.QueryString.Add("dt", "t");
-                Client.QueryString.Add("sl", SourceLang.ToLower());
-                Client.QueryString.Add("tl", TargetLang.ToLower());
-                Client.QueryString.Add("q", Text);
-                byte[] Response = Client.DownloadData(REQ);
-                byte[] Content = new byte[Response.Length - 2];
-                for (int i = 0; i < Content.Length; i++) 
-                    Content[i] = Response[i + 1];                
-                string TranslatedText = Encoding.UTF8.GetString(Content);
-                if (!TranslatedText.StartsWith("[[\""))
-                    throw new Exception();
-                string TL = string.Empty;
-                int pos = 3;
-                while (true) {
-                    TL += GetStringAt(pos, TranslatedText);
-                    pos = TranslatedText.IndexOf(TAG, pos);
-                    if (pos < 0)
-                        break;
-                    else
-                        pos += TAG.Length;
-                }
-                return Decode(TL);
-            }
-            catch {
-                if (tries++ < 2)
-                    goto again;
-               throw new Exception("Translation Error");
-            }
-        }
-
-        private static string GetStringAt(int pos, string Text) {
-            string STR = string.Empty;
-            for (int i = pos; i < Text.Length; i++) {
-                if (Text[i] == '"' && Text[i - 1] != '\\') {
-                    const string Mask = "\",,,";
-                    int Index = Text.IndexOf(Mask, i);
-                    if (Index < 0)
-                        break;
-                    i = Index + 4 + Mask.Length;
-                    if (i + 8 > Text.Length)
-                        break;
-                } else
-                    STR += Text[i];
-            }
-            return STR;
-        }
-        private static string Decode(string text) {
-            string Output = string.Empty;
-            for (int i = 0; i < text.Length; i++) {
-                if (text[i] != '\\') {
-                    Output += text[i];
-                    continue;
-                }
-                i++;
-                switch (text[i]) {
-                    case '"':
-                        Output += "\"";
-                        break;
-                    case 'n':
-                        Output += "\n";
-                        break;
-                    case 'u':
-                        i++;
-                        byte b2 = Convert.ToByte(text[i] + (text[i+1]+""), 16);
-                        i += 2;
-                        byte b1 = Convert.ToByte(text[i] + (text[i + 1]+""), 16);
-                        i += 1;
-                        byte[] Unicode = new byte[] { b1, b2 };
-                        string C = Encoding.Unicode.GetString(Unicode);
-                        Output += C;
-                        break;
-                }
-            }
-            foreach (string Replacement in new string[] { "ę,ê", "ă,ã", "ő,õ", "ï¿,ã", "½,o" }) {
-                Output = Output.Replace(Replacement.Split(',')[0], Replacement.Split(',')[1]);
-            }
-            return Output;
-        }
-    }
 }

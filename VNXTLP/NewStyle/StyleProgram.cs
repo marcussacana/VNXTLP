@@ -16,6 +16,8 @@ namespace VNXTLP.NewStyle {
         internal bool FileOpen = false;
         internal bool FileSaved = true;
 
+        internal int SelectedIndex = -1;
+
         public override string Text { get { return base.Text; } set { base.Text = value; ZSKN.Text = value; Invalidate(); } }
         internal int Index {
             get
@@ -26,6 +28,7 @@ namespace VNXTLP.NewStyle {
             set
             {
                 Engine.UpdateInfo(value, ref InfoLbl, GetBackupFrequence(), ref Changes, ZValidar.Checked);
+                SelectedIndex = StrList.SelectedIndex;
             }
         }
 
@@ -63,7 +66,7 @@ namespace VNXTLP.NewStyle {
             ThemeEngine = new Engine.RadioToolStrip(ref ThemeItems, 1);
             ThemeEngine.CheckedChange += ChangeTheme;
 
-            ToolStripMenuItem[] TLCLients = new ToolStripMenuItem[] { ZLEC, ZGoogle };
+            ToolStripMenuItem[] TLCLients = new ToolStripMenuItem[] { ZLEC, ZGoogle, ZBing };
             TLEngine = new Engine.RadioToolStrip(ref TLCLients, 1);
             TLEngine.CheckedChange += TLEngine_CheckedChange;
 
@@ -72,8 +75,9 @@ namespace VNXTLP.NewStyle {
             SelEngine.CheckedChange += SelEngine_CheckedChange;
 
             //Initialize DeleyedMouseOver Event
-            OVE = new Engine.OverTimerEvent();
-            OVE.sender = StrList;
+            OVE = new Engine.OverTimerEvent() {
+                sender = StrList
+            };
             OVE.MouseStopOver += StrList_MouseStopOver;
             OVE.Initialize();
 
@@ -95,8 +99,7 @@ namespace VNXTLP.NewStyle {
 
             //get int
             string cfg = Engine.GetConfig("VNXTLP", "BackupSpeed", false);
-            int Val;
-            if (int.TryParse(cfg, out Val))
+            if (int.TryParse(cfg, out int Val))
                 RadioEngine.SelectedIndex = Val;
 
             //get int
@@ -147,7 +150,7 @@ namespace VNXTLP.NewStyle {
             ZAutoSelMode.Text = Engine.LoadTranslation(102);
             ZAsianSel.Text = Engine.LoadTranslation(103);
             ZLatimSel.Text = Engine.LoadTranslation(104);
-            ZSaveAsItem.Text = Engine.LoadTranslation(106);
+            ZSaveAsItem.Text = Engine.LoadTranslation(15);
 
             //Load Custom Resources from a VNXTL Build
             foreach (ToolStripMenuItem item in Engine.CustomResources(ref TLBox))
@@ -208,7 +211,7 @@ namespace VNXTLP.NewStyle {
             Engine.Save(SaveScript.FileName, StringList);
             FileSaved = true;
             Engine.UpdateSelection();
-            MessageBox.Show(Engine.LoadTranslation(46), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(Engine.LoadTranslation(46, System.IO.Path.GetFileName(Engine.ScriptPath)), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private int GetBackupFrequence() {
@@ -275,7 +278,7 @@ namespace VNXTLP.NewStyle {
             if (!Engine.Authenticated)
                 (new StyleLogin()).ShowDialog();
             else {
-                NewStyle.StyleBackup BackupForm = new NewStyle.StyleBackup();
+                StyleBackup BackupForm = new StyleBackup();
                 BackupForm.BackupSelected += BackupForm_BackupSelected;
                 BackupForm.ShowDialog();
             }
@@ -340,10 +343,10 @@ namespace VNXTLP.NewStyle {
                 e.SuppressKeyPress = true;
 
                 //Update translation and get next string
-                StrList.Items[Index] = TLBox.Text;
+                StrList.Items[SelectedIndex] = TLBox.Text;
                 FileSaved = false;
                 Changes++;
-                Index++;
+                Index = SelectedIndex + 1;
             }
         }
 
@@ -490,8 +493,9 @@ namespace VNXTLP.NewStyle {
             catch { }
 
             //Prevent Hidden incon in taskbar
-            Form frm = new Form();
-            frm.Size = new System.Drawing.Size(1, 1);
+            Form frm = new Form() {
+                Size = new System.Drawing.Size(1, 1)
+            };
             frm.Shown += (a, b) => { frm.Close(); };
             frm.ShowDialog();
         }

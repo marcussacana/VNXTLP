@@ -31,12 +31,20 @@ namespace VNXTLP {
             return FTP.TreeDir("Backup\\" + UserAccount.Name);
         }
 
+
+        private static string BackupFileName { get {
+                string DIR = Path.GetDirectoryName(ScriptPath) + "\\";
+                string FN = Path.GetFileNameWithoutExtension(ScriptPath);
+                string EXT =  Path.GetExtension(ScriptPath);
+                if (!FN.ToLower().EndsWith("_backup"))
+                    FN += "_Backup";
+                return DIR + FN + EXT; 
+            } }
         internal static bool Backup(string[] Strings, bool IsSave = false) {
             try {
-                if (GetConfig("VNXTLP", "OfflineBackup", false) == "true") {
-                    string Path = ScriptPath;
-                    Save(System.IO.Path.GetDirectoryName(Path) + "\\" + System.IO.Path.GetFileNameWithoutExtension(Path) + "_backup" + System.IO.Path.GetExtension(Path), Strings, true);
-                    ScriptPath = Path;
+                if (GetConfig("VNXTLP", "OfflineBackup", false) == "true" && !IsSave) {
+                    Save(BackupFileName, Strings, true);
+                    
                 }
 
                 if (string.IsNullOrEmpty(UserAccount.Name))

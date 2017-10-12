@@ -46,9 +46,10 @@
             // LblLocalizar
             // 
             this.LblLocalizar.AutoSize = true;
-            this.LblLocalizar.Location = new System.Drawing.Point(7, 15);
+            this.LblLocalizar.Location = new System.Drawing.Point(5, 12);
+            this.LblLocalizar.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.LblLocalizar.Name = "LblLocalizar";
-            this.LblLocalizar.Size = new System.Drawing.Size(69, 17);
+            this.LblLocalizar.Size = new System.Drawing.Size(52, 13);
             this.LblLocalizar.TabIndex = 0;
             this.LblLocalizar.Text = "Localizar:";
             // 
@@ -56,17 +57,19 @@
             // 
             this.txtContentToFind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtContentToFind.Location = new System.Drawing.Point(82, 12);
+            this.txtContentToFind.Location = new System.Drawing.Point(62, 10);
+            this.txtContentToFind.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtContentToFind.Name = "txtContentToFind";
-            this.txtContentToFind.Size = new System.Drawing.Size(534, 22);
+            this.txtContentToFind.Size = new System.Drawing.Size(402, 20);
             this.txtContentToFind.TabIndex = 1;
             // 
             // LblRep
             // 
             this.LblRep.AutoSize = true;
-            this.LblRep.Location = new System.Drawing.Point(7, 51);
+            this.LblRep.Location = new System.Drawing.Point(5, 41);
+            this.LblRep.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.LblRep.Name = "LblRep";
-            this.LblRep.Size = new System.Drawing.Size(71, 17);
+            this.LblRep.Size = new System.Drawing.Size(53, 13);
             this.LblRep.TabIndex = 2;
             this.LblRep.Text = "Substituir:";
             // 
@@ -74,9 +77,10 @@
             // 
             this.txtContentToRep.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtContentToRep.Location = new System.Drawing.Point(82, 48);
+            this.txtContentToRep.Location = new System.Drawing.Point(62, 39);
+            this.txtContentToRep.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtContentToRep.Name = "txtContentToRep";
-            this.txtContentToRep.Size = new System.Drawing.Size(534, 22);
+            this.txtContentToRep.Size = new System.Drawing.Size(402, 20);
             this.txtContentToRep.TabIndex = 3;
             // 
             // GBAdvOpt
@@ -92,9 +96,11 @@
             this.GBAdvOpt.Controls.Add(this.ckWithContains);
             this.GBAdvOpt.Controls.Add(this.ckCaseSensentive);
             this.GBAdvOpt.Controls.Add(this.ckRepFullDiag);
-            this.GBAdvOpt.Location = new System.Drawing.Point(10, 81);
+            this.GBAdvOpt.Location = new System.Drawing.Point(8, 66);
+            this.GBAdvOpt.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.GBAdvOpt.Name = "GBAdvOpt";
-            this.GBAdvOpt.Size = new System.Drawing.Size(448, 118);
+            this.GBAdvOpt.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.GBAdvOpt.Size = new System.Drawing.Size(336, 96);
             this.GBAdvOpt.TabIndex = 4;
             this.GBAdvOpt.TabStop = false;
             this.GBAdvOpt.Text = "Opções Avançadas";
@@ -102,18 +108,20 @@
             // lblDirec
             // 
             this.lblDirec.AutoSize = true;
-            this.lblDirec.Location = new System.Drawing.Point(216, 76);
+            this.lblDirec.Location = new System.Drawing.Point(162, 62);
+            this.lblDirec.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblDirec.Name = "lblDirec";
-            this.lblDirec.Size = new System.Drawing.Size(61, 17);
+            this.lblDirec.Size = new System.Drawing.Size(47, 13);
             this.lblDirec.TabIndex = 6;
             this.lblDirec.Text = "Direção:";
             // 
             // radioBack
             // 
             this.radioBack.AutoSize = true;
-            this.radioBack.Location = new System.Drawing.Point(359, 74);
+            this.radioBack.Location = new System.Drawing.Point(269, 60);
+            this.radioBack.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.radioBack.Name = "radioBack";
-            this.radioBack.Size = new System.Drawing.Size(58, 21);
+            this.radioBack.Size = new System.Drawing.Size(46, 17);
             this.radioBack.TabIndex = 5;
             this.radioBack.Text = "Trás";
             this.radioBack.UseVisualStyleBackColor = true;
@@ -122,9 +130,10 @@
             // 
             this.radioUp.AutoSize = true;
             this.radioUp.Checked = true;
-            this.radioUp.Location = new System.Drawing.Point(283, 74);
+            this.radioUp.Location = new System.Drawing.Point(212, 60);
+            this.radioUp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.radioUp.Name = "radioUp";
-            this.radioUp.Size = new System.Drawing.Size(70, 21);
+            this.radioUp.Size = new System.Drawing.Size(55, 17);
             this.radioUp.TabIndex = 4;
             this.radioUp.TabStop = true;
             this.radioUp.Text = "Frente";
@@ -133,9 +142,13 @@
             // ckCircle
             // 
             this.ckCircle.AutoSize = true;
-            this.ckCircle.Location = new System.Drawing.Point(219, 21);
+            this.ckCircle.Checked = true;
+            this.ckCircle.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckCircle.Enabled = false;
+            this.ckCircle.Location = new System.Drawing.Point(164, 17);
+            this.ckCircle.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ckCircle.Name = "ckCircle";
-            this.ckCircle.Size = new System.Drawing.Size(140, 21);
+            this.ckCircle.Size = new System.Drawing.Size(109, 17);
             this.ckCircle.TabIndex = 3;
             this.ckCircle.Text = "Pesquisa Círcular";
             this.ckCircle.UseVisualStyleBackColor = true;
@@ -143,9 +156,10 @@
             // ckFindNonDiag
             // 
             this.ckFindNonDiag.AutoSize = true;
-            this.ckFindNonDiag.Location = new System.Drawing.Point(6, 75);
+            this.ckFindNonDiag.Location = new System.Drawing.Point(4, 61);
+            this.ckFindNonDiag.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ckFindNonDiag.Name = "ckFindNonDiag";
-            this.ckFindNonDiag.Size = new System.Drawing.Size(189, 21);
+            this.ckFindNonDiag.Size = new System.Drawing.Size(143, 17);
             this.ckFindNonDiag.TabIndex = 2;
             this.ckFindNonDiag.Text = "Considerar Não-Dialógos";
             this.ckFindNonDiag.UseVisualStyleBackColor = true;
@@ -153,9 +167,10 @@
             // ckWithContains
             // 
             this.ckWithContains.AutoSize = true;
-            this.ckWithContains.Location = new System.Drawing.Point(6, 48);
+            this.ckWithContains.Location = new System.Drawing.Point(4, 39);
+            this.ckWithContains.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ckWithContains.Name = "ckWithContains";
-            this.ckWithContains.Size = new System.Drawing.Size(124, 21);
+            this.ckWithContains.Size = new System.Drawing.Size(97, 17);
             this.ckWithContains.TabIndex = 1;
             this.ckWithContains.Text = "Diálogos Exato\r\n";
             this.ckWithContains.UseVisualStyleBackColor = true;
@@ -165,9 +180,10 @@
             this.ckCaseSensentive.AutoSize = true;
             this.ckCaseSensentive.Checked = true;
             this.ckCaseSensentive.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.ckCaseSensentive.Location = new System.Drawing.Point(6, 21);
+            this.ckCaseSensentive.Location = new System.Drawing.Point(4, 17);
+            this.ckCaseSensentive.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ckCaseSensentive.Name = "ckCaseSensentive";
-            this.ckCaseSensentive.Size = new System.Drawing.Size(136, 21);
+            this.ckCaseSensentive.Size = new System.Drawing.Size(106, 17);
             this.ckCaseSensentive.TabIndex = 0;
             this.ckCaseSensentive.Text = "Case Sensentive";
             this.ckCaseSensentive.UseVisualStyleBackColor = true;
@@ -175,18 +191,20 @@
             // ckRepFullDiag
             // 
             this.ckRepFullDiag.AutoSize = true;
-            this.ckRepFullDiag.Location = new System.Drawing.Point(219, 48);
+            this.ckRepFullDiag.Location = new System.Drawing.Point(164, 39);
+            this.ckRepFullDiag.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.ckRepFullDiag.Name = "ckRepFullDiag";
-            this.ckRepFullDiag.Size = new System.Drawing.Size(185, 21);
+            this.ckRepFullDiag.Size = new System.Drawing.Size(141, 17);
             this.ckRepFullDiag.TabIndex = 0;
             this.ckRepFullDiag.Text = "Substituir todo o Diálogo";
             this.ckRepFullDiag.UseVisualStyleBackColor = true;
             // 
             // bntLocNext
             // 
-            this.bntLocNext.Location = new System.Drawing.Point(464, 89);
+            this.bntLocNext.Location = new System.Drawing.Point(348, 72);
+            this.bntLocNext.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.bntLocNext.Name = "bntLocNext";
-            this.bntLocNext.Size = new System.Drawing.Size(152, 23);
+            this.bntLocNext.Size = new System.Drawing.Size(114, 19);
             this.bntLocNext.TabIndex = 5;
             this.bntLocNext.Text = "Localizar Próximo";
             this.bntLocNext.UseVisualStyleBackColor = true;
@@ -194,9 +212,10 @@
             // 
             // BntRepNext
             // 
-            this.BntRepNext.Location = new System.Drawing.Point(464, 118);
+            this.BntRepNext.Location = new System.Drawing.Point(348, 96);
+            this.BntRepNext.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.BntRepNext.Name = "BntRepNext";
-            this.BntRepNext.Size = new System.Drawing.Size(152, 23);
+            this.BntRepNext.Size = new System.Drawing.Size(114, 19);
             this.BntRepNext.TabIndex = 6;
             this.BntRepNext.Text = "Substituir";
             this.BntRepNext.UseVisualStyleBackColor = true;
@@ -204,9 +223,10 @@
             // 
             // BntRepAll
             // 
-            this.BntRepAll.Location = new System.Drawing.Point(464, 147);
+            this.BntRepAll.Location = new System.Drawing.Point(348, 119);
+            this.BntRepAll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.BntRepAll.Name = "BntRepAll";
-            this.BntRepAll.Size = new System.Drawing.Size(152, 23);
+            this.BntRepAll.Size = new System.Drawing.Size(114, 19);
             this.BntRepAll.TabIndex = 7;
             this.BntRepAll.Text = "Substituir Todos";
             this.BntRepAll.UseVisualStyleBackColor = true;
@@ -214,9 +234,10 @@
             // 
             // bntDirFind
             // 
-            this.bntDirFind.Location = new System.Drawing.Point(464, 176);
+            this.bntDirFind.Location = new System.Drawing.Point(348, 143);
+            this.bntDirFind.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.bntDirFind.Name = "bntDirFind";
-            this.bntDirFind.Size = new System.Drawing.Size(152, 23);
+            this.bntDirFind.Size = new System.Drawing.Size(114, 19);
             this.bntDirFind.TabIndex = 8;
             this.bntDirFind.Text = "Localizar em Pasta";
             this.bntDirFind.UseVisualStyleBackColor = true;
@@ -224,9 +245,9 @@
             // 
             // Search
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(628, 212);
+            this.ClientSize = new System.Drawing.Size(471, 172);
             this.Controls.Add(this.bntDirFind);
             this.Controls.Add(this.BntRepAll);
             this.Controls.Add(this.BntRepNext);
@@ -237,6 +258,7 @@
             this.Controls.Add(this.txtContentToFind);
             this.Controls.Add(this.LblLocalizar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Search";
             this.Text = "Pesquisar";
             this.TopMost = true;

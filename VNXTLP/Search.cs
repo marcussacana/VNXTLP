@@ -57,12 +57,6 @@ namespace VNXTLP {
 
         internal static bool SearchNext(string Content, bool WithContains, bool Up, bool CaseSensentive, bool Loop, bool CheckNonDialog, bool NoMsg, bool NoRerty = false) {
             int Len = CheckNonDialog ? StrList.Items.Count : StrList.CheckedItems.Count;
-            if (!Loop) {
-                if (Up && StrList.SelectedIndex == Index)
-                    return false;
-                else if (!Up && Index >= 1)
-                    return false;
-            }
             string[] Strings = new string[Len];
             int[] Indexs = new int[Len];
             for (int ind = 0, count = 0, diff = StrList.Items.Count; ind < StrList.Items.Count; ind++)
@@ -94,6 +88,7 @@ namespace VNXTLP {
             }
             else {
                 i = Indexs[i];
+                StrList.SetItemChecked(i, true);
                 Index = i;
                 string Text = CaseSensentive ? TextBox.Text : TextBox.Text.ToLower();
                 int IO = Text.IndexOf(CaseSensentive ? Content : Content.ToLower());

@@ -85,8 +85,11 @@ namespace VNXTLP {
                 Login(GetConfig("FTP", "AutoUser", true), GetConfig("FTP", "AutoPass", true), false);
             }
         }
-        internal static string LoadTranslation(int ID) {
-            return Translation[ID];
+        internal static string LoadTranslation(int ID, params object[] Format) {
+            if (Format.Length == 0)
+                return Translation[ID];
+            else
+                return string.Format(Translation[ID], Format);
         }
         internal static int GetPos(CheckedListBox StrList, int index) {
             int p = 0;
@@ -126,7 +129,7 @@ namespace VNXTLP {
                 BF = new BallonToolTip();
             else
                 BF = bf;
-            control = CustomControl == null ? MainForm : CustomControl;
+            control = CustomControl ?? MainForm;
             BF.Title = Title;
             BF.Message = Message;
             CreatePopup();

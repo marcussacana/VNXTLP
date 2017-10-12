@@ -243,9 +243,14 @@ internal class SpellTextBox : RichTextBox {
         LastEdit = DateTime.Now;
     }
 
-    private string DownloadTranslation(string word) {
+    private string DownloadTranslation(string word, string InputLang = null, string TargetLang = null) {
+        if (InputLang == null || TargetLang == null) {
+            InputLang = this.InputLang;
+            TargetLang = this.TargetLang;
+        }
         //0 = LEC
         //1 = Google
+        //2 = Bing
         //3 = Both
         string TLClient = Engine.GetConfig("VNXTLP", "TLClient", false).ToLower();
         if (Program.OfflineMode && TLClient != "0" || TLClient == "off")
@@ -256,8 +261,7 @@ internal class SpellTextBox : RichTextBox {
                 if (LEC_Port == "auto")
                     try {
                         LEC_Port = LEC.TryDiscoveryPort();
-                    }
-                    catch {
+                    } catch {
                         LEC_Port = string.Empty;
                     }
                 PortStatus = LEC.ServerIsOpen(LEC_Port) ? 1 : -1;
@@ -266,15 +270,16 @@ internal class SpellTextBox : RichTextBox {
             if (PortStatus == 1) {
                 try {
                     return LEC.Translate(word, InputLang, TargetLang, LEC.Gender.Male, LEC.Formality.Formal, LEC_Port);
-                }
-                catch { }
+                } catch { }
             }
         } else if (TLClient == "1") {
-
             try {
                 return Google.Translate(word, InputLang, TargetLang);
-            }
-            catch { }
+            } catch { }
+        } else if (TLClient == "2") {
+            try {
+                return Bing.Translate(word, InputLang, TargetLang, true);
+            } catch { }
         }
         return word;
     }
@@ -323,7 +328,7 @@ internal class SpellTextBox : RichTextBox {
                     }
                     bool isWrong = false;
                     //Get Manual Suggestion, Tl Suggestion
-                    bool Syounym = false;
+                    bool CantSugest = false;
                     List<string> Suggestions = null;
                     if (WordTL.ContainsKey(Word.ToLower())) {
                         Suggestions = new List<string>();
@@ -351,14 +356,11 @@ internal class SpellTextBox : RichTextBox {
                         if (!Contains) {
                             string TL = DownloadTranslation(Word);
                             if (TL != null && TL != Word) {
-                                string[] Synounyms = new string[0];
-                                if (GetOnlineSynonyms)
-                                    Synounyms = WordAPI.DownloadSynonyms(Word);
                                 WordTL.Add(Word, new string[] { TL });
                                 Suggestions = new List<string>();
                                 Suggestions.Add(TL);
                             } else
-                                Syounym = (TL != null && TL == Word && TargetLang == "EN");
+                                CantSugest = (TL != null && TL == Word && TargetLang == "EN");
                         }
                     }
 
@@ -368,18 +370,20 @@ internal class SpellTextBox : RichTextBox {
                             foreach (Suggestion Suggestion in TextSuggestions)
                                 if (Suggestion.Word == Word)
                                     Suggestions = Suggestion.Suggestions;
-                            if (Suggestions == null && !Syounym)
+                            if (Suggestions == null && !CantSugest)
                                 return;
                             isWrong = true;
                         } else {
-                            if (SpellChecker.Spell(Word) && !Syounym)
-                                return;
-                            Suggestions = SpellChecker.Suggest(Word);
-                            isWrong = true;
+                            if (SpellChecker.Spell(Word) && !CantSugest) {
+                                CantSugest = true;
+                            } else {
+                                Suggestions = SpellChecker.Suggest(Word);
+                                isWrong = true;
+                            }
                         }
 
                     CMS = new ContextMenuStrip();
-                    if (!Syounym) {
+                    if (!CantSugest) {
                         for (int i = 0; i < Suggestions.Count; i++) {
                             WordMeuItem MI = new WordMeuItem();
                             MI.Word = Word;
@@ -414,6 +418,9 @@ internal class SpellTextBox : RichTextBox {
                         if (!isWrong)
                             CMS.Items.Add(new ToolStripSeparator());
                         CMS.Items.Add(SSM);
+                    } else {
+                        if (CantSugest)
+                            return;
                     }
 
                     CMS.Show(this, e.Location);
@@ -426,17 +433,52 @@ internal class SpellTextBox : RichTextBox {
 
     private void ShowSynounyms(object sender, EventArgs e) {
         WordMeuItem MI = (WordMeuItem)sender;
-        string TL = DownloadTranslation(MI.Word);
-        if (!string.IsNullOrEmpty(TL) && ((TL != MI.Word && InputLang == "EN") || TL == MI.Word && TargetLang == "EN")) {
+        MI.Word = MI.Word.ToLower();
+        string TL = DownloadTranslation(MI.Word).ToLower();
+        bool CanGiveSynounyms = !string.IsNullOrEmpty(TL);
+
+        if (CanGiveSynounyms) {
             string cnt = Engine.LoadTranslation(90);
             //Asyc Download Suggestions
             BallonToolTip Ballon = new BallonToolTip();
 
+            bool IsFromInputLang = TL != MI.Word;
+            string Word = MI.Word;
+            if (IsFromInputLang && InputLang != "EN") {
+                Word = DownloadTranslation(Word, InputLang, "EN");
+            }
+            if (!IsFromInputLang && TargetLang != "EN") {
+                Word = DownloadTranslation(Word, TargetLang, "EN");
+            }
+
+            if (Word.Contains(" ")) {
+                foreach (string w in Word.Split(' ')) {
+                    string TTL = string.Empty;
+                    if (IsFromInputLang && InputLang != "EN") {
+                        TTL = DownloadTranslation(w, "EN", InputLang);
+                    }
+                    if (!IsFromInputLang && TargetLang != "EN") {
+                        TTL = DownloadTranslation(w, "EN", TargetLang);
+                    }
+                    if (MI.Word.ToLower().StartsWith(Word.ToLower()))
+                        Word = TTL;
+                }
+            }
+
+
             string[] Suggestions = new string[0];
             System.Threading.Thread Thread = new System.Threading.Thread(() => {
-                Suggestions = WordAPI.DownloadSynonyms(MI.Word);
+                try {
+                    Suggestions = WordAPI.DownloadSynonyms(Word);
+                } catch { }
+                if (Suggestions == null)
+                    Suggestions = new string[0];
+                if (!IsFromInputLang) {
+                    for (int i = 0; i < Suggestions.Length; i++)
+                        Suggestions[i] = DownloadTranslation(Suggestions[i], "EN", TargetLang);
+                }
             });
-
+            
             Timer ti = new Timer();
             ti.Interval = 500;
             ti.Tick += (sdr, ev) => {
