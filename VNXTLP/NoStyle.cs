@@ -201,6 +201,7 @@ namespace VNXTLP {
             Scroll.LargeChange = Widht / 3;
         }
         private void OpenScript_FileOk(object sender, System.ComponentModel.CancelEventArgs e) {
+            Text = "VNX+ Translation Plataform - " + System.IO.Path.GetFileName(OpenScript.FileName);
             FileOpen = true;
             string[] StringList = Engine.Open(OpenScript.FileName);
 

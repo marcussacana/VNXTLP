@@ -165,11 +165,12 @@ namespace VNXTLP {
                 }
             }
         }
+
         internal class OverTimerEvent {
             internal bool Over = false;
             private int Time = 0;
             internal Point Point;
-            private Point OPoint = new System.Drawing.Point(0, 0);
+            private Point OPoint = new Point(0, 0);
             internal object sender;
 
             internal event MouseEventHandler MouseStopOver;
@@ -187,20 +188,19 @@ namespace VNXTLP {
                             OPoint = Point;
                             Time = 0;
                         }
-                        else if (Time == 3) {
+                        else if (Time == 2) {
                             MouseEventArgs MEA = new MouseEventArgs(MouseButtons.None, 0, OPoint.X, OPoint.Y, 0);
                             MouseStopOver?.Invoke(sender, MEA);
                         }
-                        t.Interval = 1000;
                         Time++;
                     }
                     else {
                         Time = 0;
-                        t.Interval = 500;
                     }
                 };
                 t.Enabled = true;
             }
         }
+        
     }
 }

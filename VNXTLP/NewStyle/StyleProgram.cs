@@ -186,6 +186,7 @@ namespace VNXTLP.NewStyle {
         }
 
         private void OpenScript_FileOk(object sender, CancelEventArgs e) {
+            Text = "VNX+ Translation Plataform - " + System.IO.Path.GetFileName(OpenScript.FileName);
             string[] StringList = Engine.Open(OpenScript.FileName);
             FileOpen = true;
             FileSaved = true;
@@ -515,6 +516,6 @@ namespace VNXTLP.NewStyle {
                 return;
             SaveScript.FileName = Engine.ScriptPath;
             SaveScript_FileOk(null, null);
-        }
+        }        
     }
 }

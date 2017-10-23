@@ -16,6 +16,8 @@ namespace VNXTLP {
         internal static Dictionary<uint, string> Prefix = new Dictionary<uint, string>();
         internal static Dictionary<uint, string> Sufix = new Dictionary<uint, string>();
 
+        internal static Dictionary<uint, string> BreakLineEscape = new Dictionary<uint, string>();
+
         internal static dynamic BackupEditor;
         internal static dynamic RemapBackup;
         internal static dynamic StringCountBackup;

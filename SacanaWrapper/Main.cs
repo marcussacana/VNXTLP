@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define DebugPlugin
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,15 +27,20 @@ namespace SacanaWrapper
             string PluginDir = HighLevelCodeProcessator.AssemblyDirectory + "\\Plugins";       
 
             if (File.Exists(Lastest) && TryLastPluginFirst) {
+#if !DebugPlugin
                 try {
+#endif
                     Strings = TryImport(Lastest, Script);
-                    if (!ValidateResult(Strings))
+                    if (!Corrupted(Strings))
                         return Strings;
-                } catch { }
+#if !DebugPlugin
+            } catch { }
+#endif
             }
 
             string[] Plugins = GetFiles(PluginDir, "*.inf|*.ini|*.cfg");
 
+            List<string> Extensions = GetExtensions(Plugins);
 
             //Prepare Input Extension
             if (Extension != null && Extension.StartsWith(".")) {
@@ -45,55 +51,88 @@ namespace SacanaWrapper
 
 
             //Initial Detection
-            if (Extension != null) {
+            if (Extension != null && CountMatch(Extensions, Extension) > 0) {
+                uint Fails = 0;
                 foreach (string Plugin in Plugins) {
-                    string PExt = Ini.GetConfig("Plugin", "Extensions", Plugin, false);
+                    string PExt = Ini.GetConfig("Plugin", "Extensions;Extension;Ext;Exts;extensions;extension;ext;exts", Plugin, false);
                     if (string.IsNullOrEmpty(PExt))
                         continue;
                     List<string> Exts = new List<string>(PExt.ToLower().Split('|'));
-                    if (Exts.Contains(Extension))
+                    if (Exts.Contains(Extension)) {
+#if !DebugPlugin
                         try {
+#endif
                             Strings = TryImport(Plugin, Script);
-                            if (ValidateResult(Strings)) {
+                            if (Corrupted(Strings) && ++Fails < CountMatch(Extensions, Extension)) {
                                 StrIP = ImportPath;
                                 StrEP = ExportPath;
                                 continue;
                             }
                             return Strings;
-                        }
-                        catch { }
+#if !DebugPlugin
+                    } catch { }
+#endif
+                }
                 }
             }
 
             //Brute Detection
             foreach (string Plugin in Plugins) {
+#if !DebugPlugin
                 try {
+#endif
                     Strings = TryImport(Plugin, Script);
-                    if (ValidateResult(Strings)) {
+                    if (Corrupted(Strings)) {
                         StrIP = ImportPath;
                         StrEP = ExportPath;
                         continue;
                     }
                     return Strings;
-                }
-                catch { }
+#if !DebugPlugin
+                } catch { }
+#endif
             }
             if (Strings == null)
                 throw new Exception("Supported Plugin Not Found.");
 
-            if (ValidateResult(Strings) && PreventCorrupt)
+            if (Corrupted(Strings) && PreventCorrupt)
                 return new string[0];
             ImportPath = StrIP;
             ExportPath = StrEP;
             return Strings;
         }
 
-        private bool ValidateResult(string[] Strings) {
+        private uint CountMatch(List<string> Strings, string Pattern) {
+            return (uint)(from x in Strings where x == Pattern select x).LongCount(); ;
+        }
+
+        private List<string> GetExtensions(string[] Plugins) {
+            List<string> Exts = new List<string>();
+            foreach (string Plugin in Plugins) {
+                string PExt = Ini.GetConfig("Plugin", "Extensions;Extension;Ext;Exts;extensions;extension;ext;exts", Plugin, false);
+                if (string.IsNullOrEmpty(PExt))
+                    continue;
+                foreach (string ext in PExt.ToLower().Split('|'))
+                    Exts.Add(ext);
+            }
+            return Exts;
+        }
+
+        private bool Corrupted(string[] Strings) {
+            bool Matched = false;
             foreach (string str in Strings) {
                 if (str.Contains('�') || str.Trim('\x0').Contains('\x0'))//If looks corrupted, try load with other plugin, if fail, return this content.
-                    return true;
+                    if (Matched)
+                        return true;
+                    else
+                        Matched = true;
             }
             return false;
+        }
+
+        public void Export(string[] Strings, string SaveAs) {
+            byte[] Script = Export(Strings);
+            File.WriteAllBytes(SaveAs, Script);
         }
 
         public byte[] Export(string[] Strings) {
@@ -102,9 +141,9 @@ namespace SacanaWrapper
         }
 
         private string[] TryImport(string Plugin, byte[] Script) {
-            ExportPath = Ini.GetConfig("Plugin", "Export", Plugin, true);
-            ImportPath = Ini.GetConfig("Plugin", "Import", Plugin, true);
-            string CustomSource = Ini.GetConfig("Plugin", "File", Plugin, false);
+            ExportPath = Ini.GetConfig("Plugin", "Export;Exp;export;exp", Plugin, true);
+            ImportPath = Ini.GetConfig("Plugin", "Import;Imp;import;imp", Plugin, true);
+            string CustomSource = Ini.GetConfig("Plugin", "File;file;Archive;archive;Arc;arc", Plugin, false);
 
             string Path = System.IO.Path.GetDirectoryName(Plugin) + "\\",
              SourcePath = System.IO.Path.GetDirectoryName(Plugin) + "\\";
@@ -118,7 +157,7 @@ namespace SacanaWrapper
             }
 
             //Initialize Plugin
-            bool InitializeWithScript = Ini.GetConfig("Plugin", "Initialize", Plugin, true).ToLower() == "true";
+            bool InitializeWithScript = Ini.GetConfig("Plugin", "Initialize;InputOnCreate;initialize;inputoncreate", Plugin, false).ToLower() == "true";
             if (File.Exists(SourcePath))
                 this.Plugin = new HighLevelCodeProcessator(File.ReadAllText(SourcePath, Encoding.UTF8));
             else

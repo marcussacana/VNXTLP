@@ -21,13 +21,14 @@ namespace VNXTLP {
 
             byte[] Script = File.ReadAllBytes(Path);
             Editor = new Wrapper();
-            ReturnContent = Editor.Import(Script, System.IO.Path.GetExtension(Path), true);
+            ReturnContent = Editor.Import(Script, System.IO.Path.GetExtension(Path), true, true);
 
             StringCount = 0;
             if (File.Exists(Path + ".map"))
                 Remap(ref ReturnContent, Path + ".map");
 
             ClearStrings(ref ReturnContent);
+            EscapeBreakLine(ref ReturnContent);
 
             if (TempMode) {
                 Editor = BackupEditor;
@@ -39,7 +40,6 @@ namespace VNXTLP {
             return ReturnContent;
         }
 
-       
 
         internal static void Save(string Path, string[] Content, bool Temp = false) {
             string bkp = ScriptPath;
@@ -55,6 +55,7 @@ namespace VNXTLP {
             SetConfig("VNXTLP", "LastScript", ScriptPath);
             
             RestoreStrings(ref Content);
+            RestoreBreakLine(ref Content);
             UndoRemap(ref Content);
 
             if (File.Exists(ScriptPath))
@@ -96,7 +97,36 @@ namespace VNXTLP {
             
         }
 
-        private static void RestoreStrings(ref string[] Strings) {
+        private static void EscapeBreakLine(ref string[] Content) {
+            string[] Escapes = new string[] { "\\n", "\\N", "[\\B]", "<\\br>", "[\\BREAKLINE]" };
+            BreakLineEscape = new Dictionary<uint, string>();
+            for (uint i = 0; i < Content.LongLength; i++) {
+                string Line = Content[i];
+                if (!Line.Contains("\n")) {
+                    BreakLineEscape.Add(i, null);
+                    continue;
+                }
+                string Escape = string.Empty;
+                for (uint x = 0; x < Escapes.LongLength; x++) {
+                    if (!Line.Contains(Escapes[x])) {
+                        Escape = Escapes[x];
+                        break;
+                    }
+                }
+                Content[i] = Line.Replace("\n", Escape);
+                BreakLineEscape.Add(i, Escape);
+            }
+        }
+
+        private static void RestoreBreakLine(ref string[] Content) {
+            for (uint i = 0; i < Content.LongLength; i++) {
+                string Escape = BreakLineEscape[i];
+                if (Escape == null)
+                    continue;
+                Content[i] = Content[i].Replace(Escape, "\n");
+            }
+        }
+            private static void RestoreStrings(ref string[] Strings) {
             for (uint i = 0; i < Strings.LongLength; i++) {
                 if (Prefix.ContainsKey(i))
                     Strings[i] = Prefix[i] + Strings[i];

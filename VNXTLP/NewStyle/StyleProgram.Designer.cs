@@ -69,6 +69,7 @@
             this.ZTLClient = new System.Windows.Forms.ToolStripMenuItem();
             this.ZLEC = new System.Windows.Forms.ToolStripMenuItem();
             this.ZGoogle = new System.Windows.Forms.ToolStripMenuItem();
+            this.ZBing = new System.Windows.Forms.ToolStripMenuItem();
             this.ZSelMode = new System.Windows.Forms.ToolStripMenuItem();
             this.ZAutoSelMode = new System.Windows.Forms.ToolStripMenuItem();
             this.ZAsianSel = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,7 +83,6 @@
             this.OpenScript = new System.Windows.Forms.OpenFileDialog();
             this.SaveScript = new System.Windows.Forms.SaveFileDialog();
             this.SkipDelay = new System.Windows.Forms.Timer(this.components);
-            this.ZBing = new System.Windows.Forms.ToolStripMenuItem();
             this.ZSKN.SuspendLayout();
             this.ZMenu.SuspendLayout();
             this.SuspendLayout();
@@ -486,15 +486,22 @@
             // 
             this.ZLEC.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZLEC.Name = "ZLEC";
-            this.ZLEC.Size = new System.Drawing.Size(152, 22);
+            this.ZLEC.Size = new System.Drawing.Size(112, 22);
             this.ZLEC.Text = "LEC";
             // 
             // ZGoogle
             // 
             this.ZGoogle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZGoogle.Name = "ZGoogle";
-            this.ZGoogle.Size = new System.Drawing.Size(152, 22);
+            this.ZGoogle.Size = new System.Drawing.Size(112, 22);
             this.ZGoogle.Text = "Google";
+            // 
+            // ZBing
+            // 
+            this.ZBing.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.ZBing.Name = "ZBing";
+            this.ZBing.Size = new System.Drawing.Size(112, 22);
+            this.ZBing.Text = "Bing";
             // 
             // ZSelMode
             // 
@@ -592,13 +599,6 @@
             // 
             this.SkipDelay.Interval = 1000;
             this.SkipDelay.Tick += new System.EventHandler(this.DelayEnd);
-            // 
-            // ZBing
-            // 
-            this.ZBing.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.ZBing.Name = "ZBing";
-            this.ZBing.Size = new System.Drawing.Size(152, 22);
-            this.ZBing.Text = "Bing";
             // 
             // StyleProgram
             // 
