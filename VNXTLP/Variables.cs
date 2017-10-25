@@ -23,6 +23,8 @@ namespace VNXTLP {
         internal static dynamic StringCountBackup;
         internal static dynamic PrefixBackup;
         internal static dynamic SufixBackup;
+        internal static dynamic BreakLineEscapeBackup;
+
         internal static string UserDir {
             get
             {

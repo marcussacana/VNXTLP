@@ -18,7 +18,7 @@ namespace VNXTLP.NewStyle
         }
 
         private void ZRegistrar_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
-            NewStyle.StyleRegister Form = new StyleRegister();
+            StyleRegister Form = new StyleRegister();
             Form.StartPosition = FormStartPosition.Manual;
             Form.Location = Location;
             Visible = false;
@@ -28,11 +28,17 @@ namespace VNXTLP.NewStyle
         }
 
         private void ZEnt_Click(object sender, EventArgs e) {
-            bool Remember = MessageBox.Show(Engine.LoadTranslation(94), "VNXTLP", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
-            if (Engine.Login(LoginTB.Text, PassTB.Text, Remember))
+            if (Engine.Login(LoginTB.Text, PassTB.Text, true))
                 Close();
             else
                 MessageBox.Show(Engine.LoadTranslation(10), "VNXTLP - Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void KeyLoginPress(object sender, KeyPressEventArgs e) {
+            e.Handled = true;
+            if (e.KeyChar == '\r' || e.KeyChar == '\n') {
+                ZEnt_Click(null, null);
+            }
         }
     }
 }

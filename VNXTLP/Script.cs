@@ -14,7 +14,8 @@ namespace VNXTLP {
                 StringCountBackup = StringCount;
                 PrefixBackup = Prefix;
                 SufixBackup = Sufix;
-            }else {
+                BreakLineEscapeBackup = BreakLineEscape;
+            } else {
                 ScriptPath = Path;
                 SetConfig("VNXTLP", "LastScript", ScriptPath);
             }
@@ -36,6 +37,7 @@ namespace VNXTLP {
                 StringCountBackup = StringCount;
                 Prefix = PrefixBackup;
                 Sufix = SufixBackup;
+                BreakLineEscape = BreakLineEscapeBackup;
             }
             return ReturnContent;
         }
@@ -119,14 +121,22 @@ namespace VNXTLP {
         }
 
         private static void RestoreBreakLine(ref string[] Content) {
-            for (uint i = 0; i < Content.LongLength; i++) {
-                string Escape = BreakLineEscape[i];
-                if (Escape == null)
-                    continue;
-                Content[i] = Content[i].Replace(Escape, "\n");
+#if DEBUG
+            try {
+#endif
+                for (uint i = 0; i < Content.LongLength; i++) {
+                    string Escape = BreakLineEscape[i];
+                    if (Escape == null)
+                        continue;
+                    Content[i] = Content[i].Replace(Escape, "\n");
+                }
+#if DEBUG
+        } catch {
+                MessageBox.Show("RestoreBreakLine - FAILED", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+#endif
         }
-            private static void RestoreStrings(ref string[] Strings) {
+        private static void RestoreStrings(ref string[] Strings) {
             for (uint i = 0; i < Strings.LongLength; i++) {
                 if (Prefix.ContainsKey(i))
                     Strings[i] = Prefix[i] + Strings[i];

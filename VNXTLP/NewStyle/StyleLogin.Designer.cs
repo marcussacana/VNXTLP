@@ -55,11 +55,10 @@ namespace VNXTLP.NewStyle
             this.ZSKN.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.ZSKN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(142)))), ((int)(((byte)(142)))));
             this.ZSKN.Location = new System.Drawing.Point(0, 0);
-            this.ZSKN.Margin = new System.Windows.Forms.Padding(4);
             this.ZSKN.Name = "ZSKN";
-            this.ZSKN.Padding = new System.Windows.Forms.Padding(4, 34, 4, 34);
+            this.ZSKN.Padding = new System.Windows.Forms.Padding(3, 28, 3, 28);
             this.ZSKN.Sizable = false;
-            this.ZSKN.Size = new System.Drawing.Size(743, 338);
+            this.ZSKN.Size = new System.Drawing.Size(557, 275);
             this.ZSKN.SmartBounds = false;
             this.ZSKN.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
             this.ZSKN.TabIndex = 1;
@@ -72,8 +71,7 @@ namespace VNXTLP.NewStyle
             this.ZControl.EnableMaximize = false;
             this.ZControl.EnableMinimize = true;
             this.ZControl.Font = new System.Drawing.Font("Marlett", 7F);
-            this.ZControl.Location = new System.Drawing.Point(709, 0);
-            this.ZControl.Margin = new System.Windows.Forms.Padding(4);
+            this.ZControl.Location = new System.Drawing.Point(532, 0);
             this.ZControl.Name = "ZControl";
             this.ZControl.Size = new System.Drawing.Size(24, 22);
             this.ZControl.TabIndex = 12;
@@ -87,10 +85,9 @@ namespace VNXTLP.NewStyle
             this.ZRegistrar.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.ZRegistrar.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.ZRegistrar.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(153)))), ((int)(((byte)(225)))));
-            this.ZRegistrar.Location = new System.Drawing.Point(324, 279);
-            this.ZRegistrar.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.ZRegistrar.Location = new System.Drawing.Point(243, 227);
             this.ZRegistrar.Name = "ZRegistrar";
-            this.ZRegistrar.Size = new System.Drawing.Size(88, 19);
+            this.ZRegistrar.Size = new System.Drawing.Size(72, 13);
             this.ZRegistrar.TabIndex = 8;
             this.ZRegistrar.TabStop = true;
             this.ZRegistrar.Text = "Registrar-me";
@@ -104,10 +101,9 @@ namespace VNXTLP.NewStyle
             this.ZEnt.ForeColor = System.Drawing.Color.White;
             this.ZEnt.Image = null;
             this.ZEnt.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ZEnt.Location = new System.Drawing.Point(185, 219);
-            this.ZEnt.Margin = new System.Windows.Forms.Padding(4);
+            this.ZEnt.Location = new System.Drawing.Point(139, 178);
             this.ZEnt.Name = "ZEnt";
-            this.ZEnt.Size = new System.Drawing.Size(369, 49);
+            this.ZEnt.Size = new System.Drawing.Size(277, 40);
             this.ZEnt.TabIndex = 6;
             this.ZEnt.Text = "Fazer Login";
             this.ZEnt.TextAlignment = System.Drawing.StringAlignment.Center;
@@ -119,10 +115,9 @@ namespace VNXTLP.NewStyle
             this.LB2.BackColor = System.Drawing.Color.Transparent;
             this.LB2.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.LB2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(142)))), ((int)(((byte)(142)))));
-            this.LB2.Location = new System.Drawing.Point(343, 146);
-            this.LB2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LB2.Location = new System.Drawing.Point(257, 119);
             this.LB2.Name = "LB2";
-            this.LB2.Size = new System.Drawing.Size(46, 19);
+            this.LB2.Size = new System.Drawing.Size(39, 13);
             this.LB2.TabIndex = 4;
             this.LB2.Text = "Senha";
             // 
@@ -132,10 +127,9 @@ namespace VNXTLP.NewStyle
             this.LB1.BackColor = System.Drawing.Color.Transparent;
             this.LB1.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.LB1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(142)))), ((int)(((byte)(142)))));
-            this.LB1.Location = new System.Drawing.Point(337, 81);
-            this.LB1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LB1.Location = new System.Drawing.Point(253, 66);
             this.LB1.Name = "LB1";
-            this.LB1.Size = new System.Drawing.Size(56, 19);
+            this.LB1.Size = new System.Drawing.Size(47, 13);
             this.LB1.TabIndex = 3;
             this.LB1.Text = "Usuário";
             // 
@@ -144,42 +138,40 @@ namespace VNXTLP.NewStyle
             this.PassTB.BackColor = System.Drawing.Color.Transparent;
             this.PassTB.Font = new System.Drawing.Font("Tahoma", 11F);
             this.PassTB.ForeColor = System.Drawing.Color.DimGray;
-            this.PassTB.Location = new System.Drawing.Point(107, 165);
-            this.PassTB.Margin = new System.Windows.Forms.Padding(4);
+            this.PassTB.Location = new System.Drawing.Point(80, 134);
             this.PassTB.MaxLength = 32767;
             this.PassTB.Multiline = false;
             this.PassTB.Name = "PassTB";
             this.PassTB.ReadOnly = false;
-            this.PassTB.Size = new System.Drawing.Size(529, 33);
+            this.PassTB.Size = new System.Drawing.Size(397, 28);
             this.PassTB.TabIndex = 2;
             this.PassTB.TextAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             this.PassTB.UseSystemPasswordChar = true;
+            this.PassTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyLoginPress);
             // 
             // LoginTB
             // 
             this.LoginTB.BackColor = System.Drawing.Color.Transparent;
             this.LoginTB.Font = new System.Drawing.Font("Tahoma", 11F);
             this.LoginTB.ForeColor = System.Drawing.Color.DimGray;
-            this.LoginTB.Location = new System.Drawing.Point(104, 101);
-            this.LoginTB.Margin = new System.Windows.Forms.Padding(4);
+            this.LoginTB.Location = new System.Drawing.Point(78, 82);
             this.LoginTB.MaxLength = 32767;
             this.LoginTB.Multiline = false;
             this.LoginTB.Name = "LoginTB";
             this.LoginTB.ReadOnly = false;
-            this.LoginTB.Size = new System.Drawing.Size(529, 33);
+            this.LoginTB.Size = new System.Drawing.Size(397, 28);
             this.LoginTB.TabIndex = 0;
             this.LoginTB.TextAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             this.LoginTB.UseSystemPasswordChar = false;
             // 
             // StyleLogin
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(743, 338);
+            this.ClientSize = new System.Drawing.Size(557, 275);
             this.Controls.Add(this.ZSKN);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(168, 48);
+            this.MinimumSize = new System.Drawing.Size(126, 39);
             this.Name = "StyleLogin";
             this.Text = "Minha Conta - VNX+";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;

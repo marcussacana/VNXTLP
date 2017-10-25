@@ -21,15 +21,16 @@ namespace VNXTLP.NewStyle
             while (true) {
                 if (RegisterConfirmPass.Text != RegisterPass.Text) {
                     MessageBox.Show(Engine.LoadTranslation(41), "VNXTLP - Register", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    break;
                 }
                 if (RegisterLogin.Text.Length < 4) {
                     MessageBox.Show(Engine.LoadTranslation(42), "VNTLP - Register", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    break;
                 }
                 if (Engine.Register(RegisterLogin.Text, RegisterPass.Text)) {
                     MessageBox.Show(Engine.LoadTranslation(43), "VNXTLP - Register", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Close();
+                    break;
                 }
                 else {
                     DialogResult DR = MessageBox.Show(Engine.LoadTranslation(44), "VNXTLP - Engine", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
