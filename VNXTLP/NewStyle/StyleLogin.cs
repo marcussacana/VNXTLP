@@ -35,9 +35,9 @@ namespace VNXTLP.NewStyle
         }
 
         private void KeyLoginPress(object sender, KeyPressEventArgs e) {
-            e.Handled = true;
             if (e.KeyChar == '\r' || e.KeyChar == '\n') {
                 ZEnt_Click(null, null);
+                e.Handled = true;
             }
         }
     }

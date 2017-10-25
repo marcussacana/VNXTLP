@@ -53,8 +53,8 @@ namespace VNXTLP {
         }
 
         private void LoginKeyPress(object sender, KeyPressEventArgs e) {
-            e.Handled = true;
             if (e.KeyChar == '\r' || e.KeyChar == '\n') {
+                e.Handled = true;
                 LoginBnt_Click(null, null);
             }
         }
