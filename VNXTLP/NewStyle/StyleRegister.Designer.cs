@@ -55,11 +55,10 @@
             this.ZSKN.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.ZSKN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(142)))), ((int)(((byte)(142)))));
             this.ZSKN.Location = new System.Drawing.Point(0, 0);
-            this.ZSKN.Margin = new System.Windows.Forms.Padding(4);
             this.ZSKN.Name = "ZSKN";
-            this.ZSKN.Padding = new System.Windows.Forms.Padding(4, 34, 4, 34);
+            this.ZSKN.Padding = new System.Windows.Forms.Padding(3, 28, 3, 28);
             this.ZSKN.Sizable = false;
-            this.ZSKN.Size = new System.Drawing.Size(743, 384);
+            this.ZSKN.Size = new System.Drawing.Size(557, 312);
             this.ZSKN.SmartBounds = false;
             this.ZSKN.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
             this.ZSKN.TabIndex = 0;
@@ -72,8 +71,7 @@
             this.ZControl.EnableMaximize = false;
             this.ZControl.EnableMinimize = true;
             this.ZControl.Font = new System.Drawing.Font("Marlett", 7F);
-            this.ZControl.Location = new System.Drawing.Point(708, 0);
-            this.ZControl.Margin = new System.Windows.Forms.Padding(4);
+            this.ZControl.Location = new System.Drawing.Point(531, 0);
             this.ZControl.Name = "ZControl";
             this.ZControl.Size = new System.Drawing.Size(24, 22);
             this.ZControl.TabIndex = 12;
@@ -86,10 +84,9 @@
             this.ZReg.ForeColor = System.Drawing.Color.White;
             this.ZReg.Image = null;
             this.ZReg.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ZReg.Location = new System.Drawing.Point(187, 286);
-            this.ZReg.Margin = new System.Windows.Forms.Padding(4);
+            this.ZReg.Location = new System.Drawing.Point(140, 232);
             this.ZReg.Name = "ZReg";
-            this.ZReg.Size = new System.Drawing.Size(369, 49);
+            this.ZReg.Size = new System.Drawing.Size(277, 40);
             this.ZReg.TabIndex = 6;
             this.ZReg.Text = "Registrar";
             this.ZReg.TextAlignment = System.Drawing.StringAlignment.Center;
@@ -101,10 +98,9 @@
             this.LB3.BackColor = System.Drawing.Color.Transparent;
             this.LB3.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.LB3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(142)))), ((int)(((byte)(142)))));
-            this.LB3.Location = new System.Drawing.Point(304, 212);
-            this.LB3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LB3.Location = new System.Drawing.Point(228, 172);
             this.LB3.Name = "LB3";
-            this.LB3.Size = new System.Drawing.Size(111, 19);
+            this.LB3.Size = new System.Drawing.Size(93, 13);
             this.LB3.TabIndex = 5;
             this.LB3.Text = "Confirmar Senha";
             // 
@@ -114,10 +110,9 @@
             this.LB2.BackColor = System.Drawing.Color.Transparent;
             this.LB2.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.LB2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(142)))), ((int)(((byte)(142)))));
-            this.LB2.Location = new System.Drawing.Point(343, 146);
-            this.LB2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LB2.Location = new System.Drawing.Point(257, 119);
             this.LB2.Name = "LB2";
-            this.LB2.Size = new System.Drawing.Size(46, 19);
+            this.LB2.Size = new System.Drawing.Size(39, 13);
             this.LB2.TabIndex = 4;
             this.LB2.Text = "Senha";
             // 
@@ -127,10 +122,9 @@
             this.LB1.BackColor = System.Drawing.Color.Transparent;
             this.LB1.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.LB1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(142)))), ((int)(((byte)(142)))), ((int)(((byte)(142)))));
-            this.LB1.Location = new System.Drawing.Point(337, 81);
-            this.LB1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.LB1.Location = new System.Drawing.Point(253, 66);
             this.LB1.Name = "LB1";
-            this.LB1.Size = new System.Drawing.Size(56, 19);
+            this.LB1.Size = new System.Drawing.Size(47, 13);
             this.LB1.TabIndex = 3;
             this.LB1.Text = "Usuário";
             // 
@@ -139,14 +133,13 @@
             this.RegisterPass.BackColor = System.Drawing.Color.Transparent;
             this.RegisterPass.Font = new System.Drawing.Font("Tahoma", 11F);
             this.RegisterPass.ForeColor = System.Drawing.Color.DimGray;
-            this.RegisterPass.Location = new System.Drawing.Point(107, 165);
-            this.RegisterPass.Margin = new System.Windows.Forms.Padding(4);
+            this.RegisterPass.Location = new System.Drawing.Point(80, 134);
             this.RegisterPass.MaxLength = 32767;
             this.RegisterPass.Multiline = false;
             this.RegisterPass.Name = "RegisterPass";
             this.RegisterPass.ReadOnly = false;
-            this.RegisterPass.Size = new System.Drawing.Size(529, 33);
-            this.RegisterPass.TabIndex = 2;
+            this.RegisterPass.Size = new System.Drawing.Size(397, 28);
+            this.RegisterPass.TabIndex = 1;
             this.RegisterPass.TextAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             this.RegisterPass.UseSystemPasswordChar = true;
             // 
@@ -155,14 +148,13 @@
             this.RegisterConfirmPass.BackColor = System.Drawing.Color.Transparent;
             this.RegisterConfirmPass.Font = new System.Drawing.Font("Tahoma", 11F);
             this.RegisterConfirmPass.ForeColor = System.Drawing.Color.DimGray;
-            this.RegisterConfirmPass.Location = new System.Drawing.Point(104, 231);
-            this.RegisterConfirmPass.Margin = new System.Windows.Forms.Padding(4);
+            this.RegisterConfirmPass.Location = new System.Drawing.Point(78, 188);
             this.RegisterConfirmPass.MaxLength = 32767;
             this.RegisterConfirmPass.Multiline = false;
             this.RegisterConfirmPass.Name = "RegisterConfirmPass";
             this.RegisterConfirmPass.ReadOnly = false;
-            this.RegisterConfirmPass.Size = new System.Drawing.Size(529, 33);
-            this.RegisterConfirmPass.TabIndex = 1;
+            this.RegisterConfirmPass.Size = new System.Drawing.Size(397, 28);
+            this.RegisterConfirmPass.TabIndex = 2;
             this.RegisterConfirmPass.TextAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             this.RegisterConfirmPass.UseSystemPasswordChar = true;
             // 
@@ -171,26 +163,24 @@
             this.RegisterLogin.BackColor = System.Drawing.Color.Transparent;
             this.RegisterLogin.Font = new System.Drawing.Font("Tahoma", 11F);
             this.RegisterLogin.ForeColor = System.Drawing.Color.DimGray;
-            this.RegisterLogin.Location = new System.Drawing.Point(104, 101);
-            this.RegisterLogin.Margin = new System.Windows.Forms.Padding(4);
+            this.RegisterLogin.Location = new System.Drawing.Point(78, 82);
             this.RegisterLogin.MaxLength = 32767;
             this.RegisterLogin.Multiline = false;
             this.RegisterLogin.Name = "RegisterLogin";
             this.RegisterLogin.ReadOnly = false;
-            this.RegisterLogin.Size = new System.Drawing.Size(529, 33);
+            this.RegisterLogin.Size = new System.Drawing.Size(397, 28);
             this.RegisterLogin.TabIndex = 0;
             this.RegisterLogin.TextAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             this.RegisterLogin.UseSystemPasswordChar = false;
             // 
             // StyleRegister
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(743, 384);
+            this.ClientSize = new System.Drawing.Size(557, 312);
             this.Controls.Add(this.ZSKN);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(168, 48);
+            this.MinimumSize = new System.Drawing.Size(126, 39);
             this.Name = "StyleRegister";
             this.Text = "Registrar Minha Conta - VNX+";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;

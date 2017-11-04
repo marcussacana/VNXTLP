@@ -17,10 +17,12 @@ namespace VNXTLP.NewStyle
             ZOK.Text = Engine.LoadTranslation(1);
 
             new System.Threading.Thread(() => {
-                Files = Engine.ListBackups();
-                ShowBackups handle = Initialize;
-                if (handle != null)
-                    Invoke(handle, null);
+                try {
+                    Files = Engine.ListBackups();
+                    ShowBackups handle = Initialize;
+                    if (handle != null)
+                        Invoke(handle, null);
+                } catch { }
             }).Start();
         }
         private delegate void ShowBackups();
