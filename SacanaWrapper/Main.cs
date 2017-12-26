@@ -14,7 +14,7 @@ namespace SacanaWrapper
         string StrIP = string.Empty;
         string StrEP = string.Empty;
         private static string Lastest = string.Empty;
-        HighLevelCodeProcessator Plugin;
+        DotNetVM Plugin;
 
 
         public string[] Import(string ScriptPath, bool PreventCorrupt = false, bool TryLastPluginFirst = false) {
@@ -24,7 +24,7 @@ namespace SacanaWrapper
         }
         public string[] Import(byte[] Script, string Extension = null, bool PreventCorrupt = false, bool TryLastPluginFirst = false) {
             string[] Strings = null;
-            string PluginDir = HighLevelCodeProcessator.AssemblyDirectory + "\\Plugins";       
+            string PluginDir = DotNetVM.AssemblyDirectory + "\\Plugins";       
 
             if (File.Exists(Lastest) && TryLastPluginFirst) {
 #if !DebugPlugin
@@ -119,6 +119,9 @@ namespace SacanaWrapper
         }
 
         private bool Corrupted(string[] Strings) {
+            if (Strings.LongLength == 0)
+                return true;
+
             bool Matched = false;
             foreach (string str in Strings) {
                 if (str.Contains('�') || str.Trim('\x0').Contains('\x0'))//If looks corrupted, try load with other plugin, if fail, return this content.
@@ -146,22 +149,28 @@ namespace SacanaWrapper
             string CustomSource = Ini.GetConfig("Plugin", "File;file;Archive;archive;Arc;arc", Plugin, false);
 
             string Path = System.IO.Path.GetDirectoryName(Plugin) + "\\",
-             SourcePath = System.IO.Path.GetDirectoryName(Plugin) + "\\";
+             SourcePath = System.IO.Path.GetDirectoryName(Plugin) + "\\",
+             SourcePath2 = System.IO.Path.GetDirectoryName(Plugin) + "\\";
+             
             
             if (!string.IsNullOrWhiteSpace(CustomSource)){
                 Path += CustomSource + ".dll";
                 SourcePath += CustomSource + ".cs";
+                SourcePath2 += CustomSource + ".vb";
             } else {
                 Path += System.IO.Path.GetFileNameWithoutExtension(Plugin) + ".dll";
                 SourcePath += System.IO.Path.GetFileNameWithoutExtension(Plugin) + ".cs";
+                SourcePath2 += System.IO.Path.GetFileNameWithoutExtension(Plugin) + ".vb";
             }
 
             //Initialize Plugin
             bool InitializeWithScript = Ini.GetConfig("Plugin", "Initialize;InputOnCreate;initialize;inputoncreate", Plugin, false).ToLower() == "true";
             if (File.Exists(SourcePath))
-                this.Plugin = new HighLevelCodeProcessator(File.ReadAllText(SourcePath, Encoding.UTF8));
+                this.Plugin = new DotNetVM(File.ReadAllText(SourcePath, Encoding.UTF8), DotNetVM.Language.CSharp);
+            else if (File.Exists(SourcePath2))
+                this.Plugin = new DotNetVM(File.ReadAllText(SourcePath2, Encoding.UTF8), DotNetVM.Language.VisualBasic);
             else
-                this.Plugin = new HighLevelCodeProcessator(File.ReadAllBytes(Path));
+                this.Plugin = new DotNetVM(File.ReadAllBytes(Path));
 
             //Import
             Lastest = Plugin;

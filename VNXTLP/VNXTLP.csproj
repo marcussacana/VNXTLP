@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="Automation.cs" />
     <Compile Include="Backup.cs" />
     <Compile Include="BallonToolTip.cs">
       <SubType>UserControl</SubType>

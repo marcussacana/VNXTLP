@@ -18,6 +18,9 @@ namespace VNXTLP {
 
         internal static Dictionary<uint, string> BreakLineEscape = new Dictionary<uint, string>();
 
+        internal static Dictionary<string, string> Database = new Dictionary<string, string>();
+        internal static string LastString;
+
         internal static dynamic BackupEditor;
         internal static dynamic RemapBackup;
         internal static dynamic StringCountBackup;

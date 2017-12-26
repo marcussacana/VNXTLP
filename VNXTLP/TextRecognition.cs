@@ -52,46 +52,50 @@ namespace VNXTLP {
             else {
                 bool Asian = Conf == "1";
                 for (int i = 0; i < StrList.Items.Count; i++) {
-                    string text = StrList.Items[i].ToString().ToLower();
-                    bool Status = true;
-                    int Process = 0;
-                    while (Status) {
-                        switch (Process) {
-                            default:
-                                goto ExitWhile;
-                            case 0:
-                                Status = !ContainsOR(text, GetConfig("AutoSelectionEngine", "Deny-Chars"));
-                                break;
-                            case 1:
-                                Status = NumberLimiter(text, text.Length / 2);
-                                break;
-                            case 2:
-                                Status = text.Length >= 3;
-                                break;
-                            case 3:
-                                if (Asian)
-                                    Status = MinimiumFound(text, Properties.Resources.JapCommon, text.Length / 4);
-                                else
-                                    Status = text.Contains(((char)32).ToString()) || ContainsOR(text.Substring(text.Length - 2, 2), GetConfig("AutoSelectionEngine", "Marks"));
-                                break;
-                            case 4:
-                                if (!Asian)
-                                    break;
-                                Status = ContainsOR(text, GetConfig("AutoSelectionEngine", "Allowed-Chars"));
-                                break;
-                            case 5:
-                                if (Asian)
-                                    break;
-                                Status = !ContainsOR(text, Properties.Resources.JapCommon);
-                                break;
-                        }
-                        Process++;
-                    }
-                    ExitWhile:
-                    ;
+                    bool Status = IsDialogue(StrList.Items[i].ToString().ToLower(), Asian);
                     StrList.SetItemChecked(i, Status);
                 }
             }
+        }
+
+        private static bool IsDialogue(string text, bool Asian) {
+            bool Status = true;
+            int Process = 0;
+            while (Status) {
+                switch (Process) {
+                    default:
+                        goto ExitWhile;
+                    case 0:
+                        Status = !ContainsOR(text, GetConfig("AutoSelectionEngine", "Deny-Chars"));
+                        break;
+                    case 1:
+                        Status = NumberLimiter(text, text.Length / 2);
+                        break;
+                    case 2:
+                        Status = text.Length >= 3;
+                        break;
+                    case 3:
+                        if (Asian)
+                            Status = MinimiumFound(text, Properties.Resources.JapCommon, text.Length / 4);
+                        else
+                            Status = text.Contains(((char)32).ToString()) || ContainsOR(text.Substring(text.Length - 2, 2), GetConfig("AutoSelectionEngine", "Marks"));
+                        break;
+                    case 4:
+                        if (!Asian)
+                            break;
+                        Status = ContainsOR(text, GetConfig("AutoSelectionEngine", "Allowed-Chars"));
+                        break;
+                    case 5:
+                        if (Asian)
+                            break;
+                        Status = !ContainsOR(text, Properties.Resources.JapCommon);
+                        break;
+                }
+                Process++;
+            }
+            ExitWhile:
+            ;
+            return Status;
         }
 
         private static void AutoDetectMode() {
@@ -102,38 +106,7 @@ namespace VNXTLP {
             again:
             ;
             for (int i = 0; i < StrList.Items.Count; i++) {
-                string text = StrList.Items[i].ToString().ToLower();
-                bool Status = true;
-                int Process = 0;
-                while (Status) {
-                    switch (Process) {
-                        default:
-                            goto ExitWhile;
-                        case 0:
-                            Status = !ContainsOR(text, GetConfig("AutoSelectionEngine", "Deny-Chars"));
-                            break;
-                        case 1:
-                            Status = NumberLimiter(text, text.Length / 2);
-                            break;
-                        case 2:
-                            Status = text.Length >= 3;
-                            break;
-                        case 3:
-                            if (trie == 1 || trie == 3)
-                                Status = MinimiumFound(text, Properties.Resources.JapCommon, text.Length / 4);
-                            else
-                                Status = text.Contains(((char)32).ToString()) || ContainsOR(text.Substring(text.Length - 2, 2), GetConfig("AutoSelectionEngine", "Marks"));
-                            break;
-                        case 4:
-                            if (trie == 1 || trie == 3)
-                                break;
-                            Status = ContainsOR(text, GetConfig("AutoSelectionEngine", "Allowed-Chars"));
-                            break;
-                    }
-                    Process++;
-                }
-                ExitWhile:
-                ;
+                bool Status = IsDialogue(StrList.Items[i].ToString().ToLower(), trie == 1 || trie == 3);
                 if (Status)
                     count++;
                 StrList.SetItemChecked(i, Status);

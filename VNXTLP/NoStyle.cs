@@ -242,6 +242,8 @@ namespace VNXTLP {
                 
                 //Update translation and get next string
                 StrList.Items[SelectedIndex] = TLBox.Text;
+                Engine.FinishString(TLBox.Text);
+
                 FileSaved = false;
                 Changes++;
                 Index = SelectedIndex + 1;

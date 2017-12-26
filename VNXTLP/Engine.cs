@@ -44,7 +44,7 @@ namespace VNXTLP {
                     return;
             }
             StrList.SelectedIndex = value;
-            TextBox.Text = StrList.Items[value].ToString();
+            TextBox.Text = ReloadString(StrList.Items[value].ToString());
             TextBox.ResetCache();
             int Pos = TestIndex ? GetPos(StrList, value) : value;
             int Total = TestIndex ? StrList.CheckedItems.Count : StrList.Items.Count;

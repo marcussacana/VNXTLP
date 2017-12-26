@@ -19,17 +19,18 @@ namespace VNXTLP {
                 ScriptPath = Path;
                 SetConfig("VNXTLP", "LastScript", ScriptPath);
             }
+            try {
+                byte[] Script = File.ReadAllBytes(Path);
+                Editor = new Wrapper();
+                ReturnContent = Editor.Import(Script, System.IO.Path.GetExtension(Path), true, true);
 
-            byte[] Script = File.ReadAllBytes(Path);
-            Editor = new Wrapper();
-            ReturnContent = Editor.Import(Script, System.IO.Path.GetExtension(Path), true, true);
+                StringCount = 0;
+                if (File.Exists(Path + ".map"))
+                    Remap(ref ReturnContent, Path + ".map");
 
-            StringCount = 0;
-            if (File.Exists(Path + ".map"))
-                Remap(ref ReturnContent, Path + ".map");
-
-            ClearStrings(ref ReturnContent);
-            EscapeBreakLine(ref ReturnContent);
+                ClearStrings(ref ReturnContent);
+                EscapeBreakLine(ref ReturnContent);
+            } catch { ReturnContent = new string[0]; }
 
             if (TempMode) {
                 Editor = BackupEditor;

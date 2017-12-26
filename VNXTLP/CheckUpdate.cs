@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace VNXTLP
@@ -48,6 +49,12 @@ namespace VNXTLP
 #endif
 
                 if (!HaveUpdate) {
+                    if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "PMan.exe")) {
+                        Invoke(new SetText(UpdateStatus), Engine.LoadTranslation(107));
+
+                        Process.Start(AppDomain.CurrentDomain.BaseDirectory + "PMan.exe", "update").WaitForExit();
+                    }
+
                     FadeClose();
                     return;
                 }

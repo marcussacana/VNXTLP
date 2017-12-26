@@ -1,17 +1,20 @@
 ﻿using Microsoft.CSharp;
+using Microsoft.VisualBasic;
 using System;
 using System.CodeDom.Compiler;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-public class HighLevelCodeProcessator {
-
-    internal HighLevelCodeProcessator(byte[] File) {
+internal class DotNetVM {
+    public enum Language {
+        CSharp, VisualBasic
+    }
+    internal DotNetVM(byte[] File) {
         Engine = Assembly.Load(File);
     }
 
-    internal HighLevelCodeProcessator(string Code) {
+    internal DotNetVM(string Code) {
         System.IO.StringReader Sr = new System.IO.StringReader(Code);
         string[] Lines = new string[0];
         while (Sr.Peek() != -1) {
@@ -20,8 +23,21 @@ public class HighLevelCodeProcessator {
             tmp[Lines.Length] = Sr.ReadLine();
             Lines = tmp;
         }
-        Engine = InitializeEngine(Lines);
+        Engine = InitializeEngine(Lines, Language.CSharp);
     }
+
+    internal DotNetVM(string Code, Language Lang) {
+        System.IO.StringReader Sr = new System.IO.StringReader(Code);
+        string[] Lines = new string[0];
+        while (Sr.Peek() != -1) {
+            string[] tmp = new string[Lines.Length + 1];
+            Lines.CopyTo(tmp, 0);
+            tmp[Lines.Length] = Sr.ReadLine();
+            Lines = tmp;
+        }
+        Engine = InitializeEngine(Lines, Lang);
+    }
+
 
     Assembly Engine;
 
@@ -35,7 +51,7 @@ public class HighLevelCodeProcessator {
     /// <param name="FunctionName">Target function name</param>
     /// <param name="Arguments">Function parameters</param>
     /// <returns></returns>
-    internal object Call(string ClassName, string FunctionName, params object[] Arguments) => 
+    internal dynamic Call(string ClassName, string FunctionName, params object[] Arguments) => 
         Exec(Arguments, ClassName, FunctionName, Engine);
     
 
@@ -50,18 +66,22 @@ public class HighLevelCodeProcessator {
         Type fooType = assembly.GetType(Class);
         if (Instance == null)
             Instance = assembly.CreateInstance(Class);
-        MethodInfo[] Methods = fooType.GetMethods().Where(x => x.Name == Function).Select(x => x).ToArray();
+        MethodInfo[] Methods = fooType.GetMethods().Where(x => x.Name == Function && x.GetParameters().Length == Args.Length).Select(x => x).ToArray();
+
+        Exception Error = new Exception("Failed to search for the method.");
         foreach (MethodInfo Method in Methods) {
-            if (Method.GetParameters().Length == Args.Length) {
-                try {
-                    return Method?.Invoke(Instance, BindingFlags.InvokeMethod, null, Args, CultureInfo.CurrentCulture);
-                } catch { }
+            try {
+                return Method?.Invoke(Instance, BindingFlags.InvokeMethod, null, Args, CultureInfo.CurrentCulture);
+            } catch (Exception ex) {
+                Error = ex;
             }
         }
-        throw new Exception("Failed to find the method...");
+
+        throw Error;
     }
-    private Assembly InitializeEngine(string[] lines) {
-        CodeDomProvider cpd = new CSharpCodeProvider();
+
+    private Assembly InitializeEngine(string[] lines, Language Lang) {
+        CodeDomProvider cpd = (Lang == Language.CSharp ? (CodeDomProvider)new CSharpCodeProvider() : new VBCodeProvider());
         var cp = new CompilerParameters();
         string sourceCode = string.Empty;
         foreach (string line in lines) {
@@ -75,6 +95,7 @@ public class HighLevelCodeProcessator {
         cp.GenerateExecutable = false;
         CompilerResults cr = cpd.CompileAssemblyFromSource(cp, sourceCode);
         return cr.CompiledAssembly;
+
     }
 
     public static string AssemblyDirectory {
@@ -85,30 +106,4 @@ public class HighLevelCodeProcessator {
             return System.IO.Path.GetDirectoryName(path);
         }
     }
-
-    /*internal string CreateExe(string Source, string MainClass) {
-        CodeDomProvider cpd = new CSharpCodeProvider();
-        var cp = new CompilerParameters();
-        cp.GenerateExecutable = true;
-        cp.GenerateInMemory = false;
-        cp.MainClass = MainClass;
-        cp.IncludeDebugInformation = true;
-        cp.OutputAssembly = MainClass;
-        string sourceCode = string.Empty;
-        System.IO.StringReader Sr = new System.IO.StringReader(Source);
-        string[] Lines = new string[0];
-        while (Sr.Peek() != -1) {
-            string[] tmp = new string[Lines.Length + 1];
-            Lines.CopyTo(tmp, 0);
-            tmp[Lines.Length] = Sr.ReadLine();
-            Lines = tmp;
-        }
-        foreach (string line in Lines) {
-            if (line.StartsWith("using ") && line.EndsWith(";"))
-                cp.ReferencedAssemblies.Add(line.Substring(6, line.Length - 7) + ".dll");
-            sourceCode += line.Replace("\t", "") + '\n';
-        }
-        CompilerResults cr = cpd.CompileAssemblyFromSource(cp, sourceCode);
-        return cr.PathToAssembly;
-    }*/
 }
