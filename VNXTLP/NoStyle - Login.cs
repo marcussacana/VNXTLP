@@ -17,35 +17,36 @@ namespace VNXTLP {
             if (Engine.Login(LoginUser.Text, LoginPass.Text, AutoLoginChkBx.Checked))
                 Close();
             else
-                MessageBox.Show(Engine.LoadTranslation(10), "VNXTLP - Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.FailedToAuth), "VNXTLP - Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void ChangeLBL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
             LoginPanel.Visible = !LoginPanel.Visible;
             RegisterPanel.Visible = !RegisterPanel.Visible;
-            ChangeLBL.Text = LoginPanel.Visible ? Engine.LoadTranslation(39) : Engine.LoadTranslation(7);
+            ChangeLBL.Text = LoginPanel.Visible ? Engine.LoadTranslation(Engine.TLID.Register) : Engine.LoadTranslation(Engine.TLID.Login);
         }
 
         private void button1_Click(object sender, EventArgs e) {
             while (true) {
                 if (RegisterConfirmPass.Text != RegisterPass.Text) {
-                    MessageBox.Show(Engine.LoadTranslation(41), "VNXTLP - Register", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(Engine.LoadTranslation(Engine.TLID.PasswordMissmatch), "VNXTLP - Register", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 if (RegisterLogin.Text.Length < 4) {
-                    MessageBox.Show(Engine.LoadTranslation(42), "VNTLP - Register", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(Engine.LoadTranslation(Engine.TLID.BadUsername), "VNTLP - Register", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 if (Engine.Register(RegisterLogin.Text, RegisterPass.Text)) {
-                    MessageBox.Show(Engine.LoadTranslation(43), "VNXTLP - Register", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(Engine.LoadTranslation(Engine.TLID.RegisterSucess), "VNXTLP - Register", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     ChangeLBL_LinkClicked(null, null);
+                    
                     //Efetuar Login Automaticamente
                     LoginUser.Text = RegisterLogin.Text;
                     LoginPass.Text = RegisterPass.Text;
                     LoginBnt_Click(null, null);
                 }
                 else {
-                    DialogResult DR = MessageBox.Show(Engine.LoadTranslation(44), "VNXTLP - Engine", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+                    DialogResult DR = MessageBox.Show(Engine.LoadTranslation(Engine.TLID.RegisterFailed), "VNXTLP - Engine", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
                     if (DR != DialogResult.Retry)
                         break;
                 }

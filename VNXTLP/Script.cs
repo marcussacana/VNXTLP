@@ -19,8 +19,9 @@ namespace VNXTLP {
                 ScriptPath = Path;
                 SetConfig("VNXTLP", "LastScript", ScriptPath);
             }
+
             try {
-                byte[] Script = File.ReadAllBytes(Path);
+                byte[] Script = Decrypt(File.ReadAllBytes(Path));
                 Editor = new Wrapper();
                 ReturnContent = Editor.Import(Script, System.IO.Path.GetExtension(Path), true, true);
 
@@ -54,6 +55,7 @@ namespace VNXTLP {
                     File.Copy(ScriptPath + "-Checks.bol", Path + "-Checks.bol", true);
                 }
             }
+
             ScriptPath = Path;
             SetConfig("VNXTLP", "LastScript", ScriptPath);
             
@@ -64,7 +66,7 @@ namespace VNXTLP {
             if (File.Exists(ScriptPath))
                 File.Delete(ScriptPath);
 
-            byte[] Output = Editor.Export(Content);
+            byte[] Output = Encrypt(Editor.Export(Content));
             File.WriteAllBytes(ScriptPath, Output);
 
             if (Temp)
@@ -132,7 +134,7 @@ namespace VNXTLP {
                     Content[i] = Content[i].Replace(Escape, "\n");
                 }
 #if DEBUG
-        } catch {
+            } catch {
                 MessageBox.Show("RestoreBreakLine - FAILED", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 #endif
@@ -175,7 +177,7 @@ namespace VNXTLP {
             uint OriLen = StringCount = Reader.ReadUInt32();
             uint RstLen = Reader.ReadUInt32();
             if (Strings.Length != OriLen) {
-                MessageBox.Show(LoadTranslation(97), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(LoadTranslation(TLID.BadScriptRemap), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             string[] Result = new string[RstLen];
@@ -210,7 +212,7 @@ namespace VNXTLP {
                 uint[] StrMap = Map.ToArray();
 
                 if (StrMap.LongLength == 0) {
-                    MessageBox.Show(LoadTranslation(98), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(LoadTranslation(TLID.FailedScriptsNotEqual), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Writer.Close();
                     File.Delete(OriPath + ".map");
                     return;
@@ -222,7 +224,7 @@ namespace VNXTLP {
             }
 
             Writer.Close();
-            MessageBox.Show(LoadTranslation(100), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(LoadTranslation(TLID.RemapGenerated), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private static void UndoRemap(ref string[] Strings) {
             if (StringCount == 0)

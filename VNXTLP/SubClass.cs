@@ -8,11 +8,10 @@ using System.Windows.Forms;
 namespace VNXTLP {
     internal static partial class Engine {
 
-
         #region FTP
         private static string ParsePass(string Hex) {
             if (Hex.Length % 2 != 0) {
-                MessageBox.Show(LoadTranslation(55), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(LoadTranslation(TLID.BadPassowordFormat), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
             byte[] Str = new byte[Hex.Length / 2];
@@ -41,7 +40,21 @@ namespace VNXTLP {
                     return string.Format("ftp://{0}/", Ip);
                 }
             }
+
+            internal static bool Avaliable {
+                get {
+                    if (GetConfigStatus("FTP", "Host") != ConfigStatus.Ok)
+                        return false;
+                    if (GetConfigStatus("FTP", "Login") != ConfigStatus.Ok)
+                        return false;
+                    if (GetConfigStatus("FTP", "Pass") != ConfigStatus.Ok)
+                        return false;
+
+                    return true;
+                }
+            }
             internal static byte[] Download(string file) {
+
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create(Server + file.Replace("\\", "/"));
                 request.Method = WebRequestMethods.Ftp.DownloadFile;
                 request.Credentials = ServerAcess;
@@ -113,6 +126,17 @@ namespace VNXTLP {
                 request.KeepAlive = false;
                 using (var resp = (FtpWebResponse)request.GetResponse()) {
                     Console.WriteLine(resp.StatusCode);
+                }
+            }
+            internal static bool MoveFile(string Path, string NewPath) {
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(Server + Path.Replace("\\", "/"));
+                request.Method = WebRequestMethods.Ftp.Rename;
+                request.RenameTo = NewPath.Replace("\\", "/");
+                request.UseBinary = true;
+                request.Credentials = ServerAcess;
+                request.KeepAlive = false;
+                using (FtpWebResponse resp = (FtpWebResponse)request.GetResponse()) {
+                    return resp.StatusCode == FtpStatusCode.CommandOK || resp.StatusCode == FtpStatusCode.FileActionOK;
                 }
             }
         }
@@ -201,6 +225,139 @@ namespace VNXTLP {
                 t.Enabled = true;
             }
         }
-        
+
+
+        internal enum Commands : sbyte {
+            GetCount, GetSel, SetSel, GetTop, SetTop, Closing, Closed, Running, Connected
+        }
+
+        internal enum TLID : int {
+            LoadingBackups = 0,
+            Close = 1,
+            BackupsLoaded = 2,
+            WelcomeBackup = 3,
+            Welcome = 4,
+            MyAccount = 5,
+            Register = 6,
+            Login = 7,
+            Password = 8,
+            Username = 9,
+            FailedToAuth = 10,
+            Next = 11,
+            Back = 12,
+            File = 13,
+            Open = 14,
+            SaveAs = 15,
+            Selection = 16,
+            SelectAll = 17,
+            UnselectAll = 18,
+            AutoSelect = 19,
+            Options = 20,
+            Theme = 21,
+            Basic = 22,
+            Modern = 23,
+            BackupFrequence = 24,
+            OnSave = 25,
+            BackOn50 = 26,
+            BackOn25 = 27,
+            BackOn10 = 28,
+            Never = 29,
+            SpellChecking = 30,
+            ValidateIndex = 31,
+            About = 32,
+            SelectAScript = 33,
+            BeforeSaveOpenAScript = 34,
+            WrongBackup = 35,
+            BackupLoaded = 36,
+            WaitBackupUpload = 37,
+            CreateNewAccount = 38,
+            ConfirmPassword = 40,
+            PasswordMissmatch = 41,
+            BadUsername = 42,
+            RegisterSucess = 43,
+            RegisterFailed = 44,
+            Confim = 45,
+            SaveAsSucess = 46,
+            InfoMask = 47,
+            ScriptComplete = 48,
+            Congratulation = 49,
+            FailedToLoadSetting = 50,
+            SearchingUpdates = 51,
+            UpdatesInstaled = 52,
+            InstallingUpdates = 53,
+            FailedOnUpdate = 54,
+            BadPassowordFormat = 55,
+            NoSuggestions = 56,
+            AddOnDictionary = 57,
+            SearchOrReplace = 58,
+            SearchFor = 59,
+            ReplaceWith = 60,
+            NoMatchFound = 61,
+            TranslationSystem = 62,
+            LEC = 63,
+            Google = 64,
+            SelectAReferenceScript = 65,
+            BadReferenceScript = 66,
+            Reference = 67,
+            ReferenceScript = 68,
+            DoesNotLooksADialogue = 69,
+            HighContrast = 70,
+            HighResolution = 71,
+            XResultsReplaced = 72,
+            AdvancedSettings = 73,
+            CaseSensetive = 74,
+            SearchFullDialogue = 75,
+            SearchNonDialogue = 76,
+            CircleSearch = 77,
+            ReplaceFullDialogue = 78,
+            SearchDirection = 79,
+            Forward = 80,
+            Behind = 81,
+            ReplaceAll = 84,
+            XResultsFoundAt = 85,
+            SearchInFolder = 86,
+            ShowSynonyms = 87,
+            FailedToDetectWordLang = 88,
+            SynonymsFor = 89,
+            LoadingSuggetionsPlzWait = 90,
+            NoSynonymsFound = 91,
+            TryManuallySearch = 92,
+            InvalidInput = 93,
+            EnableAutoLogin = 94,
+            RestarNow = 95,
+            NoScriptOpen = 96,
+            BadScriptRemap = 97,
+            FailedScriptsNotEqual = 98,
+            RemapNow = 99,
+            RemapGenerated = 100,
+            SelectMode = 101,
+            AutoDetect = 102,
+            Asian = 103,
+            Latim = 104,
+            NoChangeDialogueNow = 105,
+            Save = 106,
+            UpdatngPluigins = 107,
+            Tools = 108,
+            DialoguesCount = 109,
+            LinesCount = 110,
+            SelectFilesToCount = 111,
+            PressCtrlCToCopy = 112,
+            WithTotalOf = 113,
+            YourAuthCodeIs = 114,
+            AuthToken = 115,
+            RegisterNotAllowed = 116,
+            GenerateToken = 117,
+            NoFTPServer = 118,
+            DecryptFiles = 119,
+            OperationClear = 120,
+            ProcessingLogin = 121,
+            BackupDeleted = 122,
+            DeleteBackupFailed = 123,
+            DeleteIt = 124,
+            SyncConfirm = 125,
+            DisableSync = 126,
+            LimitSkip = 127,
+            DynamicMode = 128
+        }
     }
 }

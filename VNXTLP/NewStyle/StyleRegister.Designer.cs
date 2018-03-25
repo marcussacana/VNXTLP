@@ -87,7 +87,7 @@
             this.ZReg.Location = new System.Drawing.Point(140, 232);
             this.ZReg.Name = "ZReg";
             this.ZReg.Size = new System.Drawing.Size(277, 40);
-            this.ZReg.TabIndex = 6;
+            this.ZReg.TabIndex = 3;
             this.ZReg.Text = "Registrar";
             this.ZReg.TextAlignment = System.Drawing.StringAlignment.Center;
             this.ZReg.Click += new System.EventHandler(this.ZReg_Click);

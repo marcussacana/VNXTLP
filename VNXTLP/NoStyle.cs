@@ -17,7 +17,8 @@ namespace VNXTLP {
         internal int Index {
             get
             {
-                SkipDelay.Enabled = true;
+                if (delimitarAvançoToolStripMenuItem.Checked)
+                    SkipDelay.Enabled = true;
                 return StrList.SelectedIndex < 0 ? 0 : StrList.SelectedIndex;
             }
             set
@@ -81,11 +82,13 @@ namespace VNXTLP {
             TLBox.BootUP();
 
             //Initialize Config
-            SpellCheckEnableMenuItem.Checked = Engine.GetConfig("VNXTLP", "SpellCheck", false) == "true";
+            SpellCheckEnableMenuItem.Checked = Engine.GetConfig("VNXTLP", "SpellCheck", false).ToLower() == "true";
             TLBox.SpellCheckEnable = SpellCheckEnableMenuItem.Checked;
-            IndexTestEnableMenuItem.Checked = Engine.GetConfig("VNXTLP", "AutoJump", false) == "true";
-            altaResoluçãoToolStripMenuItem.Checked = Engine.GetConfig("VNXTLP", "HighFont", false) == "true";
-            altoContrasteToolStripMenuItem.Checked = Engine.GetConfig("VNXTLP", "BlackTheme", false) == "true";
+            IndexTestEnableMenuItem.Checked = Engine.GetConfig("VNXTLP", "AutoJump", false).ToLower() == "true";
+            altaResoluçãoToolStripMenuItem.Checked = Engine.GetConfig("VNXTLP", "HighFont", false).ToLower() == "true";
+            altoContrasteToolStripMenuItem.Checked = Engine.GetConfig("VNXTLP", "BlackTheme", false).ToLower() == "true";
+            delimitarAvançoToolStripMenuItem.Checked = Engine.GetConfig("VNXTLP", "SkipDelay", false).ToLower() == "true";
+            modoDinâmicoToolStripMenuItem.Checked = Engine.GetConfig("VNXTLP", "DynamicMode", false).ToLower() == "true";
 
 
             //get int
@@ -107,42 +110,44 @@ namespace VNXTLP {
                 sistemaDeTraduçãoToolStripMenuItem.Visible = false;
 
             //Load Translation
-            SkipBnt.Text = Engine.LoadTranslation(11);
-            RetBnt.Text = Engine.LoadTranslation(12);
-            arquivoToolStripMenuItem.Text = Engine.LoadTranslation(13);
-            OpenItem.Text = Engine.LoadTranslation(14);
-            SaveAsItem.Text = Engine.LoadTranslation(15);
-            TLAccMenuItem.Text = Engine.LoadTranslation(5);
-            seleçãoToolStripMenuItem.Text = Engine.LoadTranslation(16);
-            SelectAll.Text = Engine.LoadTranslation(17);
-            UnselectAll.Text = Engine.LoadTranslation(18);
-            AutoSelect.Text = Engine.LoadTranslation(19);
-            opçõesToolStripMenuItem.Text = Engine.LoadTranslation(20);
-            temaToolStripMenuItem.Text = Engine.LoadTranslation(21);
-            BasicThemeMenuItem.Text = Engine.LoadTranslation(22);
-            ModernThemeMenuItem.Text = Engine.LoadTranslation(23);
-            períodoDeBackupToolStripMenuItem.Text = Engine.LoadTranslation(24);
-            BackupOnSaveItem.Text = Engine.LoadTranslation(25);
-            BackupOn50Item.Text = Engine.LoadTranslation(26);
-            BackupOn25Item.Text = Engine.LoadTranslation(27);
-            BackupOn10Item.Text = Engine.LoadTranslation(28);
-            NeverBackupItem.Text = Engine.LoadTranslation(29);
-            SpellCheckEnableMenuItem.Text = Engine.LoadTranslation(30);
-            IndexTestEnableMenuItem.Text = Engine.LoadTranslation(31);
-            OpenScript.Title = Engine.LoadTranslation(33);
-            SaveScript.Title = Engine.LoadTranslation(33);
-            pesquisaToolStripMenuItem.Text = Engine.LoadTranslation(58);
-            sistemaDeTraduçãoToolStripMenuItem.Text = Engine.LoadTranslation(62);
-            lECToolStripMenuItem.Text = Engine.LoadTranslation(63);
-            googleToolStripMenuItem.Text = Engine.LoadTranslation(64);
-            RefScriptMenuItem.Text = Engine.LoadTranslation(68);
-            altoContrasteToolStripMenuItem.Text = Engine.LoadTranslation(70);
-            altaResoluçãoToolStripMenuItem.Text = Engine.LoadTranslation(71);
-            SelecaoAutomaticaMenuItem1.Text = Engine.LoadTranslation(101);
-            AutomaticoToolStripMenuItem.Text = Engine.LoadTranslation(102);
-            asiaticaToolStripMenuItem.Text = Engine.LoadTranslation(103);
-            latimToolStripMenuItem.Text = Engine.LoadTranslation(104);
-            SaveItem.Text = Engine.LoadTranslation(106);
+            SkipBnt.Text = Engine.LoadTranslation(Engine.TLID.Next);
+            RetBnt.Text = Engine.LoadTranslation(Engine.TLID.Back);
+            arquivoToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.File);
+            OpenItem.Text = Engine.LoadTranslation(Engine.TLID.Open);
+            SaveAsItem.Text = Engine.LoadTranslation(Engine.TLID.SaveAs);
+            TLAccMenuItem.Text = Engine.LoadTranslation(Engine.TLID.MyAccount);
+            seleçãoToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.Selection);
+            SelectAll.Text = Engine.LoadTranslation(Engine.TLID.SelectAll);
+            UnselectAll.Text = Engine.LoadTranslation(Engine.TLID.UnselectAll);
+            AutoSelect.Text = Engine.LoadTranslation(Engine.TLID.AutoSelect);
+            opçõesToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.Options);
+            temaToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.Theme);
+            BasicThemeMenuItem.Text = Engine.LoadTranslation(Engine.TLID.Basic);
+            ModernThemeMenuItem.Text = Engine.LoadTranslation(Engine.TLID.Modern);
+            períodoDeBackupToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.BackupFrequence);
+            BackupOnSaveItem.Text = Engine.LoadTranslation(Engine.TLID.OnSave);
+            BackupOn50Item.Text = Engine.LoadTranslation(Engine.TLID.BackOn50);
+            BackupOn25Item.Text = Engine.LoadTranslation(Engine.TLID.BackOn25);
+            BackupOn10Item.Text = Engine.LoadTranslation(Engine.TLID.BackOn10);
+            NeverBackupItem.Text = Engine.LoadTranslation(Engine.TLID.Never);
+            SpellCheckEnableMenuItem.Text = Engine.LoadTranslation(Engine.TLID.SpellChecking);
+            IndexTestEnableMenuItem.Text = Engine.LoadTranslation(Engine.TLID.ValidateIndex);
+            OpenScript.Title = Engine.LoadTranslation(Engine.TLID.SelectAScript);
+            SaveScript.Title = Engine.LoadTranslation(Engine.TLID.SelectAScript);
+            pesquisaToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.SearchOrReplace);
+            sistemaDeTraduçãoToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.TranslationSystem);
+            lECToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.LEC);
+            googleToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.Google);
+            RefScriptMenuItem.Text = Engine.LoadTranslation(Engine.TLID.ReferenceScript);
+            altoContrasteToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.HighContrast);
+            altaResoluçãoToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.HighResolution);
+            SelecaoAutomaticaMenuItem1.Text = Engine.LoadTranslation(Engine.TLID.SelectMode);
+            AutomaticoToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.AutoDetect);
+            asiaticaToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.Asian);
+            latimToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.Latim);
+            SaveItem.Text = Engine.LoadTranslation(Engine.TLID.Save);
+            delimitarAvançoToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.LimitSkip);
+            modoDinâmicoToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.DynamicMode);
 
             //Special Items
             foreach (ToolStripMenuItem item in Engine.CustomResources(ref TLBox))
@@ -170,7 +175,7 @@ namespace VNXTLP {
 
         private void SaveItem_Click(object sender, EventArgs e) {
             if (!FileOpen) {
-                MessageBox.Show(Engine.LoadTranslation(34), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.BeforeSaveOpenAScript), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             SaveScript.ShowDialog();
@@ -221,14 +226,14 @@ namespace VNXTLP {
                 StringList[i] = StrList.Items[i].ToString();
 
             //Backup if needed
-            if (!Program.OfflineMode && !NeverBackupItem.Checked) 
+            if (!Program.OfflineMode && (!(NeverBackupItem.Checked && Engine.DebugMode)))
                 (new System.Threading.Thread((str) => { Engine.Backup(StringList, true); })).Start(StringList);
             
             //Save Script
             Engine.Save(SaveScript.FileName, StringList);
             FileSaved = true;
             Engine.UpdateSelection();
-            MessageBox.Show(Engine.LoadTranslation(46), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(Engine.LoadTranslation(Engine.TLID.SaveAsSucess), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         internal void TLBox_KeyDown(object sender, KeyEventArgs e) {
@@ -239,7 +244,7 @@ namespace VNXTLP {
                 //Stop "Ding" Sound
                 e.Handled = true;
                 e.SuppressKeyPress = true;
-                
+
                 //Update translation and get next string
                 StrList.Items[SelectedIndex] = TLBox.Text;
                 Engine.FinishString(TLBox.Text);
@@ -247,6 +252,23 @@ namespace VNXTLP {
                 FileSaved = false;
                 Changes++;
                 Index = SelectedIndex + 1;
+            }
+
+            if (!SkipDelay.Enabled) {
+                if (e.KeyCode == Keys.Up) {
+                    //Stop "Ding" Sound
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+
+                    RetBnt_Click(null, null);
+                }
+                if (e.KeyCode == Keys.Down) {
+                    //Stop "Ding" Sound
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+
+                    SkipBnt_Click(null, null);
+                }
             }
         }
 
@@ -263,7 +285,10 @@ namespace VNXTLP {
                     return 25;
                 case 5:
                     return 10;
+
                 default:
+                    if (!Engine.DebugMode)
+                        goto case 1;
                     return -1;
             }
         }
@@ -279,6 +304,11 @@ namespace VNXTLP {
         }
 
         private void StrList_SelectedIndexChanged(object sender, EventArgs e) {
+            if (modoDinâmicoToolStripMenuItem.Checked && StrList.SelectedIndex >= 0) {
+                Index = StrList.SelectedIndex;
+                TLBox.Focus();
+            }
+            
             SkipBnt.Enabled = Index != StrList.Items.Count - 1;
             RetBnt.Enabled = Index > 0;
         }
@@ -323,23 +353,23 @@ namespace VNXTLP {
         private void BackupForm_BackupSelected(object sender, EventArgs e) {
             string[] BackupStrings = (string[])sender;
             if (BackupStrings.Length != StrList.Items.Count) {
-                MessageBox.Show(Engine.LoadTranslation(35), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.WrongBackup), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             for (int i = 0; i < BackupStrings.Length; i++)
                 StrList.Items[i] = BackupStrings[i];
             Index = 0; //Update Textbox
-            MessageBox.Show(Engine.LoadTranslation(36), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(Engine.LoadTranslation(Engine.TLID.BackupLoaded), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void NoStyle_FormClosing(object sender, FormClosingEventArgs e) {
             if (Engine.UploadingBackup) {
                 e.Cancel = true;
-                MessageBox.Show(Engine.LoadTranslation(37), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.WaitBackupUpload), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             if (!FileSaved) {
-                DialogResult dr = MessageBox.Show(Engine.LoadTranslation(96), "VNXTLP", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                DialogResult dr = MessageBox.Show(Engine.LoadTranslation(Engine.TLID.NoScriptOpen), "VNXTLP", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                 if (dr == DialogResult.Yes) {
                     SaveItem_Click(null, null);
                     if (!FileSaved) {
@@ -354,13 +384,28 @@ namespace VNXTLP {
             }
             if (!e.Cancel)
                 TLBox.SaveWords();
+
+            Engine.SetConfig("VNXTLP", "DynamicMode", modoDinâmicoToolStripMenuItem.Checked ? "true" : "false");
+            Engine.SetConfig("VNXTLP", "SkipDelay", delimitarAvançoToolStripMenuItem.Checked ? "true" : "false");
             Engine.SetConfig("VNXTLP", "SpellCheck", TLBox.SpellCheckEnable ? "true" : "false");
             Engine.SetConfig("VNXTLP", "AutoJump", IndexTestEnableMenuItem.Checked ? "true" : "false");
             Engine.SetConfig("VNXTLP", "BlackTheme", altoContrasteToolStripMenuItem.Checked ? "true" : "false");
             Engine.SetConfig("VNXTLP", "HighFont", altaResoluçãoToolStripMenuItem.Checked ? "true" : "false");
+            Engine.SetConfig("VNXTLP", "LastScript", Engine.ScriptPath + "|" + Index);
+
             if (GetBackupFrequence() > 0)
                 Engine.SetConfig("VNXTLP", "BackupSpeed", RadioEngine.SelectedIndex.ToString());
-            Engine.SetConfig("VNXTLP", "LastScript", Engine.ScriptPath + "|" + Index);
+
+            if (Engine.ServerStatus == Engine.Commands.Running) {
+                DateTime WaitBegin = DateTime.Now;
+                Engine.ServerStatus = Engine.Commands.Closing;
+                while (Engine.ServerStatus != Engine.Commands.Closed && (DateTime.Now - WaitBegin).Seconds > 3) {
+                    Application.DoEvents();
+                    System.Threading.Thread.Sleep(100);
+                }
+            }
+
+            Environment.Exit(0);
         }
         internal string GetStr(int i) {
             return Index == i ? TLBox.Text : StrList.Items[i].ToString();
@@ -377,7 +422,7 @@ namespace VNXTLP {
                 return;
             int i = StrList.IndexFromPoint(e.Location);
             string Reference = RefScript[i];
-            Engine.ShowToolTip(Engine.LocationCalc(e.Location, 0, (Cursor.Current.Size.Height / 2)), Reference, Engine.LoadTranslation(67));
+            Engine.ShowToolTip(Engine.LocationCalc(e.Location, 0, (Cursor.Current.Size.Height / 2)), Reference, Engine.LoadTranslation(Engine.TLID.Reference));
         }
 
         private void StrList_MouseEnter(object sender, EventArgs e) {
@@ -394,19 +439,19 @@ namespace VNXTLP {
 
         private void ZScriptRef_Click(object sender, EventArgs e) {
             if (!FileOpen) {
-                MessageBox.Show(Engine.LoadTranslation(34), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.NoScriptOpen), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             RefScriptMenuItem.Checked = !RefScriptMenuItem.Checked;
             if (RefScriptMenuItem.Checked) {
                 OpenFileDialog FD = new OpenFileDialog {
                     Filter = Engine.Filter,
-                    Title = Engine.LoadTranslation(65)
+                    Title = Engine.LoadTranslation(Engine.TLID.SelectAReferenceScript)
                 };
                 if (FD.ShowDialog() == DialogResult.OK) {
                     string[] Script = Engine.Open(FD.FileName, true);
                     if (Script.Length != StrList.Items.Count)
-                        MessageBox.Show(Engine.LoadTranslation(66), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        MessageBox.Show(Engine.LoadTranslation(Engine.TLID.BadReferenceScript), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     else {
                         RefScript = Script;
                         return;
@@ -471,7 +516,10 @@ namespace VNXTLP {
                 if (System.IO.File.Exists(File)) {
                     OpenScript.FileName = File;
                     OpenScript_FileOk(null, null);
-                    this.Index = int.Parse(Index);
+
+                    int ID = int.Parse(Index);
+                    if (ID > 0 && ID < StrList.Items.Count)
+                        this.Index = ID;
                 }
             }
             catch { }

@@ -10,7 +10,7 @@ namespace VNXTLP
         internal CheckUpdate()
         {
             InitializeComponent();
-            UpdateStatus(Engine.LoadTranslation(51));
+            UpdateStatus(Engine.LoadTranslation(Engine.TLID.ProcessingLogin));
             //FadeIn
             new System.Threading.Thread((frm) => {
                 CheckUpdate form = (CheckUpdate)frm;
@@ -20,8 +20,14 @@ namespace VNXTLP
                     SetOpacity Updater = form.UpdateOpacity;
                     if (Updater != null)
                         form.Invoke(Updater, form.Opacity + 0.02);
-                    System.Threading.Thread.Sleep(1);
+                    System.Threading.Thread.Sleep(3);
                 }
+                
+                while (Program.Connecting) {
+                    System.Threading.Thread.Sleep(500);
+                }
+
+                Invoke(new SetText(UpdateStatus), Engine.LoadTranslation(Engine.TLID.SearchingUpdates));
                 FindUpdates();
             }).Start(this);
         }
@@ -32,6 +38,7 @@ namespace VNXTLP
             return new Version(fvi.FileMajorPart, fvi.FileMinorPart, fvi.FileBuildPart);
         }
         private void FindUpdates() {
+
             if (!CheckInternet()) {
                 Program.OfflineMode = true;
                 FadeClose();
@@ -50,7 +57,7 @@ namespace VNXTLP
 
                 if (!HaveUpdate) {
                     if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "PMan.exe")) {
-                        Invoke(new SetText(UpdateStatus), Engine.LoadTranslation(107));
+                        Invoke(new SetText(UpdateStatus), Engine.LoadTranslation(Engine.TLID.UpdatngPluigins));
 
                         Process.Start(AppDomain.CurrentDomain.BaseDirectory + "PMan.exe", "update").WaitForExit();
                     }
@@ -59,14 +66,14 @@ namespace VNXTLP
                     return;
                 }
                 Program.InitializeForm = false;
-                Invoke(new SetText(UpdateStatus), Engine.LoadTranslation(53));
+                Invoke(new SetText(UpdateStatus), Engine.LoadTranslation(Engine.TLID.InstallingUpdates));
 #if DEBUG
                 bool FoundAError = VM.GetUpdate(Application.ExecutablePath);
 #else
                 bool FoundAError = (bool)VM.Call("Updater", "GetUpdate", Application.ExecutablePath);
 #endif
                 if (FoundAError)
-                    MessageBox.Show(Engine.LoadTranslation(54), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(Engine.LoadTranslation(Engine.TLID.FailedOnUpdate), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 else {
                     Process.Start(AppDomain.CurrentDomain.BaseDirectory + "Launcher.exe");
                     Application.Exit();
@@ -95,7 +102,7 @@ namespace VNXTLP
                     SetOpacity Updater = form.UpdateOpacity;
                     if (Updater != null)
                         form.Invoke(Updater, form.Opacity - 0.02);
-                    System.Threading.Thread.Sleep(1);
+                    System.Threading.Thread.Sleep(4);
                 }
                 form.Invoke(new SendClose(() => { form.Close(); }));
             }).Start(this);

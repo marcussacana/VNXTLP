@@ -12,21 +12,21 @@ namespace VNXTLP {
         internal Search() {
             InitializeComponent();
 
-            LblLocalizar.Text = Engine.LoadTranslation(59);
-            LblRep.Text = Engine.LoadTranslation(60);
-            GBAdvOpt.Text = Engine.LoadTranslation(73);
-            ckCaseSensentive.Text = Engine.LoadTranslation(74);
-            ckWithContains.Text = Engine.LoadTranslation(75);
-            ckFindNonDiag.Text = Engine.LoadTranslation(76);
-            ckCircle.Text = Engine.LoadTranslation(77);
-            ckRepFullDiag.Text = Engine.LoadTranslation(78);
-            lblDirec.Text = Engine.LoadTranslation(79);
-            radioUp.Text = Engine.LoadTranslation(80);
-            radioBack.Text = Engine.LoadTranslation(81);
-            bntLocNext.Text = Engine.LoadTranslation(82);
-            BntRepNext.Text = Engine.LoadTranslation(83);
-            BntRepAll.Text = Engine.LoadTranslation(84);
-            bntDirFind.Text = Engine.LoadTranslation(86);
+            LblLocalizar.Text = Engine.LoadTranslation(Engine.TLID.SearchFor);
+            LblRep.Text = Engine.LoadTranslation(Engine.TLID.ReplaceWith);
+            GBAdvOpt.Text = Engine.LoadTranslation(Engine.TLID.AdvancedSettings);
+            ckCaseSensentive.Text = Engine.LoadTranslation(Engine.TLID.CaseSensetive);
+            ckWithContains.Text = Engine.LoadTranslation(Engine.TLID.SearchFullDialogue);
+            ckFindNonDiag.Text = Engine.LoadTranslation(Engine.TLID.SearchNonDialogue);
+            ckCircle.Text = Engine.LoadTranslation(Engine.TLID.CircleSearch);
+            ckRepFullDiag.Text = Engine.LoadTranslation(Engine.TLID.ReplaceFullDialogue);
+            lblDirec.Text = Engine.LoadTranslation(Engine.TLID.SearchDirection);
+            radioUp.Text = Engine.LoadTranslation(Engine.TLID.Forward);
+            radioBack.Text = Engine.LoadTranslation(Engine.TLID.Behind);
+            bntLocNext.Text = Engine.LoadTranslation(Engine.TLID.SearchFor);
+            BntRepNext.Text = Engine.LoadTranslation(Engine.TLID.ReplaceWith);
+            BntRepAll.Text = Engine.LoadTranslation(Engine.TLID.ReplaceAll);
+            bntDirFind.Text = Engine.LoadTranslation(Engine.TLID.SearchInFolder);
         }
 
         private void bntLocNext_Click(object sender, EventArgs e) {
@@ -35,14 +35,14 @@ namespace VNXTLP {
 
         private void BntRepNext_Click(object sender, EventArgs e) {
             if (Engine.ReplaceNext(txtContentToFind.Text, txtContentToRep.Text, !ckWithContains.Checked, radioUp.Checked, ckCaseSensentive.Checked, ckCircle.Checked, ckFindNonDiag.Checked, ckRepFullDiag.Checked, false))
-                MessageBox.Show(string.Format(Engine.LoadTranslation(72), 1), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(string.Format(Engine.LoadTranslation(Engine.TLID.XResultsReplaced), 1), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void BntRepAll_Click(object sender, EventArgs e) {
             uint reps = 0;
             while (Engine.ReplaceNext(txtContentToFind.Text, txtContentToRep.Text, !ckWithContains.Checked, radioUp.Checked, ckCaseSensentive.Checked, ckCircle.Checked, ckFindNonDiag.Checked, ckRepFullDiag.Checked, true))
                 reps++;
-            MessageBox.Show(string.Format(Engine.LoadTranslation(72), reps), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(string.Format(Engine.LoadTranslation(Engine.TLID.XResultsReplaced), reps), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void Search_FormClosing(object sender, FormClosingEventArgs e) {
@@ -75,11 +75,11 @@ namespace VNXTLP {
                 }
             }
             if (founds == 0) {
-                MessageBox.Show(Engine.LoadTranslation(61), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.NoMatchFound), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             FoundFiles = FoundFiles.Substring(0, FoundFiles.Length - 2);
-            MessageBox.Show(string.Format(Engine.LoadTranslation(85), founds) + '\n' + FoundFiles, "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(string.Format(Engine.LoadTranslation(Engine.TLID.XResultsFoundAt), founds) + '\n' + FoundFiles, "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private string GetDir() {

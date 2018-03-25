@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace VNXTLP {
@@ -28,9 +29,10 @@ namespace VNXTLP {
                 if (!Exist(UserAccount.Name, "Backup"))
                     return new string[0];
             }
-            return FTP.TreeDir("Backup\\" + UserAccount.Name);
-        }
 
+            string[] List = FTP.TreeDir("Backup\\" + UserAccount.Name);
+            return (from x in List where x != "VNX+ - Backup Trash" select x.Replace("§", "/")).ToArray();
+        }       
 
         private static string BackupFileName { get {
                 string DIR = Path.GetDirectoryName(ScriptPath) + "\\";
@@ -40,15 +42,33 @@ namespace VNXTLP {
                     FN += "_Backup";
                 return DIR + FN + EXT; 
             } }
+
+        internal static bool HideBackup(string Backup) {
+            if (string.IsNullOrEmpty(UserAccount.Name))
+                return false;
+
+            string UserDir = @"Backup\" + UserAccount.Name + @"\";
+            string Trash = "VNX+ - Backup Trash\\";
+            Backup = Backup.Replace("/", "§");
+
+            string[] List = FTP.TreeDir(UserDir);
+            if (!List.Contains(Backup))
+                return false;
+
+            if (!List.Contains("VNX+ - Backup Trash"))
+                FTP.CreateDirectory(UserDir + Trash);            
+
+            return FTP.MoveFile(UserDir + Backup, "\\" + UserDir + Trash + Backup);
+        }
         internal static bool Backup(string[] Strings, bool IsSave = false) {
             try {
                 if (GetConfig("VNXTLP", "OfflineBackup", false) == "true" && !IsSave) {
-                    Save(BackupFileName, Strings, true);
-                    
+                    Save(BackupFileName, Strings, true);                    
                 }
 
                 if (string.IsNullOrEmpty(UserAccount.Name))
                     return false;
+
                 UploadingBackup = true;
                 string UserDir = @"Backup\" + UserAccount.Name;
 
@@ -63,7 +83,7 @@ namespace VNXTLP {
                 }
 
                 DateTime Now = DateTime.Now;
-                string BackupName = string.Format("\\{0} - {1},{2},{3} At {4}:{5}.{6} " + (IsSave ? "(Saved)" : "(Auto)"),
+                string BackupName = string.Format("\\{0} - {1}§{2}§{3} At {4}:{5}{6} " + (IsSave ? "(Saved)" : "(Auto)"),
                     Path.GetFileNameWithoutExtension(ScriptPath), Now.Day, Now.Month, Now.Year, Now.Hour, Now.Minute, Path.GetExtension(ScriptPath));
 
                 byte[] Backup = new byte[4];

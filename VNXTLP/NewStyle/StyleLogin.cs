@@ -10,11 +10,11 @@ namespace VNXTLP.NewStyle
             InitializeComponent();
 
             //Load Translations
-            LB1.Text = Engine.LoadTranslation(9);
-            LB2.Text = Engine.LoadTranslation(8);
-            ZEnt.Text = Engine.LoadTranslation(7);
-            ZRegistrar.Text = Engine.LoadTranslation(6);
-            Text = Engine.LoadTranslation(5) + " - VNXTLP";
+            LB1.Text = Engine.LoadTranslation(Engine.TLID.Username);
+            LB2.Text = Engine.LoadTranslation(Engine.TLID.Password);
+            ZEnt.Text = Engine.LoadTranslation(Engine.TLID.Login);
+            ZRegistrar.Text = Engine.LoadTranslation(Engine.TLID.Register);
+            Text = Engine.LoadTranslation(Engine.TLID.MyAccount) + " - VNXTLP";
         }
 
         private void ZRegistrar_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
@@ -31,7 +31,7 @@ namespace VNXTLP.NewStyle
             if (Engine.Login(LoginTB.Text, PassTB.Text, true))
                 Close();
             else
-                MessageBox.Show(Engine.LoadTranslation(10), "VNXTLP - Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.FailedToAuth), "VNXTLP - Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void KeyLoginPress(object sender, KeyPressEventArgs e) {

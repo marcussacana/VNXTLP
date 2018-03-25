@@ -88,7 +88,7 @@ namespace VNXTLP.NewStyle
             this.ZRegistrar.Location = new System.Drawing.Point(243, 227);
             this.ZRegistrar.Name = "ZRegistrar";
             this.ZRegistrar.Size = new System.Drawing.Size(72, 13);
-            this.ZRegistrar.TabIndex = 8;
+            this.ZRegistrar.TabIndex = 3;
             this.ZRegistrar.TabStop = true;
             this.ZRegistrar.Text = "Registrar-me";
             this.ZRegistrar.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(101)))), ((int)(((byte)(202)))));
@@ -104,7 +104,7 @@ namespace VNXTLP.NewStyle
             this.ZEnt.Location = new System.Drawing.Point(139, 178);
             this.ZEnt.Name = "ZEnt";
             this.ZEnt.Size = new System.Drawing.Size(277, 40);
-            this.ZEnt.TabIndex = 6;
+            this.ZEnt.TabIndex = 2;
             this.ZEnt.Text = "Fazer Login";
             this.ZEnt.TextAlignment = System.Drawing.StringAlignment.Center;
             this.ZEnt.Click += new System.EventHandler(this.ZEnt_Click);
@@ -144,7 +144,7 @@ namespace VNXTLP.NewStyle
             this.PassTB.Name = "PassTB";
             this.PassTB.ReadOnly = false;
             this.PassTB.Size = new System.Drawing.Size(397, 28);
-            this.PassTB.TabIndex = 2;
+            this.PassTB.TabIndex = 1;
             this.PassTB.TextAlignment = System.Windows.Forms.HorizontalAlignment.Center;
             this.PassTB.UseSystemPasswordChar = true;
             this.PassTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.KeyLoginPress);

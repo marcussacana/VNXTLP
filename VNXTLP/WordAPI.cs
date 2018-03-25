@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -9,11 +8,13 @@ namespace VNXTLP {
     internal static class WordAPI {
         const string Refresh = "\"message\" : \"missing accessToken\"";
         const string Exipred = "\"message\" : \"demo page has expired\"";
-        const string WhenStr = "when = \"";
-        const string EncryptedStr = "encrypted = \"";
+        const string WhenStr = "when = '";
+        const string EncryptedStr = "encrypted = '";
+        const string JsonReply = "\"{0}\":[";
+
         const string Domain = "https://www.wordsapi.com";
         const string API = Domain + "/mashape/words/{0}/{1}?when={2}&encrypted={3}";
-        const string JsonReply = "\"{0}\":[";
+
         private static string Encrypted = "unk";
         private static string When = "unk";
         private static void GetKeys() {
@@ -31,6 +32,7 @@ namespace VNXTLP {
         private static string[] RequestArrayByType(string ReqType, string Word, bool NoRetry = false) {
             if (When == "unk" || Encrypted == "unk")
                 GetKeys();
+
             string URL = string.Format(API, Word, ReqType, When, Encrypted);
             string Response = DownloadString(URL);
             if (Response.Contains(Refresh) || Response.Contains(Exipred) && !NoRetry) {
@@ -39,6 +41,7 @@ namespace VNXTLP {
             }
             else if (Response.Contains(Refresh))
                 return null;
+
             string Tag = string.Format(JsonReply, ReqType);
             if (!Response.Contains(Tag))
                 return null;
@@ -46,7 +49,7 @@ namespace VNXTLP {
         }
         private static string GetStringAt(int Pos, string content) {
             string result = string.Empty;
-            while (content[Pos] != '"')
+            while (content[Pos] != '"' && content[Pos] != '\'')
                 result += content[Pos++];
             return result;
         }
@@ -71,7 +74,8 @@ namespace VNXTLP {
         private static string DownloadString(string Url) {
             return Encoding.UTF8.GetString(DownloadData(Url));
         }
-        private static byte[] DownloadData(string Url) {byte[] FC = new byte[0];
+        private static byte[] DownloadData(string Url) {
+            byte[] FC = new byte[0];
             try {
                 HttpWebRequest Request = (HttpWebRequest)WebRequest.Create(Url);
                 Request.UseDefaultCredentials = true;

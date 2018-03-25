@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Windows.Forms;
 
 namespace VNXTLP {
     internal static partial class Engine {
@@ -9,6 +10,12 @@ namespace VNXTLP {
                 foreach (Account acc in Accs)
                     if (acc.Name == Username)
                         return false;
+
+                if (!ConfirmPermission(Username)) {
+                    MessageBox.Show(LoadTranslation(TLID.RegisterNotAllowed), "VNXTLP - Register", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
                 byte[] Accounts = FTP.Download("Accs.bin");
                 byte[] DW = new byte[4];
                 Array.Copy(Accounts, 0, DW, 0, DW.Length);
@@ -43,6 +50,38 @@ namespace VNXTLP {
             catch {
                 return false;
             }
+        }
+
+        private static bool ConfirmPermission(string Nick) {
+            byte[] Hash = GetHash(Nick);
+            uint Seed = (uint)(DateTime.Now.ToBinary() & 0xFFFFFFFFu);
+            for (int i = 0; i < Hash.Length; i++) {
+                Seed ^= (uint)Hash[i] << (8 * (i % 7));
+            }
+
+            uint Key = Seed & 0xFFFFF;
+
+            MessageBox.Show(LoadTranslation(TLID.YourAuthCodeIs, Key), "VNXTL - Register", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            RegKey KeyWindow = new RegKey();
+            if (KeyWindow.ShowDialog() != DialogResult.OK)
+                return false;
+
+            if (GetRefSeed(Key) != KeyWindow.Key)
+                return false;
+
+            return true;
+        }
+
+        internal static uint GetRefSeed(uint Key) {
+            uint Base = (uint)DateTime.Now.Year * (uint)DateTime.Now.DayOfYear;
+            Key *= (uint)DateTime.Now.Year;
+
+            for (int i = 0; i < 4; i++) {
+                Key ^= (Base << (i));
+            }
+
+            return Key;
         }
 
         internal static bool Login(string Username, string Password, bool Remember) {

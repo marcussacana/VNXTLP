@@ -95,6 +95,7 @@
     </Compile>
     <Compile Include="Configs.cs" />
     <Compile Include="Custom.cs" />
+    <Compile Include="Encryption.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Input.cs">
       <SubType>Form</SubType>
@@ -102,6 +103,13 @@
     <Compile Include="Input.Designer.cs">
       <DependentUpon>Input.cs</DependentUpon>
     </Compile>
+    <Compile Include="NoStyle - RegKey.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NoStyle - RegKey.Designer.cs">
+      <DependentUpon>NoStyle - RegKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pipe.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="HLCP.cs" />
     <Compile Include="NewStyle\StyleBackup.cs">
@@ -196,6 +204,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="NoStyle - Login.resx">
       <DependentUpon>NoStyle - Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NoStyle - RegKey.resx">
+      <DependentUpon>NoStyle - RegKey.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>

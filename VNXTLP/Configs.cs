@@ -24,7 +24,7 @@ namespace VNXTLP {
             }
             if (!Required)
                 return string.Empty;
-            MessageBox.Show(string.Format(LoadTranslation(50), Name));
+            MessageBox.Show(string.Format(LoadTranslation(TLID.FailedToLoadSetting), Name));
             Application.Exit();
             Application.ExitThread();
             throw new Exception("Config Error");

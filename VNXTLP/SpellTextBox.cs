@@ -395,22 +395,19 @@ internal class SpellTextBox : RichTextBox {
                         }
 
                         if (CMS.Items.Count == 0)
-                            //CMS.Items.Add(new ToolStripMenuItem("Sem Sugestões") { Enabled = false });
-                            CMS.Items.Add(new ToolStripMenuItem(Engine.LoadTranslation(56)) { Enabled = false });
+                            CMS.Items.Add(new ToolStripMenuItem(Engine.LoadTranslation(Engine.TLID.NoSuggestions)) { Enabled = false });
 
                         if (isWrong) {
                             CMS.Items.Add(new ToolStripSeparator());
                             ToolStripMenuItem NWItem = new ToolStripMenuItem();
-                            //NWItem.Text = "Adicionar ao Dicionário";
-                            NWItem.Text = Engine.LoadTranslation(57);
+                            NWItem.Text = Engine.LoadTranslation(Engine.TLID.AddOnDictionary);
                             NWItem.Name = Word;
                             NWItem.Click += AddToDic;
                             CMS.Items.Add(NWItem);
                         }
                     }
                     WordMeuItem SSM = new WordMeuItem();
-                    //SSM.Text = "Mostrar Sinônimos";
-                    SSM.Text = Engine.LoadTranslation(87);
+                    SSM.Text = Engine.LoadTranslation(Engine.TLID.ShowSynonyms);
                     SSM.Word = Word;
                     SSM.Location = e.Location;
                     SSM.Click += ShowSynounyms;
@@ -438,7 +435,7 @@ internal class SpellTextBox : RichTextBox {
         bool CanGiveSynounyms = !string.IsNullOrEmpty(TL);
 
         if (CanGiveSynounyms) {
-            string cnt = Engine.LoadTranslation(90);
+            string cnt = Engine.LoadTranslation(Engine.TLID.LoadingSuggetionsPlzWait);
             //Asyc Download Suggestions
             BallonToolTip Ballon = new BallonToolTip();
 
@@ -487,8 +484,8 @@ internal class SpellTextBox : RichTextBox {
                     string WordList = string.Empty;
                     if (Suggestions == null) {
                         Ballon = new BallonToolTip();
-                        Ballon.Title = Engine.LoadTranslation(91);
-                        Ballon.Message = Engine.LoadTranslation(92);
+                        Ballon.Title = Engine.LoadTranslation(Engine.TLID.NoSynonymsFound);
+                        Ballon.Message = Engine.LoadTranslation(Engine.TLID.TryManuallySearch);
                         Engine.UpdateToolTip(Ballon, true);
                         return;
                     }
@@ -499,17 +496,17 @@ internal class SpellTextBox : RichTextBox {
                         WordList = @"  ";
                     WordList = WordList.Substring(0, WordList.Length - 2);
                     Ballon = new BallonToolTip();
-                    Ballon.Title = string.IsNullOrWhiteSpace(WordList) ? Engine.LoadTranslation(91) : string.Format(Engine.LoadTranslation(89), MI.Word);
-                    Ballon.Message = string.IsNullOrWhiteSpace(WordList) ? Engine.LoadTranslation(92) : WordList;
+                    Ballon.Title = string.IsNullOrWhiteSpace(WordList) ? Engine.LoadTranslation(Engine.TLID.NoSynonymsFound) : string.Format(Engine.LoadTranslation(Engine.TLID.SynonymsFor), MI.Word);
+                    Ballon.Message = string.IsNullOrWhiteSpace(WordList) ? Engine.LoadTranslation(Engine.TLID.TryManuallySearch) : WordList;
                     Engine.UpdateToolTip(Ballon, true);
                 }
             };
 
-            Engine.ShowToolTip(MI.Location, cnt, string.Format(Engine.LoadTranslation(89), MI.Word), Ballon, true, this);
+            Engine.ShowToolTip(MI.Location, cnt, string.Format(Engine.LoadTranslation(Engine.TLID.SynonymsFor), MI.Word), Ballon, true, this);
             Thread.Start();
             ti.Enabled = true;
         } else {
-            if (MessageBox.Show(Engine.LoadTranslation(88), "VNXTLP", MessageBoxButtons.RetryCancel, MessageBoxIcon.Information) == DialogResult.Retry)
+            if (MessageBox.Show(Engine.LoadTranslation(Engine.TLID.FailedToDetectWordLang), "VNXTLP", MessageBoxButtons.RetryCancel, MessageBoxIcon.Information) == DialogResult.Retry)
                 ShowSynounyms(sender, e);
             return;
         }

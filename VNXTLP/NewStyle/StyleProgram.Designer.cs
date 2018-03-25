@@ -80,9 +80,12 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.ZVerificacao = new System.Windows.Forms.ToolStripMenuItem();
             this.ZValidar = new System.Windows.Forms.ToolStripMenuItem();
+            this.ZLimiteAvanco = new System.Windows.Forms.ToolStripMenuItem();
+            this.ZModoDianmico = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenScript = new System.Windows.Forms.OpenFileDialog();
             this.SaveScript = new System.Windows.Forms.SaveFileDialog();
             this.SkipDelay = new System.Windows.Forms.Timer(this.components);
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ZSKN.SuspendLayout();
             this.ZMenu.SuspendLayout();
             this.SuspendLayout();
@@ -366,7 +369,10 @@
             this.ZAltaRel,
             this.toolStripSeparator3,
             this.ZVerificacao,
-            this.ZValidar});
+            this.ZValidar,
+            this.toolStripSeparator2,
+            this.ZLimiteAvanco,
+            this.ZModoDianmico});
             this.ZOpcoes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZOpcoes.Name = "ZOpcoes";
             this.ZOpcoes.Size = new System.Drawing.Size(59, 22);
@@ -587,6 +593,24 @@
             this.ZValidar.Text = "Validar Índice";
             this.ZValidar.CheckedChanged += new System.EventHandler(this.ValChanged);
             // 
+            // ZLimiteAvanco
+            // 
+            this.ZLimiteAvanco.Checked = true;
+            this.ZLimiteAvanco.CheckOnClick = true;
+            this.ZLimiteAvanco.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ZLimiteAvanco.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.ZLimiteAvanco.Name = "ZLimiteAvanco";
+            this.ZLimiteAvanco.Size = new System.Drawing.Size(194, 22);
+            this.ZLimiteAvanco.Text = "Delimitar Avanço";
+            // 
+            // ZModoDianmico
+            // 
+            this.ZModoDianmico.CheckOnClick = true;
+            this.ZModoDianmico.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.ZModoDianmico.Name = "ZModoDianmico";
+            this.ZModoDianmico.Size = new System.Drawing.Size(194, 22);
+            this.ZModoDianmico.Text = "Modo Dinâmico";
+            // 
             // OpenScript
             // 
             this.OpenScript.FileOk += new System.ComponentModel.CancelEventHandler(this.OpenScript_FileOk);
@@ -599,6 +623,11 @@
             // 
             this.SkipDelay.Interval = 1000;
             this.SkipDelay.Tick += new System.EventHandler(this.DelayEnd);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(191, 6);
             // 
             // StyleProgram
             // 
@@ -679,5 +708,8 @@
         private System.Windows.Forms.Timer SkipDelay;
         private System.Windows.Forms.ToolStripMenuItem ZSaveItem;
         private System.Windows.Forms.ToolStripMenuItem ZBing;
+        private System.Windows.Forms.ToolStripMenuItem ZLimiteAvanco;
+        private System.Windows.Forms.ToolStripMenuItem ZModoDianmico;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

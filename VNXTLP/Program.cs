@@ -8,6 +8,7 @@ na versão antiga do RTT no decorrer do projeto.
 */
 
 using System;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace VNXTLP {
@@ -19,6 +20,7 @@ namespace VNXTLP {
         internal static bool OfflineMode = false;
         internal static bool InitializeForm = true;
         internal static bool UsingTheme = false;
+        internal static bool Connecting = false;
 
         /// <summary>
         /// The main entry point for the application.
@@ -27,7 +29,7 @@ namespace VNXTLP {
         static void Main(string[] Args) {
             bool EndUpdate = false;
             foreach (string str in Args) {
-                string Command = str.ToLower();
+                string Command = str.ToLower().Trim('-', '\\', '/');
                 switch (Command) {
                     default:
                         continue;
@@ -40,30 +42,66 @@ namespace VNXTLP {
                 }
             }
 
-            if (System.IO.File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Launcher.exe"))
+            if (System.IO.File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Launcher.exe")) {
                 try {
                     System.Threading.Thread.Sleep(500);
                     System.IO.File.Delete(AppDomain.CurrentDomain.BaseDirectory + "Launcher.exe");
-                }
-                catch { }
+                } catch { }
+            }
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             Engine.InitializeStrings();
-            if (EndUpdate)
-                MessageBox.Show(Engine.LoadTranslation(52), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            if (!OfflineMode)
+
+            if (EndUpdate) {
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.UpdatesInstaled), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            new Thread(() => {
+                try {
+                    if (Engine.GetConfig("FTP", "AutoLogin", false) == "true") {
+                        Connecting = true;
+                        Engine.Login(Engine.GetConfig("FTP", "AutoUser", true), Engine.GetConfig("FTP", "AutoPass", true), false);
+                    }
+                } catch { }
+                Connecting = false;
+            }).Start();
+
+            UsingTheme = Engine.UseTheme();
+
+            if (!OfflineMode) {
                 try {
                     (new CheckUpdate()).ShowDialog();
+                } catch { }
+                if (!Engine.FTP.Avaliable) {
+                    MessageBox.Show(Engine.LoadTranslation(Engine.TLID.NoFTPServer), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
-                catch { }
-            UsingTheme = Engine.UseTheme();
+                if (!Engine.Authenticated) {
+                    Form Login = UsingTheme ? new NewStyle.StyleLogin() : (Form)new NoStyleLogin();
+
+                    Login.ShowDialog();
+                    if (!Engine.Authenticated)
+                        return;
+                }
+            }
+
             if (UsingTheme) {
                 StyleForm = new NewStyle.StyleProgram();
+
+                new Thread(() => {
+                    Engine.InitializePipe();
+                }).Start();
+
                 Application.Run(StyleForm);
             } else {
                 NoStyleForm = new NoStyle();
+
+                new Thread(() => {
+                    Engine.InitializePipe();
+                }).Start();
+
                 Application.Run(NoStyleForm);
             }
         }

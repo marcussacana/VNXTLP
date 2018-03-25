@@ -22,7 +22,8 @@ namespace VNXTLP.NewStyle {
         internal int Index {
             get
             {
-                SkipDelay.Enabled = true;
+                if (ZLimiteAvanco.Checked)
+                    SkipDelay.Enabled = true;
                 return StrList.SelectedIndex < 0 ? 0 : StrList.SelectedIndex;
             }
             set
@@ -37,6 +38,7 @@ namespace VNXTLP.NewStyle {
         internal StyleProgram() {
             InitializeComponent();
 
+            #region SpeelTextBox
             //Create TLBox
             TLBox = new SpellTextBox();
             ZSKN.Controls.Add(TLBox);
@@ -57,6 +59,10 @@ namespace VNXTLP.NewStyle {
             TLBox.KeyDown += new KeyEventHandler(TLBox_KeyDown);
             TLBox.Anchor = ((AnchorStyles.Bottom | AnchorStyles.Left) | AnchorStyles.Right);
             ZTextBox.GotFocus += (sender, e) => { TLBox.Focus(); };
+
+            #endregion
+
+            #region RadioToolStrip
 
             //Initialize RadioToolStrip Engine 
             ToolStripMenuItem[] BackupItems = new ToolStripMenuItem[] { ZAoSalvar, Z200Dialogos, Z100Dialogos, Z50Dialogos, Z25Dialogos, Z10Dialogos, ZNunca };
@@ -81,6 +87,8 @@ namespace VNXTLP.NewStyle {
             OVE.MouseStopOver += StrList_MouseStopOver;
             OVE.Initialize();
 
+            #endregion
+
             //Set File Filter
             OpenScript.Filter = Engine.Filter;
             SaveScript.Filter = Engine.Filter;
@@ -91,11 +99,13 @@ namespace VNXTLP.NewStyle {
             TLBox.BootUP();
 
             //Initialize Config
-            ZVerificacao.Checked = Engine.GetConfig("VNXTLP", "SpellCheck", false) == "true";
+            ZVerificacao.Checked = Engine.GetConfig("VNXTLP", "SpellCheck", false).ToLower() == "true";
             TLBox.SpellCheckEnable = ZVerificacao.Checked;
-            ZValidar.Checked = Engine.GetConfig("VNXTLP", "AutoJump", false) == "true";
-            ZAltaRel.Checked = Engine.GetConfig("VNXTLP", "HighFont", false) == "true";
-            ZAltoContraste.Checked = Engine.GetConfig("VNXTLP", "BlackTheme", false) == "true";
+            ZValidar.Checked = Engine.GetConfig("VNXTLP", "AutoJump", false).ToLower() == "true";
+            ZAltaRel.Checked = Engine.GetConfig("VNXTLP", "HighFont", false).ToLower() == "true";
+            ZAltoContraste.Checked = Engine.GetConfig("VNXTLP", "BlackTheme", false).ToLower() == "true";
+            ZLimiteAvanco.Checked = Engine.GetConfig("VNXTLP", "SkipDelay", false).ToLower() == "true";
+            ZModoDianmico.Checked = Engine.GetConfig("VNXTLP", "DynamicMode", false).ToLower() == "true";
 
             //get int
             string cfg = Engine.GetConfig("VNXTLP", "BackupSpeed", false);
@@ -116,43 +126,45 @@ namespace VNXTLP.NewStyle {
                 ZTLClient.Visible = false;
 
             //Load Translation
-            ZContinue.Text = Engine.LoadTranslation(11);
-            ZReturn.Text = Engine.LoadTranslation(12);
-            ZArquivo.Text = Engine.LoadTranslation(13);
-            ZAbrir.Text = Engine.LoadTranslation(14);
-            ZSaveAsItem.Text = Engine.LoadTranslation(15);
-            ZMinhaConta.Text = Engine.LoadTranslation(5);
-            ZSelecao.Text = Engine.LoadTranslation(16);
-            ZSelecionarTodos.Text = Engine.LoadTranslation(17);
-            ZDesselecionarTodos.Text = Engine.LoadTranslation(18);
-            ZSelecaoAutomatica.Text = Engine.LoadTranslation(19);
-            ZOpcoes.Text = Engine.LoadTranslation(20);
-            ZTema.Text = Engine.LoadTranslation(21);
-            ZBasico.Text = Engine.LoadTranslation(22);
-            ZModerno.Text = Engine.LoadTranslation(23);
+            ZContinue.Text = Engine.LoadTranslation(Engine.TLID.Next);
+            ZReturn.Text = Engine.LoadTranslation(Engine.TLID.Back);
+            ZArquivo.Text = Engine.LoadTranslation(Engine.TLID.File);
+            ZAbrir.Text = Engine.LoadTranslation(Engine.TLID.Open);
+            ZSaveAsItem.Text = Engine.LoadTranslation(Engine.TLID.SaveAs);
+            ZMinhaConta.Text = Engine.LoadTranslation(Engine.TLID.MyAccount);
+            ZSelecao.Text = Engine.LoadTranslation(Engine.TLID.Selection);
+            ZSelecionarTodos.Text = Engine.LoadTranslation(Engine.TLID.SelectAll);
+            ZDesselecionarTodos.Text = Engine.LoadTranslation(Engine.TLID.UnselectAll);
+            ZSelecaoAutomatica.Text = Engine.LoadTranslation(Engine.TLID.AutoSelect);
+            ZOpcoes.Text = Engine.LoadTranslation(Engine.TLID.Options);
+            ZTema.Text = Engine.LoadTranslation(Engine.TLID.Theme);
+            ZBasico.Text = Engine.LoadTranslation(Engine.TLID.Basic);
+            ZModerno.Text = Engine.LoadTranslation(Engine.TLID.Modern);
 
-            ZPeriodo.Text = Engine.LoadTranslation(24);
-            ZAoSalvar.Text = Engine.LoadTranslation(25);
-            Z50Dialogos.Text = Engine.LoadTranslation(26);
-            Z25Dialogos.Text = Engine.LoadTranslation(27);
-            Z10Dialogos.Text = Engine.LoadTranslation(28);
-            ZNunca.Text = Engine.LoadTranslation(29);
-            ZVerificacao.Text = Engine.LoadTranslation(30);
-            ZValidar.Text = Engine.LoadTranslation(31);
-            OpenScript.Title = Engine.LoadTranslation(33);
-            SaveScript.Title = Engine.LoadTranslation(33);
-            ZPesquisa.Text = Engine.LoadTranslation(58);
-            ZTLClient.Text = Engine.LoadTranslation(62);
-            ZLEC.Text = Engine.LoadTranslation(63);
-            ZGoogle.Text = Engine.LoadTranslation(64);
-            ZScriptRef.Text = Engine.LoadTranslation(68);
-            ZAltoContraste.Text = Engine.LoadTranslation(70);
-            ZAltaRel.Text = Engine.LoadTranslation(71);
-            ZSelMode.Text = Engine.LoadTranslation(101);
-            ZAutoSelMode.Text = Engine.LoadTranslation(102);
-            ZAsianSel.Text = Engine.LoadTranslation(103);
-            ZLatimSel.Text = Engine.LoadTranslation(104);
-            ZSaveAsItem.Text = Engine.LoadTranslation(15);
+            ZPeriodo.Text = Engine.LoadTranslation(Engine.TLID.BackupFrequence);
+            ZAoSalvar.Text = Engine.LoadTranslation(Engine.TLID.OnSave);
+            Z50Dialogos.Text = Engine.LoadTranslation(Engine.TLID.BackOn50);
+            Z25Dialogos.Text = Engine.LoadTranslation(Engine.TLID.BackOn25);
+            Z10Dialogos.Text = Engine.LoadTranslation(Engine.TLID.BackOn10);
+            ZNunca.Text = Engine.LoadTranslation(Engine.TLID.Never);
+            ZVerificacao.Text = Engine.LoadTranslation(Engine.TLID.SpellChecking);
+            ZValidar.Text = Engine.LoadTranslation(Engine.TLID.ValidateIndex);
+            OpenScript.Title = Engine.LoadTranslation(Engine.TLID.SelectAScript);
+            SaveScript.Title = Engine.LoadTranslation(Engine.TLID.SelectAScript);
+            ZPesquisa.Text = Engine.LoadTranslation(Engine.TLID.SearchOrReplace);
+            ZTLClient.Text = Engine.LoadTranslation(Engine.TLID.TranslationSystem);
+            ZLEC.Text = Engine.LoadTranslation(Engine.TLID.LEC);
+            ZGoogle.Text = Engine.LoadTranslation(Engine.TLID.Google);
+            ZScriptRef.Text = Engine.LoadTranslation(Engine.TLID.ReferenceScript);
+            ZAltoContraste.Text = Engine.LoadTranslation(Engine.TLID.HighContrast);
+            ZAltaRel.Text = Engine.LoadTranslation(Engine.TLID.HighResolution);
+            ZSelMode.Text = Engine.LoadTranslation(Engine.TLID.SelectMode);
+            ZAutoSelMode.Text = Engine.LoadTranslation(Engine.TLID.AutoDetect);
+            ZAsianSel.Text = Engine.LoadTranslation(Engine.TLID.Asian);
+            ZLatimSel.Text = Engine.LoadTranslation(Engine.TLID.Latim);
+            ZSaveAsItem.Text = Engine.LoadTranslation(Engine.TLID.SaveAs);
+            ZLimiteAvanco.Text = Engine.LoadTranslation(Engine.TLID.LimitSkip);
+            ZModoDianmico.Text = Engine.LoadTranslation(Engine.TLID.DynamicMode);
 
             //Load Custom Resources from a VNXTL Build
             foreach (ToolStripMenuItem item in Engine.CustomResources(ref TLBox))
@@ -179,7 +191,7 @@ namespace VNXTLP.NewStyle {
 
         private void ZSalvar_Click(object sender, EventArgs e) {
             if (!FileOpen) {
-                MessageBox.Show(Engine.LoadTranslation(34), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.BeforeSaveOpenAScript), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             SaveScript.ShowDialog();
@@ -207,14 +219,14 @@ namespace VNXTLP.NewStyle {
                 StringList[i] = StrList.Items[i].ToString();
 
             //Backup if needed
-            if (!Program.OfflineMode && !ZNunca.Checked)
+            if (!Program.OfflineMode && (!(ZNunca.Checked && Engine.DebugMode)))
                 (new System.Threading.Thread((str) => { Engine.Backup(StringList, true); })).Start(StringList);
 
             //Save Script
             Engine.Save(SaveScript.FileName, StringList);
             FileSaved = true;
             Engine.UpdateSelection();
-            MessageBox.Show(Engine.LoadTranslation(46, System.IO.Path.GetFileName(Engine.ScriptPath)), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(Engine.LoadTranslation(Engine.TLID.SaveAsSucess, System.IO.Path.GetFileName(Engine.ScriptPath)), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private int GetBackupFrequence() {
@@ -230,7 +242,10 @@ namespace VNXTLP.NewStyle {
                     return 25;
                 case 5:
                     return 10;
+
                 default:
+                    if (!Engine.DebugMode)
+                        goto case 1;
                     return -1;
             }
         }
@@ -247,6 +262,11 @@ namespace VNXTLP.NewStyle {
         }
 
         private void StrList_SelectedIndexChanged(object sender, EventArgs e) {
+            if (ZModoDianmico.Checked && StrList.SelectedIndex >= 0) {
+                Index = StrList.SelectedIndex;
+                TLBox.Focus();
+            }
+
             ZContinue.Enabled = Index != StrList.Items.Count - 1;
             ZReturn.Enabled = Index > 0;
         }
@@ -286,6 +306,7 @@ namespace VNXTLP.NewStyle {
                 BackupForm.ShowDialog();
             }
         }
+
         internal void SetStr(int i, string Content) {
             if (Index == i)
                 TLBox.Text = Content;
@@ -297,23 +318,23 @@ namespace VNXTLP.NewStyle {
             string[] BackupStrings = (string[])sender;
             if (BackupStrings.Length != StrList.Items.Count) {
 
-                MessageBox.Show(Engine.LoadTranslation(35), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.WrongBackup), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             for (int i = 0; i < BackupStrings.Length; i++)
                 StrList.Items[i] = BackupStrings[i];
             Index = 0; //Update Textbox
-            MessageBox.Show(Engine.LoadTranslation(36), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(Engine.LoadTranslation(Engine.TLID.BackupLoaded), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void StyleFrmClosing(object sender, FormClosingEventArgs e) {
             if (Engine.UploadingBackup) {
                 e.Cancel = true;
-                MessageBox.Show(Engine.LoadTranslation(37), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.WaitBackupUpload), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             if (!FileSaved) {
-                DialogResult dr = MessageBox.Show(Engine.LoadTranslation(96), "VNXTLP", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                DialogResult dr = MessageBox.Show(Engine.LoadTranslation(Engine.TLID.NoScriptOpen), "VNXTLP", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                 if (dr == DialogResult.Yes) {
                     ZSalvar_Click(null, null);
                     if (!FileSaved) {
@@ -328,13 +349,28 @@ namespace VNXTLP.NewStyle {
             }
             if (!e.Cancel)
                 TLBox.SaveWords();
+
+            Engine.SetConfig("VNXTLP", "DynamicMode", ZModoDianmico.Checked ? "true" : "false");
+            Engine.SetConfig("VNXTLP", "SkipDelay", ZLimiteAvanco.Checked ? "true" : "false");
             Engine.SetConfig("VNXTLP", "SpellCheck", TLBox.SpellCheckEnable ? "true" : "false");
             Engine.SetConfig("VNXTLP", "AutoJump", ZValidar.Checked ? "true" : "false");
             Engine.SetConfig("VNXTLP", "BlackTheme", ZAltoContraste.Checked ? "true" : "false");
             Engine.SetConfig("VNXTLP", "HighFont", ZAltaRel.Checked ? "true" : "false");
+            Engine.SetConfig("VNXTLP", "LastScript", Engine.ScriptPath + "|" + Index);
+
             if (GetBackupFrequence() > 0)
                 Engine.SetConfig("VNXTLP", "BackupSpeed", RadioEngine.SelectedIndex.ToString());
-            Engine.SetConfig("VNXTLP", "LastScript", Engine.ScriptPath + "|" + Index);
+
+            if (Engine.ServerStatus == Engine.Commands.Running) {
+                DateTime WaitBegin = DateTime.Now;
+                Engine.ServerStatus = Engine.Commands.Closing;
+                while (Engine.ServerStatus != Engine.Commands.Closed && (DateTime.Now - WaitBegin).Seconds > 3) {
+                    Application.DoEvents();
+                    System.Threading.Thread.Sleep(100);
+                }
+            }
+
+            Environment.Exit(0);
         }
         internal void TLBox_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Enter) {
@@ -352,6 +388,23 @@ namespace VNXTLP.NewStyle {
                 FileSaved = false;
                 Changes++;
                 Index = SelectedIndex + 1;
+            }
+
+            if (!SkipDelay.Enabled) {
+                if (e.KeyCode == Keys.Up) {
+                    //Stop "Ding" Sound
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+
+                    ZReturn_Click(null, null);
+                }
+                if (e.KeyCode == Keys.Down) {
+                    //Stop "Ding" Sound
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+
+                    ZContinue_Click(null, null);
+                }
             }
         }
 
@@ -395,7 +448,7 @@ namespace VNXTLP.NewStyle {
                 return;
             int i = StrList.IndexFromPoint(e.Location);
             string Reference = RefScript[i];
-            Engine.ShowToolTip(Engine.LocationCalc(e.Location, 0, (Cursor.Current.Size.Height / 2)), Reference, Engine.LoadTranslation(67));
+            Engine.ShowToolTip(Engine.LocationCalc(e.Location, 0, (Cursor.Current.Size.Height / 2)), Reference, Engine.LoadTranslation(Engine.TLID.Reference));
         }
 
         private void StrList_MouseEnter(object sender, EventArgs e) {
@@ -412,19 +465,19 @@ namespace VNXTLP.NewStyle {
 
         private void ZScriptRef_Click(object sender, EventArgs e) {
             if (!FileOpen) {
-                MessageBox.Show(Engine.LoadTranslation(34), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.BeforeSaveOpenAScript), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             ZScriptRef.Checked = !ZScriptRef.Checked;
             if (ZScriptRef.Checked) {
                 OpenFileDialog FD = new OpenFileDialog {
                     Filter = Engine.Filter,
-                    Title = Engine.LoadTranslation(65)
+                    Title = Engine.LoadTranslation(Engine.TLID.SelectAReferenceScript)
                 };
                 if (FD.ShowDialog() == DialogResult.OK) {
                     string[] Script = Engine.Open(FD.FileName, true);
                     if (Script.Length != StrList.Items.Count)
-                        MessageBox.Show(Engine.LoadTranslation(66), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        MessageBox.Show(Engine.LoadTranslation(Engine.TLID.BadReferenceScript), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     else {
                         RefScript = Script;
                         return;
@@ -492,7 +545,10 @@ namespace VNXTLP.NewStyle {
                 if (System.IO.File.Exists(File)) {
                     OpenScript.FileName = File;
                     OpenScript_FileOk(null, null);
-                    this.Index = int.Parse(Index);
+
+                    int ID = int.Parse(Index);
+                    if (ID > 0 && ID < StrList.Items.Count)
+                        this.Index = ID;
                 }
             }
             catch { }
@@ -503,6 +559,10 @@ namespace VNXTLP.NewStyle {
             };
             frm.Shown += (a, b) => { frm.Close(); };
             frm.ShowDialog();
+
+            TopMost = true;
+            Focus();
+            TopMost = false;
         }
 
         private void Resized(object sender, EventArgs e) {

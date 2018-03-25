@@ -41,6 +41,12 @@ namespace VNXTLP {
             }
         }
 
+        internal static bool DebugMode {
+            get {
+                return GetConfig("VNXTLP", "IsMod", false).ToLower().Trim() == "vnxtlp";
+            }
+        }
+
         //SpeedUp Backup System
         private static bool BackupDirExist = false;
         private static bool UserDirExist = false;
@@ -58,5 +64,46 @@ namespace VNXTLP {
         internal static Form MainForm { get { return Program.UsingTheme ? Program.StyleForm as Form: Program.NoStyleForm as Form; } }
         internal static bool FileOpen { get { return Program.UsingTheme ? Program.StyleForm.FileOpen : Program.NoStyleForm.FileOpen; } }
 
+        internal static Commands ServerStatus = Commands.Closed;
+        
+        private static int SelIndex {
+            get {
+                int Val = -1;
+                StrList.Invoke(new MethodInvoker(() => {
+                    Val = StrList.SelectedIndex;
+                }));
+                return Val;
+            }
+            set {
+                StrList.Invoke(new MethodInvoker(() => {
+                    StrList.SelectedIndex = value;
+                }));
+            }
+        }
+
+        private static int StrCnt {
+            get {
+                int Val = -1;
+                StrList.Invoke(new MethodInvoker(() => {
+                    Val = StrList.Items.Count;
+                }));
+                return Val;
+            }
+        }
+
+        private static int TopItem {
+            get {
+                int Val = -1;
+                StrList.Invoke(new MethodInvoker(() => {
+                    Val = StrList.TopIndex;
+                }));
+                return Val;
+            }
+            set {
+                StrList.Invoke(new MethodInvoker(() => {
+                    StrList.TopIndex = value;
+                }));
+            }
+        }
     }
 }

@@ -84,7 +84,7 @@ namespace VNXTLP {
             bool Found = i > -1;
             if (!Found) {
                 if (!NoMsg)
-                    MessageBox.Show(LoadTranslation(61), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(LoadTranslation(TLID.NoMatchFound), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else {
                 i = Indexs[i];

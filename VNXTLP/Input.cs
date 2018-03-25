@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace VNXTLP {
@@ -22,7 +16,7 @@ namespace VNXTLP {
                 Value = Type?.Invoke(TbValue.Text);
                 Close();
             } catch {
-                MessageBox.Show(Engine.LoadTranslation(93), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.InvalidInput), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

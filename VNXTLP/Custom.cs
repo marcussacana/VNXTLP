@@ -4,12 +4,14 @@ using System.Windows.Forms;
 
 namespace VNXTLP {
     internal static partial class Engine {
+
+        static ToolStripMenuItem ItemHost = new ToolStripMenuItem();
         internal static ToolStripMenuItem[] CustomResources(ref SpellTextBox TB) {
-            ToolStripMenuItem Item = new ToolStripMenuItem(LoadTranslation(99));
+            ToolStripMenuItem Item = new ToolStripMenuItem(LoadTranslation(TLID.RemapNow));
             Item.Click += (a, b) => {
                 OpenFileDialog FileDialog = new OpenFileDialog() {
                     Filter = Filter,
-                    Title = LoadTranslation(99)
+                    Title = LoadTranslation(TLID.RemapNow)
                 };
                 if (DialogResult.OK != FileDialog.ShowDialog())
                     return;
@@ -19,13 +21,12 @@ namespace VNXTLP {
                 string Trg = FileDialog.FileName;
                 Genmap(Ori, Trg);
             };
-
-            ToolStripSeparator Separator = new ToolStripSeparator();
-            ToolStripMenuItem Item2 = new ToolStripMenuItem(LoadTranslation(109));
+            
+            ToolStripMenuItem Item2 = new ToolStripMenuItem(LoadTranslation(TLID.DialoguesCount));
             Item2.Click += (a, b) => {
                 OpenFileDialog FD = new OpenFileDialog() {
                     Filter = Filter,
-                    Title = LoadTranslation(111),
+                    Title = LoadTranslation(TLID.SelectFilesToCount),
                     Multiselect = true
                 };
 
@@ -36,11 +37,11 @@ namespace VNXTLP {
                 MessageBox.Show(List, "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
             };
 
-            ToolStripMenuItem Item3 = new ToolStripMenuItem(LoadTranslation(110));
+            ToolStripMenuItem Item3 = new ToolStripMenuItem(LoadTranslation(TLID.LinesCount));
             Item3.Click += (a, b) => {
                 OpenFileDialog FD = new OpenFileDialog() {
                     Filter = Filter,
-                    Title = LoadTranslation(111),
+                    Title = LoadTranslation(TLID.SelectFilesToCount),
                     Multiselect = true
                 };
 
@@ -52,11 +53,46 @@ namespace VNXTLP {
             };
 
 
-            ToolStripMenuItem ItemHost = new ToolStripMenuItem(LoadTranslation(108));
+            ToolStripMenuItem Item4 = new ToolStripMenuItem(LoadTranslation(TLID.GenerateToken));
+            Item4.Click += (a, b) => {
+                RegKey Key = new RegKey();
+                if (Key.ShowDialog() != DialogResult.OK)
+                    return;
+
+                MessageBox.Show(LoadTranslation(TLID.AuthToken) + GetRefSeed(Key.Key), "VNXTLP - DEBUG", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
+
+            ToolStripMenuItem Item5 = new ToolStripMenuItem(LoadTranslation(TLID.DecryptFiles));
+            Item5.Click += (a, b) => {
+                OpenFileDialog FD = new OpenFileDialog() {
+                    Filter = Filter,
+                    Title = LoadTranslation(TLID.DecryptFiles) + ":",
+                    Multiselect = true
+                };
+
+                if (FD.ShowDialog() != DialogResult.OK)
+                    return;
+
+                foreach (string Script in FD.FileNames) {
+                    byte[] Result = Decrypt(System.IO.File.ReadAllBytes(Script));
+                    System.IO.File.Delete(Script);
+                    System.IO.File.WriteAllBytes(Script, Result);
+                }
+
+                MessageBox.Show(LoadTranslation(TLID.OperationClear), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
+
+            ItemHost.Text = LoadTranslation(TLID.Tools);
             ItemHost.DropDownItems.Add(Item);
-            ItemHost.DropDownItems.Add(Separator);
+            ItemHost.DropDownItems.Add(new ToolStripSeparator());
             ItemHost.DropDownItems.Add(Item2);
             ItemHost.DropDownItems.Add(Item3);
+            
+            if (DebugMode) {
+                ItemHost.DropDownItems.Add(new ToolStripSeparator());
+                ItemHost.DropDownItems.Add(Item4);
+                ItemHost.DropDownItems.Add(Item5);
+            }
 
             return new ToolStripMenuItem[] {
                 ItemHost
@@ -64,7 +100,7 @@ namespace VNXTLP {
         }
 
         private static string LogLines(string[] Scripts, bool Filter) {
-            string LOG = LoadTranslation(112) + "\n==================";
+            string LOG = LoadTranslation(TLID.PressCtrlCToCopy) + "\n==================";
 
             Array.Sort(Scripts);
 
@@ -85,18 +121,9 @@ namespace VNXTLP {
                 LOG += $"\n{Lines.LongLength:D5}: {System.IO.Path.GetFileName(File)}";
             }
 
-            LOG += string.Format("\n==================\n" + LoadTranslation(113), Total);
+            LOG += string.Format("\n==================\n" + LoadTranslation(TLID.WithTotalOf), Total);
             return LOG;
         }
-
-        private static string GetStringByIndex(int i) {
-            return Program.UsingTheme ? Program.StyleForm.GetStr(i) : Program.NoStyleForm.GetStr(i);
-        }
-        private static void SetStringByIndex(int i, string Content) {
-            if (Program.UsingTheme)
-                Program.StyleForm.SetStr(i, Content);
-            else
-                Program.NoStyleForm.SetStr(i, Content);
-        }
+        
     }
 }

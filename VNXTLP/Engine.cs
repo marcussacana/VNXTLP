@@ -15,14 +15,14 @@ namespace VNXTLP {
         #region LabelInfoEngine
         internal static void UpdateInfo(int value, ref Label InfoLbl, int BackupFreq, ref int Changes, bool TestIndex) {
             if (value < 0) {
-                InfoLbl.Text = LoadTranslation(105);
+                InfoLbl.Text = LoadTranslation(TLID.NoChangeDialogueNow);
                 return;
             }
             bool CanJump = true;
             if (value == StrList.Items.Count) {
                 Changes = 0;
-                InfoLbl.Text = LoadTranslation(49) + ": " + LoadTranslation(48);
-                MessageBox.Show(LoadTranslation(48), LoadTranslation(49), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                InfoLbl.Text = LoadTranslation(TLID.Congratulation) + ": " + LoadTranslation(TLID.ScriptComplete);
+                MessageBox.Show(LoadTranslation(TLID.ScriptComplete), LoadTranslation(TLID.Congratulation), MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -37,8 +37,8 @@ namespace VNXTLP {
             if (!CanJump) {
                 if (value == StrList.Items.Count) {
                     Changes = 0;
-                    InfoLbl.Text = LoadTranslation(49) + ": " + LoadTranslation(48);
-                    MessageBox.Show(LoadTranslation(48), LoadTranslation(49), MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    InfoLbl.Text = LoadTranslation(TLID.Congratulation) + ": " + LoadTranslation(TLID.ScriptComplete);
+                    MessageBox.Show(LoadTranslation(TLID.ScriptComplete), LoadTranslation(TLID.Congratulation), MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 } else
                     return;
@@ -58,7 +58,7 @@ namespace VNXTLP {
                 //Multi-Thread Backup
                 (new System.Threading.Thread((arg) => { Backup((string[])arg); })).Start(Strs);
             }
-            InfoLbl.Text = string.Format(LoadTranslation(47), Pos, Total, Progress, Freq);
+            InfoLbl.Text = string.Format(LoadTranslation(TLID.InfoMask), Pos, Total, Progress, Freq);
         }
         #endregion
 
@@ -71,7 +71,7 @@ namespace VNXTLP {
             Arr = NewArr;
         }
         internal static bool UseTheme() {
-            return GetConfig("VNXTLP", "Theme", false) == "Modern";
+            return GetConfig("VNXTLP", "Theme", false).ToLower() == "modern";
         }
         internal static void InitializeStrings() {
             TextReader TR = (new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "Translation.ini", Encoding.UTF8));
@@ -79,12 +79,17 @@ namespace VNXTLP {
                 string Line = TR.ReadLine();
                 if (Line.StartsWith("//") || Line.StartsWith("[") || Line.StartsWith("!") || string.IsNullOrWhiteSpace(Line) || !Line.Contains("="))
                     continue;
-                Translation.Insert(int.Parse(Line.Split('=')[0]), Line.Split('=')[1].Replace("\\n", "\n"));
-            }
-            if (GetConfig("FTP", "AutoLogin", false) == "true") {
-                Login(GetConfig("FTP", "AutoUser", true), GetConfig("FTP", "AutoPass", true), false);
+                int ID = int.Parse(Line.Split('=')[0]);
+                while (ID > Translation.Count)
+                    Translation.Add(string.Format("NO TRANSLATED ENTRY ID: {0}", Translation.Count));
+                Translation.Insert(ID, Line.Split('=')[1].Replace("\\n", "\n"));
             }
         }
+
+        internal static string LoadTranslation(TLID ID, params object[] Format) {
+            return LoadTranslation((int)ID, Format);
+        }
+
         internal static string LoadTranslation(int ID, params object[] Format) {
             if (Format.Length == 0)
                 return Translation[ID];
@@ -105,8 +110,10 @@ namespace VNXTLP {
             Program.SearchOpen = false;
 
             SetConfig("VNXTLP", "Theme", EnableTheme ? "Modern" : "Basic");
-            if (DialogResult.Yes == MessageBox.Show(LoadTranslation(95), "VNXTLP", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
-                Application.Restart();
+            if (DialogResult.Yes == MessageBox.Show(LoadTranslation(TLID.RestarNow), "VNXTLP", MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+                System.Diagnostics.Process.Start(Application.ExecutablePath);
+                Environment.Exit(0);
+            }
         }
 
         private static BallonToolTip BF;
