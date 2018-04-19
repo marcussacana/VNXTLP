@@ -39,7 +39,7 @@
             this.ZContinue = new Tema.Tema_Button_1();
             this.ZReturn = new Tema.Tema_Button_1();
             this.ZTextBox = new Tema.Tema_TextBox_Small();
-            this.StrList = new System.Windows.Forms.CheckedListBox();
+            this.StrList = new Tema.Tema_CheckedListBox();
             this.ZMenu = new Tema.Tema_MenuStrip();
             this.ZArquivo = new System.Windows.Forms.ToolStripMenuItem();
             this.ZAbrir = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,12 +80,12 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.ZVerificacao = new System.Windows.Forms.ToolStripMenuItem();
             this.ZValidar = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ZLimiteAvanco = new System.Windows.Forms.ToolStripMenuItem();
             this.ZModoDianmico = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenScript = new System.Windows.Forms.OpenFileDialog();
             this.SaveScript = new System.Windows.Forms.SaveFileDialog();
             this.SkipDelay = new System.Windows.Forms.Timer(this.components);
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.ZSKN.SuspendLayout();
             this.ZMenu.SuspendLayout();
             this.SuspendLayout();
@@ -214,6 +214,8 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.StrList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
             this.StrList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.StrList.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(235)))), ((int)(((byte)(235)))));
+            this.StrList.Color2 = System.Drawing.Color.White;
             this.StrList.FormattingEnabled = true;
             this.StrList.HorizontalScrollbar = true;
             this.StrList.Location = new System.Drawing.Point(10, 58);
@@ -593,6 +595,11 @@
             this.ZValidar.Text = "Validar Índice";
             this.ZValidar.CheckedChanged += new System.EventHandler(this.ValChanged);
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(191, 6);
+            // 
             // ZLimiteAvanco
             // 
             this.ZLimiteAvanco.Checked = true;
@@ -623,11 +630,6 @@
             // 
             this.SkipDelay.Interval = 1000;
             this.SkipDelay.Tick += new System.EventHandler(this.DelayEnd);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(191, 6);
             // 
             // StyleProgram
             // 
@@ -677,7 +679,7 @@
         private System.Windows.Forms.ToolStripMenuItem ZValidar;
         private System.Windows.Forms.OpenFileDialog OpenScript;
         private System.Windows.Forms.SaveFileDialog SaveScript;
-        internal System.Windows.Forms.CheckedListBox StrList;
+        internal Tema.Tema_CheckedListBox StrList;
         private Tema.Tema_TextBox_Small ZTextBox;
         private Tema.Tema_Button_1 ZReturn;
         private Tema.Tema_Button_1 ZContinue;

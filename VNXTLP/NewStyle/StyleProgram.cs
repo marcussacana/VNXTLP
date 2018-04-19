@@ -498,10 +498,16 @@ namespace VNXTLP.NewStyle {
             if (ZAltoContraste.Checked) {
                 StrList.BackColor = System.Drawing.Color.Black;
                 StrList.ForeColor = System.Drawing.Color.Green;
+
+                StrList.Color1 = StrList.BackColor;
+                StrList.Color2 = System.Drawing.Color.FromArgb(30, 30, 30);
             }
             else {
-                StrList.BackColor = System.Drawing.SystemColors.Window;
+                StrList.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
                 StrList.ForeColor = System.Drawing.Color.Black;
+
+                StrList.Color1 = StrList.BackColor;
+                StrList.Color2 = System.Drawing.Color.White;
             }
         }
 
@@ -578,6 +584,7 @@ namespace VNXTLP.NewStyle {
                 return;
             SaveScript.FileName = Engine.ScriptPath;
             SaveScript_FileOk(null, null);
-        }        
+        }
+        
     }
 }

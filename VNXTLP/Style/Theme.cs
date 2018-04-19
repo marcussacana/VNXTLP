@@ -84,57 +84,49 @@ namespace Tema {
         }
 
         public override xColorTable CommonColorTable {
-            get
-            {
+            get {
                 return _CommonColorTable;
             }
         }
 
         public override System.Drawing.Color BackgroundTopGradient {
-            get
-            {
+            get {
                 return Color.FromArgb(246, 246, 246);
             }
         }
 
         public override System.Drawing.Color BackgroundBottomGradient {
-            get
-            {
+            get {
                 return Color.FromArgb(226, 226, 226);
             }
         }
 
         public override System.Drawing.Color DropdownTopGradient {
-            get
-            {
+            get {
                 return Color.FromArgb(246, 246, 246);
             }
         }
 
         public override System.Drawing.Color DropdownBottomGradient {
-            get
-            {
+            get {
                 return Color.FromArgb(246, 246, 246);
             }
         }
 
         public override System.Drawing.Color DroppedDownItemBackground {
-            get
-            {
+            get {
                 return Color.FromArgb(240, 240, 240);
             }
         }
 
         public override System.Drawing.Color Separator {
-            get
-            {
+            get {
                 return Color.FromArgb(190, 195, 203);
             }
         }
 
         public override System.Drawing.Color ImageMargin {
-            get
-            {
+            get {
                 return Color.FromArgb(240, 240, 240);
             }
         }
@@ -143,85 +135,73 @@ namespace Tema {
     public class DefaultCColorTable : xColorTable {
 
         public override System.Drawing.Color CheckedBackground {
-            get
-            {
+            get {
                 return Color.FromArgb(230, 230, 230);
             }
         }
 
         public override System.Drawing.Color CheckedSelectedBackground {
-            get
-            {
+            get {
                 return Color.FromArgb(230, 230, 230);
             }
         }
 
         public override System.Drawing.Color SelectionBorder {
-            get
-            {
+            get {
                 return Color.FromArgb(180, 180, 180);
             }
         }
 
         public override System.Drawing.Color SelectionTopGradient {
-            get
-            {
+            get {
                 return Color.FromArgb(240, 240, 240);
             }
         }
 
         public override System.Drawing.Color SelectionMidGradient {
-            get
-            {
+            get {
                 return Color.FromArgb(235, 235, 235);
             }
         }
 
         public override System.Drawing.Color SelectionBottomGradient {
-            get
-            {
+            get {
                 return Color.FromArgb(230, 230, 230);
             }
         }
 
         public override System.Drawing.Color PressedBackground {
-            get
-            {
+            get {
                 return Color.FromArgb(232, 232, 232);
             }
         }
 
         public override System.Drawing.Color TextColor {
-            get
-            {
+            get {
                 return Color.FromArgb(80, 80, 80);
             }
         }
 
         public override System.Drawing.Color Background {
-            get
-            {
+            get {
                 return Color.FromArgb(188, 199, 216);
             }
         }
 
         public override System.Drawing.Color DropdownBorder {
-            get
-            {
+            get {
                 return Color.LightGray;
             }
         }
 
         public override System.Drawing.Color Arrow {
-            get
-            {
+            get {
                 return Color.Black;
             }
         }
 
         public override System.Drawing.Color OverflowBackground {
-            get
-            {
+            get {
                 return Color.FromArgb(213, 220, 232);
             }
         }
@@ -242,15 +222,13 @@ namespace Tema {
 
         private ColorTable _ColorTable;
         public new ColorTable ColorTable {
-            get
-            {
+            get {
                 if (_ColorTable == null) {
                     _ColorTable = new MSColorTable();
                 }
                 return _ColorTable;
             }
-            set
-            {
+            set {
                 _ColorTable = value;
             }
         }
@@ -288,8 +266,7 @@ namespace Tema {
                     if (!e.Item.IsOnDropDown) {
                         Rectangle SelRect = new Rectangle(0, 0, e.Item.Width - 1, e.Item.Height - 1);
                         RectDrawing.DrawSelection(e.Graphics, this.ColorTable.CommonColorTable, SelRect);
-                    }
-                    else {
+                    } else {
                         Rectangle SelRect = new Rectangle(2, 0, e.Item.Width - 4, e.Item.Height - 1);
                         RectDrawing.DrawSelection(e.Graphics, this.ColorTable.CommonColorTable, SelRect);
                     }
@@ -378,16 +355,14 @@ namespace Tema {
                         e.Graphics.FillRectangle(b, rect);
                     }
 
-                }
-                else {
+                } else {
                     using (SolidBrush b = new SolidBrush(this.ColorTable.CommonColorTable.CheckedBackground)) {
                         e.Graphics.FillRectangle(b, rect);
                     }
 
                 }
 
-            }
-            else {
+            } else {
 
                 if (e.Item.Pressed) {
                     drawBorder = true;
@@ -395,8 +370,7 @@ namespace Tema {
                         e.Graphics.FillRectangle(b, rect);
                     }
 
-                }
-                else if (e.Item.Selected) {
+                } else if (e.Item.Selected) {
                     drawBorder = true;
                     RectDrawing.DrawSelection(e.Graphics, this.ColorTable.CommonColorTable, rect);
                 }
@@ -421,8 +395,7 @@ namespace Tema {
                     e.Graphics.FillRectangle(b, rect);
                 }
 
-            }
-            else if (e.Item.Selected) {
+            } else if (e.Item.Selected) {
                 drawBorder = true;
                 RectDrawing.DrawSelection(e.Graphics, this.ColorTable.CommonColorTable, rect);
             }
@@ -450,15 +423,13 @@ namespace Tema {
                     SolidBrush b = new SolidBrush(this.ColorTable.CommonColorTable.PressedBackground);
                     try {
                         e.Graphics.FillRectangle(b, borderRect);
-                    }
-                    finally {
+                    } finally {
                         flag = (b != null);
                         if (flag) {
                             ((IDisposable)b).Dispose();
                         }
                     }
-                }
-                else {
+                } else {
                     flag = item.DropDownButtonSelected;
                     if (flag) {
                         drawBorder = true;
@@ -470,8 +441,7 @@ namespace Tema {
                     SolidBrush b2 = new SolidBrush(this.ColorTable.CommonColorTable.PressedBackground);
                     try {
                         e.Graphics.FillRectangle(b2, btnRect);
-                    }
-                    finally {
+                    } finally {
                         flag = (b2 != null);
                         if (flag) {
                             ((IDisposable)b2).Dispose();
@@ -487,8 +457,7 @@ namespace Tema {
                         if (flag) {
                             e.Graphics.DrawRectangle(p, btnRect);
                         }
-                    }
-                    finally {
+                    } finally {
                         flag = (p != null);
                         if (flag) {
                             ((IDisposable)p).Dispose();
@@ -528,11 +497,9 @@ namespace Tema {
                     e.Graphics.FillRectangle(b, rect);
                 }
 
-            }
-            else if (e.Item.Selected) {
+            } else if (e.Item.Selected) {
                 RectDrawing.DrawSelection(e.Graphics, this.ColorTable.CommonColorTable, rect);
-            }
-            else {
+            } else {
                 using (SolidBrush b = new SolidBrush(this.ColorTable.CommonColorTable.OverflowBackground)) {
                     e.Graphics.FillRectangle(b, rect);
                 }
@@ -648,39 +615,33 @@ namespace Tema {
 
         private bool _Sizable = true;
         public bool Sizable {
-            get
-            {
+            get {
                 return _Sizable;
             }
-            set
-            {
+            set {
                 _Sizable = value;
             }
         }
 
         private bool _SmartBounds = false;
         public bool SmartBounds {
-            get
-            {
+            get {
                 return _SmartBounds;
             }
-            set
-            {
+            set {
                 _SmartBounds = value;
             }
         }
 
         private bool _IsParentForm;
         protected bool IsParentForm {
-            get
-            {
+            get {
                 return _IsParentForm;
             }
         }
 
         protected bool IsParentMdi {
-            get
-            {
+            get {
                 if (Parent == null) {
                     return false;
                 }
@@ -690,12 +651,10 @@ namespace Tema {
 
         private bool _ControlMode;
         protected bool ControlMode {
-            get
-            {
+            get {
                 return _ControlMode;
             }
-            set
-            {
+            set {
                 _ControlMode = value;
                 Invalidate();
             }
@@ -703,17 +662,14 @@ namespace Tema {
 
         private FormStartPosition _StartPosition;
         public FormStartPosition StartPosition {
-            get
-            {
+            get {
                 if (_IsParentForm && !_ControlMode) {
                     return ParentForm.StartPosition;
-                }
-                else {
+                } else {
                     return _StartPosition;
                 }
             }
-            set
-            {
+            set {
                 _StartPosition = value;
 
                 if (_IsParentForm && !_ControlMode) {
@@ -767,8 +723,7 @@ namespace Tema {
                     Capture = false;
                     WM_LMBUTTONDOWN = true;
                     DefWndProc(ref Messages[0]);
-                }
-                else if (_Sizable && !(Previous == 0)) {
+                } else if (_Sizable && !(Previous == 0)) {
                     Capture = false;
                     WM_LMBUTTONDOWN = true;
                     DefWndProc(ref Messages[Previous]);
@@ -1038,8 +993,7 @@ namespace Tema {
             base.OnMouseClick(e);
             if (i > 0 & i < 28) {
                 this.FindForm().WindowState = FormWindowState.Minimized;
-            }
-            else if (i > 30 & i < 75) {
+            } else if (i > 30 & i < 75) {
                 this.FindForm().Close();
             }
 
@@ -1125,8 +1079,7 @@ namespace Tema {
                         G.FillPath(xCloseGradient, GP_CloseRect);
                         G.DrawPath(new Pen(Color.FromArgb(40, 40, 40)), GP_CloseRect);
                         G.DrawString("r", new Font("Marlett", 11, FontStyle.Regular), new SolidBrush(Color.FromArgb(221, 221, 221)), CloseRect.Width - 4, CloseRect.Height - 16);
-                    }
-                    else if (i > 30 & i < 75) {
+                    } else if (i > 30 & i < 75) {
                         LinearGradientBrush xCloseGradient = new LinearGradientBrush(CloseRect, Color.FromArgb(76, 76, 76, 76), Color.FromArgb(48, 48, 48), 90);
                         G.FillPath(xCloseGradient, GP_CloseRect);
                         G.DrawPath(new Pen(Color.FromArgb(40, 40, 40)), GP_CloseRect);
@@ -1136,8 +1089,7 @@ namespace Tema {
                         G.FillPath(xMinimizeGradient, RoundRectangle.RoundRect(MinimizeRect, 1));
                         G.DrawPath(new Pen(Color.FromArgb(40, 40, 40)), GP_MinimizeRect);
                         G.DrawString("0", new Font("Marlett", 11, FontStyle.Regular), new SolidBrush(Color.FromArgb(221, 221, 221)), MinimizeRect.Width - 22, MinimizeRect.Height - 16);
-                    }
-                    else
+                    } else
                         goto case MouseState.None;
                     break;
             }
@@ -1251,12 +1203,10 @@ namespace Tema {
 
         public Image Image {
             get { return _Image; }
-            set
-            {
+            set {
                 if (value == null) {
                     _ImageSize = Size.Empty;
-                }
-                else {
+                } else {
                     _ImageSize = value.Size;
                 }
 
@@ -1271,8 +1221,7 @@ namespace Tema {
 
         public ContentAlignment ImageAlign {
             get { return _ImageAlign; }
-            set
-            {
+            set {
                 _ImageAlign = value;
                 Invalidate();
             }
@@ -1280,8 +1229,7 @@ namespace Tema {
 
         public StringAlignment TextAlignment {
             get { return this._TextAlignment; }
-            set
-            {
+            set {
                 this._TextAlignment = value;
                 this.Invalidate();
             }
@@ -1289,8 +1237,7 @@ namespace Tema {
 
         public override Color ForeColor {
             get { return this._TextColor; }
-            set
-            {
+            set {
                 this._TextColor = value;
                 this.Invalidate();
             }
@@ -1372,8 +1319,7 @@ namespace Tema {
                             Alignment = _TextAlignment,
                             LineAlignment = StringAlignment.Center
                         });
-                    }
-                    else {
+                    } else {
                         _G.DrawImage(_Image, ipt.X, ipt.Y, ImageSize.Width, ImageSize.Height);
                         _G.DrawString(Text, Font, new SolidBrush(ForeColor), R1, new StringFormat {
                             Alignment = _TextAlignment,
@@ -1390,8 +1336,7 @@ namespace Tema {
                             Alignment = _TextAlignment,
                             LineAlignment = StringAlignment.Center
                         });
-                    }
-                    else {
+                    } else {
                         _G.DrawImage(_Image, ipt.X, ipt.Y, ImageSize.Width, ImageSize.Height);
                         _G.DrawString(Text, Font, new SolidBrush(ForeColor), R1, new StringFormat {
                             Alignment = _TextAlignment,
@@ -1503,12 +1448,10 @@ namespace Tema {
 
         public Image Image {
             get { return _Image; }
-            set
-            {
+            set {
                 if (value == null) {
                     _ImageSize = Size.Empty;
-                }
-                else {
+                } else {
                     _ImageSize = value.Size;
                 }
 
@@ -1519,8 +1462,7 @@ namespace Tema {
 
         public StringAlignment TextAlignment {
             get { return this._TextAlignment; }
-            set
-            {
+            set {
                 this._TextAlignment = value;
                 this.Invalidate();
             }
@@ -1532,8 +1474,7 @@ namespace Tema {
 
         public ContentAlignment ImageAlign {
             get { return _ImageAlign; }
-            set
-            {
+            set {
                 _ImageAlign = value;
                 Invalidate();
             }
@@ -1618,8 +1559,7 @@ namespace Tema {
                             Alignment = _TextAlignment,
                             LineAlignment = StringAlignment.Center
                         });
-                    }
-                    else {
+                    } else {
                         _G.DrawImage(_Image, ipt.X, ipt.Y, ImageSize.Width, ImageSize.Height);
                         _G.DrawString(Text, Font, new SolidBrush(ForeColor), R1, new StringFormat {
                             Alignment = _TextAlignment,
@@ -1635,8 +1575,7 @@ namespace Tema {
                             Alignment = _TextAlignment,
                             LineAlignment = StringAlignment.Center
                         });
-                    }
-                    else {
+                    } else {
                         _G.DrawImage(_Image, ipt.X, ipt.Y, ImageSize.Width, ImageSize.Height);
                         _G.DrawString(Text, Font, new SolidBrush(ForeColor), R1, new StringFormat {
                             Alignment = _TextAlignment,
@@ -1668,15 +1607,13 @@ namespace Tema {
 
             if (PillStyle.Left) {
                 functionReturnValue.AddArc(new Rectangle(Rectangle.X, Rectangle.Y, Rectangle.Height, Rectangle.Height), -270, 180);
-            }
-            else {
+            } else {
                 functionReturnValue.AddLine(Rectangle.X, Rectangle.Y + Rectangle.Height, Rectangle.X, Rectangle.Y);
             }
 
             if (PillStyle.Right) {
                 functionReturnValue.AddArc(new Rectangle(Rectangle.X + Rectangle.Width - Rectangle.Height, Rectangle.Y, Rectangle.Height, Rectangle.Height), -90, 180);
-            }
-            else {
+            } else {
                 functionReturnValue.AddLine(Rectangle.X + Rectangle.Width, Rectangle.Y, Rectangle.X + Rectangle.Width, Rectangle.Y + Rectangle.Height);
             }
 
@@ -1714,8 +1651,7 @@ namespace Tema {
 
         public bool Toggled {
             get { return _Toggled; }
-            set
-            {
+            set {
                 _Toggled = value;
                 Invalidate();
 
@@ -1727,8 +1663,7 @@ namespace Tema {
 
         public _Type Type {
             get { return ToggleType; }
-            set
-            {
+            set {
                 ToggleType = value;
                 Invalidate();
             }
@@ -1766,8 +1701,7 @@ namespace Tema {
                     ToggleLocation += 10;
                     this.Invalidate(false);
                 }
-            }
-            else if ((ToggleLocation > 0)) {
+            } else if ((ToggleLocation > 0)) {
                 ToggleLocation -= 10;
                 this.Invalidate(false);
             }
@@ -1802,8 +1736,7 @@ namespace Tema {
                                     Alignment = StringAlignment.Center,
                                     LineAlignment = StringAlignment.Center
                                 });
-                            }
-                            else {
+                            } else {
                                 G.DrawString("No", new Font("Segoe UI", 7f, FontStyle.Regular), Brushes.Gray, (float)(this.Bar.X + 18), (float)this.Bar.Y, new StringFormat {
                                     Alignment = StringAlignment.Center,
                                     LineAlignment = StringAlignment.Center
@@ -1818,8 +1751,7 @@ namespace Tema {
                                     Alignment = StringAlignment.Center,
                                     LineAlignment = StringAlignment.Center
                                 });
-                            }
-                            else {
+                            } else {
                                 G.DrawString("Off", new Font("Segoe UI", 7f, FontStyle.Regular), Brushes.Gray, (float)(this.Bar.X + 18), (float)this.Bar.Y, new StringFormat {
                                     Alignment = StringAlignment.Center,
                                     LineAlignment = StringAlignment.Center
@@ -1834,8 +1766,7 @@ namespace Tema {
                                     Alignment = StringAlignment.Center,
                                     LineAlignment = StringAlignment.Center
                                 });
-                            }
-                            else {
+                            } else {
                                 G.DrawString("O", new Font("Segoe UI", 7f, FontStyle.Regular), Brushes.Gray, (float)(this.Bar.X + 18), (float)this.Bar.Y, new StringFormat {
                                     Alignment = StringAlignment.Center,
                                     LineAlignment = StringAlignment.Center
@@ -1912,16 +1843,14 @@ namespace Tema {
 
         public HorizontalAlignment TextAlignment {
             get { return ALNType; }
-            set
-            {
+            set {
                 ALNType = value;
                 Invalidate();
             }
         }
         public int MaxLength {
             get { return _maxchars; }
-            set
-            {
+            set {
                 _maxchars = value;
                 TemaTB.MaxLength = MaxLength;
                 Invalidate();
@@ -1930,8 +1859,7 @@ namespace Tema {
 
         public bool UseSystemPasswordChar {
             get { return isPasswordMasked; }
-            set
-            {
+            set {
                 TemaTB.UseSystemPasswordChar = UseSystemPasswordChar;
                 isPasswordMasked = value;
                 Invalidate();
@@ -1939,8 +1867,7 @@ namespace Tema {
         }
         public bool ReadOnly {
             get { return _ReadOnly; }
-            set
-            {
+            set {
                 _ReadOnly = value;
                 if (TemaTB != null) {
                     TemaTB.ReadOnly = value;
@@ -1949,16 +1876,14 @@ namespace Tema {
         }
         public bool Multiline {
             get { return _Multiline; }
-            set
-            {
+            set {
                 _Multiline = value;
                 if (TemaTB != null) {
                     TemaTB.Multiline = value;
 
                     if (value) {
                         TemaTB.Height = Height - 23;
-                    }
-                    else {
+                    } else {
                         Height = TemaTB.Height + 23;
                     }
                 }
@@ -1967,16 +1892,13 @@ namespace Tema {
         }
 
         public Image Image {
-            get
-            {
+            get {
                 return _Image;
             }
-            set
-            {
+            set {
                 if (value == null) {
                     _ImageSize = Size.Empty;
-                }
-                else {
+                } else {
                     _ImageSize = value.Size;
                 }
 
@@ -1984,8 +1906,7 @@ namespace Tema {
 
                 if (Image == null) {
                     TemaTB.Location = new Point(8, 10);
-                }
-                else {
+                } else {
                     TemaTB.Location = new Point(35, 11);
                 }
                 Invalidate();
@@ -1993,8 +1914,7 @@ namespace Tema {
         }
 
         protected Size ImageSize {
-            get
-            {
+            get {
                 return _ImageSize;
             }
         }
@@ -2042,8 +1962,7 @@ namespace Tema {
             base.OnResize(e);
             if (_Multiline) {
                 TemaTB.Height = Height - 23;
-            }
-            else {
+            } else {
                 Height = TemaTB.Height + 23;
             }
 
@@ -2101,8 +2020,7 @@ namespace Tema {
 
             if (Image == null) {
                 TemaTB.Width = Width - 18;
-            }
-            else {
+            } else {
                 TemaTB.Width = Width - 45;
             }
 
@@ -2147,16 +2065,14 @@ namespace Tema {
 
         public HorizontalAlignment TextAlignment {
             get { return ALNType; }
-            set
-            {
+            set {
                 ALNType = value;
                 Invalidate();
             }
         }
         public int MaxLength {
             get { return _maxchars; }
-            set
-            {
+            set {
                 _maxchars = value;
                 TemaTB.MaxLength = MaxLength;
                 Invalidate();
@@ -2165,8 +2081,7 @@ namespace Tema {
 
         public bool UseSystemPasswordChar {
             get { return isPasswordMasked; }
-            set
-            {
+            set {
                 TemaTB.UseSystemPasswordChar = UseSystemPasswordChar;
                 isPasswordMasked = value;
                 Invalidate();
@@ -2174,8 +2089,7 @@ namespace Tema {
         }
         public bool ReadOnly {
             get { return _ReadOnly; }
-            set
-            {
+            set {
                 _ReadOnly = value;
                 if (TemaTB != null) {
                     TemaTB.ReadOnly = value;
@@ -2184,16 +2098,14 @@ namespace Tema {
         }
         public bool Multiline {
             get { return _Multiline; }
-            set
-            {
+            set {
                 _Multiline = value;
                 if (TemaTB != null) {
                     TemaTB.Multiline = value;
 
                     if (value) {
                         TemaTB.Height = Height - 10;
-                    }
-                    else {
+                    } else {
                         Height = TemaTB.Height + 10;
                     }
                 }
@@ -2243,8 +2155,7 @@ namespace Tema {
             base.OnResize(e);
             if (_Multiline) {
                 TemaTB.Height = Height - 10;
-            }
-            else {
+            } else {
                 Height = TemaTB.Height + 10;
             }
 
@@ -2336,16 +2247,14 @@ namespace Tema {
 
         public override string Text {
             get { return TemaRTB.Text; }
-            set
-            {
+            set {
                 TemaRTB.Text = value;
                 Invalidate();
             }
         }
         public bool ReadOnly {
             get { return _ReadOnly; }
-            set
-            {
+            set {
                 _ReadOnly = value;
                 if (TemaRTB != null) {
                     TemaRTB.ReadOnly = value;
@@ -2354,8 +2263,7 @@ namespace Tema {
         }
         public bool WordWrap {
             get { return _WordWrap; }
-            set
-            {
+            set {
                 _WordWrap = value;
                 if (TemaRTB != null) {
                     TemaRTB.WordWrap = value;
@@ -2364,8 +2272,7 @@ namespace Tema {
         }
         public bool AutoWordSelection {
             get { return _AutoWordSelection; }
-            set
-            {
+            set {
                 _AutoWordSelection = value;
                 if (TemaRTB != null) {
                     TemaRTB.AutoWordSelection = value;
@@ -2490,12 +2397,10 @@ namespace Tema {
         #region  Properties
 
         public long Value {
-            get
-            {
+            get {
                 return _Value;
             }
-            set
-            {
+            set {
                 if (value <= _Maximum & value >= _Minimum) {
                     _Value = value;
                 }
@@ -2504,12 +2409,10 @@ namespace Tema {
         }
 
         public long Minimum {
-            get
-            {
+            get {
                 return _Minimum;
             }
-            set
-            {
+            set {
                 if (value < _Maximum) {
                     _Minimum = value;
                 }
@@ -2521,12 +2424,10 @@ namespace Tema {
         }
 
         public long Maximum {
-            get
-            {
+            get {
                 return _Maximum;
             }
-            set
-            {
+            set {
                 if (value > _Minimum) {
                     _Maximum = value;
                 }
@@ -2538,12 +2439,10 @@ namespace Tema {
         }
 
         public _TextAlignment TextAlignment {
-            get
-            {
+            get {
                 return MyStringAlignment;
             }
-            set
-            {
+            set {
                 MyStringAlignment = value;
                 Invalidate();
             }
@@ -2571,8 +2470,7 @@ namespace Tema {
 
             if (e.X < Width - 24) {
                 Cursor = Cursors.IBeam;
-            }
-            else {
+            } else {
                 Cursor = Cursors.Default;
             }
         }
@@ -2584,14 +2482,12 @@ namespace Tema {
                     if ((Value + 1) <= _Maximum) {
                         _Value++;
                     }
-                }
-                else {
+                } else {
                     if ((Value - 1) >= _Minimum) {
                         _Value--;
                     }
                 }
-            }
-            else {
+            } else {
                 KeyboardNum = !KeyboardNum;
                 Focus();
             }
@@ -2607,8 +2503,7 @@ namespace Tema {
                 if (_Value > _Maximum) {
                     _Value = _Maximum;
                 }
-            }
-            catch (Exception) {
+            } catch (Exception) {
             }
         }
 
@@ -2632,8 +2527,7 @@ namespace Tema {
                     _Value++;
                 }
                 Invalidate();
-            }
-            else {
+            } else {
                 if ((Value - 1) >= _Minimum) {
                     _Value--;
                 }
@@ -2727,8 +2621,7 @@ namespace Tema {
 
         public override Color ForeColor {
             get { return this._TextColor; }
-            set
-            {
+            set {
                 this._TextColor = value;
                 this.Invalidate();
             }
@@ -2736,8 +2629,7 @@ namespace Tema {
 
         public Color BubbleColor {
             get { return this._BubbleColor; }
-            set
-            {
+            set {
                 this._BubbleColor = value;
                 this.Invalidate();
             }
@@ -2745,8 +2637,7 @@ namespace Tema {
 
         public bool DrawBubbleArrow {
             get { return _DrawBubbleArrow; }
-            set
-            {
+            set {
                 _DrawBubbleArrow = value;
                 Invalidate();
             }
@@ -2825,8 +2716,7 @@ namespace Tema {
 
         public override Color ForeColor {
             get { return this._TextColor; }
-            set
-            {
+            set {
                 this._TextColor = value;
                 this.Invalidate();
             }
@@ -2834,8 +2724,7 @@ namespace Tema {
 
         public Color BubbleColor {
             get { return this._BubbleColor; }
-            set
-            {
+            set {
                 this._BubbleColor = value;
                 this.Invalidate();
             }
@@ -2843,8 +2732,7 @@ namespace Tema {
 
         public bool DrawBubbleArrow {
             get { return _DrawBubbleArrow; }
-            set
-            {
+            set {
                 _DrawBubbleArrow = value;
                 Invalidate();
             }
@@ -3036,8 +2924,7 @@ namespace Tema {
 
         public bool Checked {
             get { return _Checked; }
-            set
-            {
+            set {
                 _Checked = value;
                 if (CheckedChanged != null) {
                     CheckedChanged(this);
@@ -3139,8 +3026,7 @@ namespace Tema {
 
         public bool Checked {
             get { return _Checked; }
-            set
-            {
+            set {
                 _Checked = value;
                 InvalidateControls();
                 if (CheckedChanged != null) {
@@ -3232,15 +3118,13 @@ namespace Tema {
         #region Properties
 
         public int Value {
-            get
-            {
+            get {
                 if (this._Value == 0) {
                     return 0;
                 }
                 return this._Value;
             }
-            set
-            {
+            set {
                 if (value > this._Maximum) {
                     value = this._Maximum;
                 }
@@ -3250,12 +3134,10 @@ namespace Tema {
         }
 
         public int Maximum {
-            get
-            {
+            get {
                 return this._Maximum;
             }
-            set
-            {
+            set {
                 if (value < this._Value) {
                     this._Value = value;
                 }
@@ -3325,6 +3207,28 @@ namespace Tema {
     }
 
     #endregion
+    #region CheckListBox
+    class Tema_CheckedListBox : CheckedListBox {
+        private Color _Color1 = Color.FromArgb(235, 235, 235);
+        private Color _Color2 = Color.White;
+        public Color Color1 {
+            get { return _Color1; }
+            set { _Color1 = value; Invalidate(); }
+        }
+        public Color Color2 {
+            get { return _Color2; }
+            set { _Color2 = value; Invalidate(); }
+        }
+        protected override void OnDrawItem(DrawItemEventArgs e) {
+            if (e.Index >= 0) {
+                var Rectangle = new Rectangle(e.Bounds.Location, e.Bounds.Size);
+                e = new DrawItemEventArgs(e.Graphics, e.Font, Rectangle, e.Index, e.State, ForeColor, (e.Index % 2 == 0) ? _Color1 : _Color2);
+                base.OnDrawItem(e);
+            }
+        }
+    }    
+    #endregion
+
     #region ComboBox
 
     class Tema_ComboBox : ComboBox {
