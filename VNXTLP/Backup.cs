@@ -30,24 +30,25 @@ namespace VNXTLP {
                     return new string[0];
             }
 
-            string[] List = FTP.TreeDir("Backup\\" + UserAccount.Name);
+            string[] List = FTP.TreeDir(UserDir);
             return (from x in List where x != "VNX+ - Backup Trash" select x.Replace("§", "/")).ToArray();
         }       
 
-        private static string BackupFileName { get {
+        private static string BackupFileName {
+            get {
                 string DIR = Path.GetDirectoryName(ScriptPath) + "\\";
                 string FN = Path.GetFileNameWithoutExtension(ScriptPath);
                 string EXT =  Path.GetExtension(ScriptPath);
                 if (!FN.ToLower().EndsWith("_backup"))
                     FN += "_Backup";
                 return DIR + FN + EXT; 
-            } }
+            }
+        }
 
         internal static bool HideBackup(string Backup) {
             if (string.IsNullOrEmpty(UserAccount.Name))
                 return false;
-
-            string UserDir = @"Backup\" + UserAccount.Name + @"\";
+            
             string Trash = "VNX+ - Backup Trash\\";
             Backup = Backup.Replace("/", "§");
 
@@ -83,8 +84,8 @@ namespace VNXTLP {
                 }
 
                 DateTime Now = DateTime.Now;
-                string BackupName = string.Format("\\{0} - {1}§{2}§{3} At {4}:{5}{6} " + (IsSave ? "(Saved)" : "(Auto)"),
-                    Path.GetFileNameWithoutExtension(ScriptPath), Now.Day, Now.Month, Now.Year, Now.Hour, Now.Minute, Path.GetExtension(ScriptPath));
+                string BackupName = string.Format("\\{0} - {1}§{2}§{3} At {4}:{5}{6} ({7})",
+                    Path.GetFileNameWithoutExtension(ScriptPath), Now.Day, Now.Month, Now.Year, Now.Hour, Now.Minute, Path.GetExtension(ScriptPath), (IsSave ? "Saved" : "Auto"));
 
                 byte[] Backup = new byte[4];
                 BitConverter.GetBytes((uint)Strings.Length).CopyTo(Backup, 0);

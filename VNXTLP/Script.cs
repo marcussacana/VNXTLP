@@ -9,7 +9,7 @@ namespace VNXTLP {
         internal static string[] Open(string Path, bool TempMode = false) {
             string[] ReturnContent;
             if (TempMode) {
-                Editor = BackupEditor;
+                BackupEditor = Editor;
                 RemapBackup = StrMap;
                 StringCountBackup = StringCount;
                 PrefixBackup = Prefix;

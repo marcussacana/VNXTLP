@@ -9,15 +9,21 @@ namespace VNXTLP {
         internal NoStyleBackup() {
             InitializeComponent();
 
-            Text = Engine.LoadTranslation(Engine.TLID.LoadingBackups);
+            FormClosing += (a, b) => { Engine.AdminBackup = null; };
+
             abrirToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.Open);
-            deletarToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.DeleteIt); 
+            deletarToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.DeleteIt);
+            explorarUsuáriosToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.BrowseUser);
+
+            if (!Engine.DebugMode)
+                ItemMenu.Items.Remove(explorarUsuáriosToolStripMenuItem);
 
             Initialize();
         }
 
         private delegate void ShowBackups();
         private void Initialize() {
+            Text = Engine.LoadTranslation(Engine.TLID.LoadingBackups);
             if (Files == null) {
                 new System.Threading.Thread(() => {
                     Files = Engine.ListBackups();
@@ -46,7 +52,14 @@ namespace VNXTLP {
             Pointer = BackupList.PointToClient(Pointer);
             MenuStripID = BackupList.IndexFromPoint(Pointer);
 
-            e.Cancel = MenuStripID < 0;
+
+            bool ItemSelected = MenuStripID >= 0;
+
+            abrirToolStripMenuItem.Visible = ItemSelected;
+            deletarToolStripMenuItem.Visible = ItemSelected;
+
+            if (!ItemSelected && !Engine.DebugMode)
+                e.Cancel = true;
         }
 
         private void abrirToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -65,6 +78,15 @@ namespace VNXTLP {
                 Initialize();
             } else {
                 MessageBox.Show(Engine.LoadTranslation(Engine.TLID.DeleteBackupFailed), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void explorarUsuáriosToolStripMenuItem_Click(object sender, EventArgs e) {
+            var Form = new BackupViewer();
+            if (Form.ShowDialog() == DialogResult.OK) {
+                Files = null;
+                BackupList.Items.Clear();
+                Initialize();
             }
         }
     }

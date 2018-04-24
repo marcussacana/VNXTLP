@@ -496,11 +496,11 @@ namespace VNXTLP.NewStyle {
 
         private void ZAltoContraste_CheckedChanged(object sender, EventArgs e) {
             if (ZAltoContraste.Checked) {
-                StrList.BackColor = System.Drawing.Color.Black;
-                StrList.ForeColor = System.Drawing.Color.Green;
+                StrList.BackColor = Engine.LoadColor("ContrastBackColor", System.Drawing.Color.Black);
+                StrList.ForeColor = Engine.LoadColor("ContrastForeColor", System.Drawing.Color.Green);
 
                 StrList.Color1 = StrList.BackColor;
-                StrList.Color2 = System.Drawing.Color.FromArgb(30, 30, 30);
+                StrList.Color2 = Engine.LoadColor("ContrastAlternateColor", System.Drawing.Color.FromArgb(30, 30, 30));
             }
             else {
                 StrList.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);

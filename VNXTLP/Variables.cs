@@ -31,7 +31,10 @@ namespace VNXTLP {
         internal static string UserDir {
             get
             {
-                return "Backup\\" + UserAccount.Name + "\\";
+                const string Mask = "Backup\\{0}\\";
+                if (DebugMode && !string.IsNullOrWhiteSpace(AdminBackup))
+                    return string.Format(Mask, AdminBackup);
+                return string.Format(Mask, UserAccount.Name);
             }
         }
         internal static bool Authenticated {
@@ -54,6 +57,7 @@ namespace VNXTLP {
 
         private static Account UserAccount = new Account() { Name = "Anon" };
         internal static string ScriptPath;
+        internal static string AdminBackup;
         private static List<string> Translation = new List<string>();
 
         //Variable Redirections

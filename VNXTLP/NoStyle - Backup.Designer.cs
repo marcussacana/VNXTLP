@@ -28,6 +28,7 @@
             this.ItemMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.abrirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deletarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.explorarUsuáriosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ItemMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,24 +50,32 @@
             // 
             this.ItemMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.abrirToolStripMenuItem,
-            this.deletarToolStripMenuItem});
+            this.deletarToolStripMenuItem,
+            this.explorarUsuáriosToolStripMenuItem});
             this.ItemMenu.Name = "ItemMenu";
-            this.ItemMenu.Size = new System.Drawing.Size(112, 48);
+            this.ItemMenu.Size = new System.Drawing.Size(165, 92);
             this.ItemMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ItemMenu_Opening);
             // 
             // abrirToolStripMenuItem
             // 
             this.abrirToolStripMenuItem.Name = "abrirToolStripMenuItem";
-            this.abrirToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.abrirToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.abrirToolStripMenuItem.Text = "Abrir";
             this.abrirToolStripMenuItem.Click += new System.EventHandler(this.abrirToolStripMenuItem_Click);
             // 
             // deletarToolStripMenuItem
             // 
             this.deletarToolStripMenuItem.Name = "deletarToolStripMenuItem";
-            this.deletarToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
+            this.deletarToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.deletarToolStripMenuItem.Text = "Deletar";
             this.deletarToolStripMenuItem.Click += new System.EventHandler(this.deletarToolStripMenuItem_Click);
+            // 
+            // explorarUsuáriosToolStripMenuItem
+            // 
+            this.explorarUsuáriosToolStripMenuItem.Name = "explorarUsuáriosToolStripMenuItem";
+            this.explorarUsuáriosToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.explorarUsuáriosToolStripMenuItem.Text = "Explorar Usuários";
+            this.explorarUsuáriosToolStripMenuItem.Click += new System.EventHandler(this.explorarUsuáriosToolStripMenuItem_Click);
             // 
             // NoStyleBackup
             // 
@@ -89,5 +98,6 @@
         private System.Windows.Forms.ContextMenuStrip ItemMenu;
         private System.Windows.Forms.ToolStripMenuItem abrirToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deletarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem explorarUsuáriosToolStripMenuItem;
     }
 }

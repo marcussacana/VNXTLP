@@ -37,6 +37,7 @@
             this.ZItemMenu = new Tema.Tema_ContextMenuStrip();
             this.ZAbrir = new System.Windows.Forms.ToolStripMenuItem();
             this.ZDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.ZExplorar = new System.Windows.Forms.ToolStripMenuItem();
             this.ZS1 = new Tema.Tema_Separator();
             this.ZSKN.SuspendLayout();
             this.ZItemMenu.SuspendLayout();
@@ -111,19 +112,20 @@
             // 
             this.ZItemMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ZAbrir,
-            this.ZDelete});
+            this.ZDelete,
+            this.ZExplorar});
             this.ZItemMenu.Name = "ZItemMenu";
             controlRenderer1.ColorTable = msColorTable1;
             controlRenderer1.RoundedEdges = true;
             this.ZItemMenu.Renderer = controlRenderer1;
-            this.ZItemMenu.Size = new System.Drawing.Size(112, 48);
+            this.ZItemMenu.Size = new System.Drawing.Size(160, 92);
             this.ZItemMenu.Opening += new System.ComponentModel.CancelEventHandler(this.ZOpenMenu);
             // 
             // ZAbrir
             // 
             this.ZAbrir.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZAbrir.Name = "ZAbrir";
-            this.ZAbrir.Size = new System.Drawing.Size(111, 22);
+            this.ZAbrir.Size = new System.Drawing.Size(159, 22);
             this.ZAbrir.Text = "Abrir";
             this.ZAbrir.Click += new System.EventHandler(this.ZAbrir_Click);
             // 
@@ -131,9 +133,17 @@
             // 
             this.ZDelete.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZDelete.Name = "ZDelete";
-            this.ZDelete.Size = new System.Drawing.Size(111, 22);
+            this.ZDelete.Size = new System.Drawing.Size(159, 22);
             this.ZDelete.Text = "Deletar";
             this.ZDelete.Click += new System.EventHandler(this.ZDelete_Click);
+            // 
+            // ZExplorar
+            // 
+            this.ZExplorar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.ZExplorar.Name = "ZExplorar";
+            this.ZExplorar.Size = new System.Drawing.Size(159, 22);
+            this.ZExplorar.Text = "Explorar Usuário";
+            this.ZExplorar.Click += new System.EventHandler(this.ZExplorar_Click);
             // 
             // ZS1
             // 
@@ -173,5 +183,6 @@
         private Tema.Tema_ContextMenuStrip ZItemMenu;
         private System.Windows.Forms.ToolStripMenuItem ZAbrir;
         private System.Windows.Forms.ToolStripMenuItem ZDelete;
+        private System.Windows.Forms.ToolStripMenuItem ZExplorar;
     }
 }

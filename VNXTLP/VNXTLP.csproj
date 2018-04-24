@@ -87,6 +87,12 @@
     <Compile Include="Account.cs" />
     <Compile Include="Automation.cs" />
     <Compile Include="Backup.cs" />
+    <Compile Include="BackupViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BackupViewer.Designer.cs">
+      <DependentUpon>BackupViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="BallonToolTip.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -181,6 +187,9 @@
     <Compile Include="TextRecognition.cs" />
     <Compile Include="Variables.cs" />
     <Compile Include="WordAPI.cs" />
+    <EmbeddedResource Include="BackupViewer.resx">
+      <DependentUpon>BackupViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BallonToolTip.resx">
       <DependentUpon>BallonToolTip.cs</DependentUpon>
     </EmbeddedResource>

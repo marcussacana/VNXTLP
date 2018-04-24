@@ -13,17 +13,24 @@ namespace VNXTLP.NewStyle
         internal StyleBackup()
         {
             InitializeComponent();
+
+            FormClosing += (a, b) => { Engine.AdminBackup = null; };
+
             //Load Translation
-            Text = Engine.LoadTranslation(Engine.TLID.LoadingBackups);
             ZOK.Text = Engine.LoadTranslation(Engine.TLID.Close);
             ZAbrir.Text = Engine.LoadTranslation(Engine.TLID.Open);
             ZDelete.Text = Engine.LoadTranslation(Engine.TLID.DeleteIt);
+            ZExplorar.Text = Engine.LoadTranslation(Engine.TLID.BrowseUser);
+
+            if (!Engine.DebugMode)
+                ZItemMenu.Items.Remove(ZExplorar);
 
             Initialize();
         }
         private delegate void ShowBackups();
 
         private void Initialize() {
+            Text = Engine.LoadTranslation(Engine.TLID.LoadingBackups);
             if (Files == null) {
                 new System.Threading.Thread(() => {
                     try {
@@ -63,7 +70,13 @@ namespace VNXTLP.NewStyle
             Pointer = BackupList.PointToClient(Pointer);
             MenuStripID = BackupList.IndexFromPoint(Pointer);
 
-            e.Cancel = MenuStripID < 0;
+            bool ItemSelected = MenuStripID >= 0;
+
+            ZAbrir.Visible = ItemSelected;
+            ZDelete.Visible = ItemSelected;
+
+            if (!ItemSelected && !Engine.DebugMode)
+                e.Cancel = true;
         }
 
         private void ZAbrir_Click(object sender, EventArgs e) {
@@ -82,6 +95,15 @@ namespace VNXTLP.NewStyle
                 Initialize();
             } else {
                 MessageBox.Show(Engine.LoadTranslation(Engine.TLID.DeleteBackupFailed), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ZExplorar_Click(object sender, EventArgs e) {
+            var Form = new BackupViewer();
+            if (Form.ShowDialog() == DialogResult.OK) {
+                Files = null;
+                BackupList.Items.Clear();
+                Initialize();
             }
         }
     }

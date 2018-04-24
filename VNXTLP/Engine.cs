@@ -5,6 +5,7 @@ using System.Text;
 using VNXTLP.NewStyle;
 using System.Drawing;
 using PopupControl;
+using System.Linq;
 //Suported Engines: KiriKiri, Eushully, SteinsGate, ExHIBIT, KrKrFate, Umineko
 //My Project Extesions: 
 //VNX: Kamidori, Kami no Rhapsody (KNR), Sankai Ou no Yubiwa (Sankai)
@@ -168,6 +169,66 @@ namespace VNXTLP {
             };
             TTI.Interval = 5000 + (BF.Message.Length * 50);
         }
+
+        internal static Color LoadColor(string Name, Color Default) {
+            if (GetConfigStatus("VNXTLP", Name) != ConfigStatus.Ok) {
+                SetConfig("VNXTLP", Name, Default.IsNamedColor ? Default.Name : $"#{Default.A:X2}{Default.R:X2}{Default.G:X2}{Default.B:X2}");
+                return Default;
+            }
+            string ColorName = GetConfig("VNXTLP", Name, true);
+
+            try {
+                if (ColorName.StartsWith("#")) {
+                    string Hex = ColorName.Trim('#', ' ');
+                    int A, R, G, B;
+                    switch (Hex.Length) {
+                        case 3:
+                            R = Convert.ToInt32(Hex[0].ToString() + Hex[0].ToString(), 16);
+                            G = Convert.ToInt32(Hex[1].ToString() + Hex[1].ToString(), 16);
+                            B = Convert.ToInt32(Hex[2].ToString() + Hex[2].ToString(), 16);
+                            return Color.FromArgb(0xFF, R, G, B);
+                        case 4:
+                            A = Convert.ToInt32(Hex[0].ToString() + Hex[0].ToString(), 16);
+                            R = Convert.ToInt32(Hex[1].ToString() + Hex[1].ToString(), 16);
+                            G = Convert.ToInt32(Hex[2].ToString() + Hex[2].ToString(), 16);
+                            B = Convert.ToInt32(Hex[3].ToString() + Hex[3].ToString(), 16);
+                            return Color.FromArgb(A, R, G, B);
+                        case 6:
+                            R = Convert.ToInt32(Hex[0].ToString() + Hex[1].ToString(), 16);
+                            G = Convert.ToInt32(Hex[2].ToString() + Hex[3].ToString(), 16);
+                            B = Convert.ToInt32(Hex[4].ToString() + Hex[5].ToString(), 16);
+                            return Color.FromArgb(0xFF, R, G, B);
+                        case 8:
+                            A = Convert.ToInt32(Hex[0].ToString() + Hex[1].ToString(), 16);
+                            R = Convert.ToInt32(Hex[2].ToString() + Hex[3].ToString(), 16);
+                            G = Convert.ToInt32(Hex[4].ToString() + Hex[5].ToString(), 16);
+                            B = Convert.ToInt32(Hex[6].ToString() + Hex[7].ToString(), 16);
+                            return Color.FromArgb(A, R, G, B);
+                    }
+
+                } else if (ColorName.Contains(";")) {
+                    string[] Array = ColorName.Replace(@" ", "").Split(';');
+                    int A, R, G, B;
+                    switch (Array.Length) {
+                        case 3:
+                            R = int.Parse(Array[0].Trim());
+                            G = int.Parse(Array[1].Trim());
+                            B = int.Parse(Array[2].Trim());
+                            return Color.FromArgb(0xFF, R, G, B);
+                        case 4:
+                            A = int.Parse(Array[0].Trim());
+                            R = int.Parse(Array[1].Trim());
+                            G = int.Parse(Array[2].Trim());
+                            B = int.Parse(Array[3].Trim());
+                            return Color.FromArgb(A, R, G, B);
+                    }
+                } else
+                    return Color.FromName(ColorName);
+            } catch { }
+
+            return Default;
+        }
+
         internal static string TableName {
             get {
                 return Path.GetDirectoryName(ScriptPath) + " /" + Path.GetFileNameWithoutExtension(ScriptPath) + "-Checks.bol";

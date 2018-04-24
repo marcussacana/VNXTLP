@@ -357,7 +357,10 @@ namespace VNXTLP {
             SyncConfirm = 125,
             DisableSync = 126,
             LimitSkip = 127,
-            DynamicMode = 128
+            DynamicMode = 128,
+            LoadingUsers = 129,
+            UsersLoaded = 130,
+            BrowseUser = 131
         }
     }
 }
