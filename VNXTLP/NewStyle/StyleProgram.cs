@@ -51,7 +51,6 @@ namespace VNXTLP.NewStyle {
             TLBox.Visible = true;
             TLBox.Enabled = false;
             TLBox.Multiline = false;
-            TLBox.KeyDown += TLBox_KeyDown;
             TLBox.BringToFront();
 
             //Initialize Events
@@ -165,10 +164,14 @@ namespace VNXTLP.NewStyle {
             ZSaveAsItem.Text = Engine.LoadTranslation(Engine.TLID.SaveAs);
             ZLimiteAvanco.Text = Engine.LoadTranslation(Engine.TLID.LimitSkip);
             ZModoDianmico.Text = Engine.LoadTranslation(Engine.TLID.DynamicMode);
+            ZOtherOptions.Text = Engine.LoadTranslation(Engine.TLID.MoreOptions);
+            ZSaveWindowState.Text = Engine.LoadTranslation(Engine.TLID.SaveWindowState);
 
             //Load Custom Resources from a VNXTL Build
             foreach (ToolStripMenuItem item in Engine.CustomResources(ref TLBox))
                 ZMenu.Items.Add(item);
+
+            Engine.LoadWindowState(this);
         }
 
         private void SelEngine_CheckedChange(object sender, EventArgs e) {
@@ -585,6 +588,9 @@ namespace VNXTLP.NewStyle {
             SaveScript.FileName = Engine.ScriptPath;
             SaveScript_FileOk(null, null);
         }
-        
+
+        private void ZSaveWindowState_Click(object sender, EventArgs e) {
+            Engine.SaveWindowState(this);
+        }
     }
 }

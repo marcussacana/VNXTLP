@@ -148,10 +148,14 @@ namespace VNXTLP {
             SaveItem.Text = Engine.LoadTranslation(Engine.TLID.Save);
             delimitarAvançoToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.LimitSkip);
             modoDinâmicoToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.DynamicMode);
+            outrasopçõesmenuitem.Text = Engine.LoadTranslation(Engine.TLID.MoreOptions);
+            salvarEstadoDaJanelaToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.SaveWindowState);
 
             //Special Items
             foreach (ToolStripMenuItem item in Engine.CustomResources(ref TLBox))
                 MainMenu.Items.Add(item);
+
+            Engine.LoadWindowState(this);
 #endif
         }
 
@@ -534,6 +538,10 @@ namespace VNXTLP {
                 return;
             SaveScript.FileName = Engine.ScriptPath;
             SaveScript_FileOk(null, null);
+        }
+
+        private void salvarEstadoDaJanelaToolStripMenuItem_Click(object sender, EventArgs e) {
+            Engine.SaveWindowState(this);
         }
     }
 

@@ -244,8 +244,27 @@ namespace VNXTLP {
             return (int)e.MeasureString(Text, Font).Height;
         }
 
-        #endregion        
+        #endregion
 
+        internal static void SaveWindowState(Form Form) {
+            SetConfig("Window", "XY", string.Format("{0}; {1}", Form.Location.X, Form.Location.Y));
+            SetConfig("Window", "WH", string.Format("{0}; {1}", Form.Size.Width, Form.Size.Height));
+            SetConfig("Window", "Maxmized", Form.WindowState == FormWindowState.Maximized ? "True" : "False");
+        }
+        internal static void LoadWindowState(Form Form) {
+            string XY = GetConfig("Window", "XY", false);
+            string WH = GetConfig("Window", "WH", false);
+            bool Maximed = GetConfig("Window", "Maxmized", false).ToLower() == "true";
+
+            if (XY.Contains(";")) {
+                Form.Location = new Point(int.Parse(XY.Split(';')[0].Trim()), int.Parse(XY.Split(';')[1].Trim()));
+            }
+            if (WH.Contains(";")) {
+                Form.Size = new Size(int.Parse(WH.Split(';')[0].Trim()), int.Parse(WH.Split(';')[1].Trim()));
+            }
+            if (Maximed)
+                Form.WindowState = FormWindowState.Maximized;
+        }
     }
     internal class WordMeuItem : ToolStripMenuItem {
         internal string Word;
@@ -253,5 +272,5 @@ namespace VNXTLP {
         internal int Length;
         internal Point Location;
     }
-    
+
 }

@@ -59,12 +59,15 @@
             this.AutomaticoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.asiaticaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.latimToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.outrasopçõesmenuitem = new System.Windows.Forms.ToolStripMenuItem();
+            this.salvarEstadoDaJanelaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.altoContrasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.altaResoluçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.SpellCheckEnableMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.IndexTestEnableMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.delimitarAvançoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modoDinâmicoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenScript = new System.Windows.Forms.OpenFileDialog();
@@ -76,7 +79,6 @@
             this.Scroll = new System.Windows.Forms.HScrollBar();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.SkipDelay = new System.Windows.Forms.Timer(this.components);
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.MainMenu.SuspendLayout();
             this.MainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -203,6 +205,7 @@
             this.períodoDeBackupToolStripMenuItem,
             this.sistemaDeTraduçãoToolStripMenuItem,
             this.SelecaoAutomaticaMenuItem1,
+            this.outrasopçõesmenuitem,
             this.toolStripSeparator1,
             this.altoContrasteToolStripMenuItem,
             this.altaResoluçãoToolStripMenuItem,
@@ -346,20 +349,35 @@
             this.AutomaticoToolStripMenuItem.Checked = true;
             this.AutomaticoToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.AutomaticoToolStripMenuItem.Name = "AutomaticoToolStripMenuItem";
-            this.AutomaticoToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.AutomaticoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.AutomaticoToolStripMenuItem.Text = "Auto Detectar";
             // 
             // asiaticaToolStripMenuItem
             // 
             this.asiaticaToolStripMenuItem.Name = "asiaticaToolStripMenuItem";
-            this.asiaticaToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.asiaticaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.asiaticaToolStripMenuItem.Text = "Asiática";
             // 
             // latimToolStripMenuItem
             // 
             this.latimToolStripMenuItem.Name = "latimToolStripMenuItem";
-            this.latimToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.latimToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.latimToolStripMenuItem.Text = "Latim";
+            // 
+            // outrasopçõesmenuitem
+            // 
+            this.outrasopçõesmenuitem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.salvarEstadoDaJanelaToolStripMenuItem});
+            this.outrasopçõesmenuitem.Name = "outrasopçõesmenuitem";
+            this.outrasopçõesmenuitem.Size = new System.Drawing.Size(194, 22);
+            this.outrasopçõesmenuitem.Text = "Outras Opções";
+            // 
+            // salvarEstadoDaJanelaToolStripMenuItem
+            // 
+            this.salvarEstadoDaJanelaToolStripMenuItem.Name = "salvarEstadoDaJanelaToolStripMenuItem";
+            this.salvarEstadoDaJanelaToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.salvarEstadoDaJanelaToolStripMenuItem.Text = "Salvar Estado da Janela";
+            this.salvarEstadoDaJanelaToolStripMenuItem.Click += new System.EventHandler(this.salvarEstadoDaJanelaToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -406,6 +424,11 @@
             this.IndexTestEnableMenuItem.Name = "IndexTestEnableMenuItem";
             this.IndexTestEnableMenuItem.Size = new System.Drawing.Size(194, 22);
             this.IndexTestEnableMenuItem.Text = "Validar Índice";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(191, 6);
             // 
             // delimitarAvançoToolStripMenuItem
             // 
@@ -518,11 +541,6 @@
             this.SkipDelay.Interval = 1000;
             this.SkipDelay.Tick += new System.EventHandler(this.DelayEnd);
             // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(191, 6);
-            // 
             // NoStyle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -602,6 +620,8 @@
         private System.Windows.Forms.ToolStripMenuItem delimitarAvançoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modoDinâmicoToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem outrasopçõesmenuitem;
+        private System.Windows.Forms.ToolStripMenuItem salvarEstadoDaJanelaToolStripMenuItem;
     }
 }
 

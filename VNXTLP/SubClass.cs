@@ -360,7 +360,9 @@ namespace VNXTLP {
             DynamicMode = 128,
             LoadingUsers = 129,
             UsersLoaded = 130,
-            BrowseUser = 131
+            BrowseUser = 131,
+            MoreOptions = 132,
+            SaveWindowState = 133
         }
     }
 }
