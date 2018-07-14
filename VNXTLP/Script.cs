@@ -194,7 +194,7 @@ namespace VNXTLP {
             Strings = Result;
         }
 
-        internal static void Genmap(string OriPath, string RstPath) {
+        internal static bool Genmap(string OriPath, string RstPath) {
             string[] Ori = Open(OriPath, true);
             string[] Rst = Open(RstPath, true);
 
@@ -211,11 +211,9 @@ namespace VNXTLP {
                 }
                 uint[] StrMap = Map.ToArray();
 
-                if (StrMap.LongLength == 0) {
-                    MessageBox.Show(LoadTranslation(TLID.FailedScriptsNotEqual), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Writer.Close();
+                if (StrMap.LongLength == 0) {                    Writer.Close();
                     File.Delete(OriPath + ".map");
-                    return;
+                    return false;
                 }
 
                 Writer.Write((uint)StrMap.LongLength);
@@ -224,7 +222,8 @@ namespace VNXTLP {
             }
 
             Writer.Close();
-            MessageBox.Show(LoadTranslation(TLID.RemapGenerated), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            return true;
         }
         private static void UndoRemap(ref string[] Strings) {
             if (StringCount == 0)

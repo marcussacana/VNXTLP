@@ -96,7 +96,7 @@ namespace VNXTLP {
                     return ConfigStatus.Ok;
             }
             return KeyFound ? ConfigStatus.NoName : ConfigStatus.NoKey;
+#endif
         }
-#endif        
     }
 }

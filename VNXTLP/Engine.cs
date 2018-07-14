@@ -71,8 +71,10 @@ namespace VNXTLP {
             NewArr[Arr.Length] = Var;
             Arr = NewArr;
         }
-        internal static bool UseTheme() {
-            return GetConfig("VNXTLP", "Theme", false).ToLower() == "modern";
+        internal static string UsingTheme() {
+            if (Program.IsWine)
+                return "Basic";
+            return GetConfig("VNXTLP", "Theme", false).ToLower();
         }
         internal static void InitializeStrings() {
             TextReader TR = (new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "Translation.ini", Encoding.UTF8));
@@ -105,12 +107,12 @@ namespace VNXTLP {
             return p;
         }
 
-        internal static void ChangeTheme(NoStyle NForm, StyleProgram SForm, bool EnableTheme) {
-            if (UseTheme() == EnableTheme)
+        internal static void ChangeTheme(string Theme) {
+            if (UsingTheme().ToLower() == Theme.ToLower())
                 return;
             Program.SearchOpen = false;
 
-            SetConfig("VNXTLP", "Theme", EnableTheme ? "Modern" : "Basic");
+            SetConfig("VNXTLP", "Theme", Theme);
             if (DialogResult.Yes == MessageBox.Show(LoadTranslation(TLID.RestarNow), "VNXTLP", MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
                 System.Diagnostics.Process.Start(Application.ExecutablePath);
                 Environment.Exit(0);

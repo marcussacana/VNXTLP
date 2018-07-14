@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -11,15 +12,30 @@ namespace VNXTLP {
             Item.Click += (a, b) => {
                 OpenFileDialog FileDialog = new OpenFileDialog() {
                     Filter = Filter,
+                    Multiselect = true,
                     Title = LoadTranslation(TLID.RemapNow)
                 };
                 if (DialogResult.OK != FileDialog.ShowDialog())
                     return;
-                string Ori = FileDialog.FileName;
+                var Oris = FileDialog.FileNames;
                 if (DialogResult.OK != FileDialog.ShowDialog())
                     return;
-                string Trg = FileDialog.FileName;
-                Genmap(Ori, Trg);
+                var Trgs = FileDialog.FileNames;
+                foreach (string Ori in Oris) {
+                    string OFN = System.IO.Path.GetFileName(Ori);
+                    foreach (string Trg in Trgs) {
+                        string TFN = System.IO.Path.GetFileName(Trg);
+                        if (TFN.ToLower() != OFN.ToLower())
+                            continue;
+
+                        if (!Genmap(Ori, Trg))
+                            MessageBox.Show(LoadTranslation(TLID.FailedScriptsNotEqual) + string.Format("\n{0} to {1}", OFN, TFN), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+
+                    }
+                }
+                MessageBox.Show(LoadTranslation(TLID.RemapGenerated), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             };
             
             ToolStripMenuItem Item2 = new ToolStripMenuItem(LoadTranslation(TLID.DialoguesCount));
@@ -81,12 +97,62 @@ namespace VNXTLP {
 
                 MessageBox.Show(LoadTranslation(TLID.OperationClear), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
             };
+            ToolStripMenuItem Item6 = null;
+            try {
+                if (Program.OfflineMode)
+                    throw new Exception();
+
+                string Lang = System.Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
+                //Lang = "ES";
+                Item6 = new ToolStripMenuItem(TLIB.Google.Translate("Switch to my Language", "EN", Lang));
+                Item6.Click += (a, e) => {
+
+                    string Path = AppDomain.CurrentDomain.BaseDirectory + "Translation.ini";
+                    string[] Entry = System.IO.File.ReadAllLines(Path);
+
+
+                    List<string> Strings = new List<string>();
+                    for (int i = 0; i < Entry.Length; i++) {
+                        string Line = Entry[i];
+                        if (Line.StartsWith("//") || Line.StartsWith("[") || Line.StartsWith("!") || string.IsNullOrWhiteSpace(Line) || !Line.Contains("="))
+                            continue;
+
+                        string Content = Line.Split('=')[1];
+                        Strings.Add(Content);
+                    }
+
+                    string[] Translated = TLIB.Google.Translate(Strings.ToArray(), "pt", Lang);
+                    for (int i = 0, x = 0; i < Entry.Length; i++) {
+                        string Line = Entry[i];
+                        if (Line.StartsWith("//") || Line.StartsWith("[") || Line.StartsWith("!") || string.IsNullOrWhiteSpace(Line) || !Line.Contains("="))
+                            continue;
+                        string Content = Line.Split('=')[1];
+
+                        string Result = Translated[x++];
+                        Result = Result.Replace("{ ", "{");
+                        Result = Result.Replace(" }", "}");
+                        Result = Result.Replace("\\ n", "\\n");
+                        Result = Result.Replace(" .", ".");
+
+                        if (char.IsUpper(Content.First()))
+                            Result = Result.First().ToString().ToUpper() + Result.Substring(1);
+
+                        Entry[i] = Line.Split('=')[0] + '=' + Result;
+                    }
+
+                    System.IO.File.WriteAllLines(Path, Entry);
+                    System.Diagnostics.Process.Start(Application.ExecutablePath);
+                    Environment.Exit(0);
+                };
+            } catch { }
 
             ItemHost.Text = LoadTranslation(TLID.Tools);
             ItemHost.DropDownItems.Add(Item);
             ItemHost.DropDownItems.Add(new ToolStripSeparator());
             ItemHost.DropDownItems.Add(Item2);
             ItemHost.DropDownItems.Add(Item3);
+            if (Item6 != null)
+                ItemHost.DropDownItems.Add(Item6);
             
             if (DebugMode) {
                 ItemHost.DropDownItems.Add(new ToolStripSeparator());

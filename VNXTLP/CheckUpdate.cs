@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define MONO
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -6,11 +7,30 @@ using System.Windows.Forms;
 namespace VNXTLP
 {
     internal partial class CheckUpdate : Form {
+
+        internal new bool? Closed = false;
         internal bool FormReady = false;
         internal CheckUpdate()
         {
             InitializeComponent();
             UpdateStatus(Engine.LoadTranslation(Engine.TLID.ProcessingLogin));
+
+            new System.Threading.Thread(() => {
+                DateTime Begin = DateTime.Now;
+
+                while (Closed == false) {
+                    if ((DateTime.Now - Begin).TotalSeconds > 15) {
+                        Process.Start(Application.ExecutablePath);
+                        Process.GetCurrentProcess().Kill();
+                        break;
+                    }
+                    System.Threading.Thread.Sleep(100);
+                }
+
+                Closed = null;
+            }).Start();
+
+
             //FadeIn
             new System.Threading.Thread((frm) => {
                 CheckUpdate form = (CheckUpdate)frm;
@@ -38,11 +58,12 @@ namespace VNXTLP
             return new Version(fvi.FileMajorPart, fvi.FileMinorPart, fvi.FileBuildPart);
         }
         private void FindUpdates() {
-
+#if !MONO
             if (!CheckInternet()) {
                 Program.OfflineMode = true;
                 FadeClose();
             }
+#endif
             try {
                 Version ThisVersion = GetVersion();
 #if DEBUG
@@ -65,6 +86,8 @@ namespace VNXTLP
                     FadeClose();
                     return;
                 }
+                if (Closed != null)
+                    Closed = true;
                 Program.InitializeForm = false;
                 Invoke(new SetText(UpdateStatus), Engine.LoadTranslation(Engine.TLID.InstallingUpdates));
 #if DEBUG
@@ -104,6 +127,14 @@ namespace VNXTLP
                         form.Invoke(Updater, form.Opacity - 0.02);
                     System.Threading.Thread.Sleep(4);
                 }
+
+                if (Closed != null) {
+                    Closed = true;
+
+                    while (Closed != null)
+                        System.Threading.Thread.Sleep(100);
+                }
+
                 form.Invoke(new SendClose(() => { form.Close(); }));
             }).Start(this);
         }
@@ -112,6 +143,7 @@ namespace VNXTLP
             FormReady = true;
         }
 
+#if !MONO
         [System.Runtime.InteropServices.DllImport("wininet.dll")]
         private extern static bool InternetGetConnectedState(out int Description, int ReservedValue);
 
@@ -119,5 +151,6 @@ namespace VNXTLP
             int desc;
             return InternetGetConnectedState(out desc, 0);
         }
+#endif
     }
 }

@@ -79,6 +79,7 @@
             this.Scroll = new System.Windows.Forms.HScrollBar();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.SkipDelay = new System.Windows.Forms.Timer(this.components);
+            this.bernToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.MainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -223,7 +224,8 @@
             // 
             this.temaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.BasicThemeMenuItem,
-            this.ModernThemeMenuItem});
+            this.ModernThemeMenuItem,
+            this.bernToolStripMenuItem});
             this.temaToolStripMenuItem.Name = "temaToolStripMenuItem";
             this.temaToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.temaToolStripMenuItem.Text = "Tema";
@@ -234,14 +236,14 @@
             this.BasicThemeMenuItem.CheckOnClick = true;
             this.BasicThemeMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.BasicThemeMenuItem.Name = "BasicThemeMenuItem";
-            this.BasicThemeMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.BasicThemeMenuItem.Size = new System.Drawing.Size(180, 22);
             this.BasicThemeMenuItem.Text = "Básico";
             // 
             // ModernThemeMenuItem
             // 
             this.ModernThemeMenuItem.CheckOnClick = true;
             this.ModernThemeMenuItem.Name = "ModernThemeMenuItem";
-            this.ModernThemeMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.ModernThemeMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ModernThemeMenuItem.Text = "Moderno";
             // 
             // períodoDeBackupToolStripMenuItem
@@ -349,19 +351,19 @@
             this.AutomaticoToolStripMenuItem.Checked = true;
             this.AutomaticoToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.AutomaticoToolStripMenuItem.Name = "AutomaticoToolStripMenuItem";
-            this.AutomaticoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.AutomaticoToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.AutomaticoToolStripMenuItem.Text = "Auto Detectar";
             // 
             // asiaticaToolStripMenuItem
             // 
             this.asiaticaToolStripMenuItem.Name = "asiaticaToolStripMenuItem";
-            this.asiaticaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.asiaticaToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.asiaticaToolStripMenuItem.Text = "Asiática";
             // 
             // latimToolStripMenuItem
             // 
             this.latimToolStripMenuItem.Name = "latimToolStripMenuItem";
-            this.latimToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.latimToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.latimToolStripMenuItem.Text = "Latim";
             // 
             // outrasopçõesmenuitem
@@ -541,6 +543,12 @@
             this.SkipDelay.Interval = 1000;
             this.SkipDelay.Tick += new System.EventHandler(this.DelayEnd);
             // 
+            // bernToolStripMenuItem
+            // 
+            this.bernToolStripMenuItem.Name = "bernToolStripMenuItem";
+            this.bernToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bernToolStripMenuItem.Text = "Bern";
+            // 
             // NoStyle
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -622,6 +630,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem outrasopçõesmenuitem;
         private System.Windows.Forms.ToolStripMenuItem salvarEstadoDaJanelaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bernToolStripMenuItem;
     }
 }
 

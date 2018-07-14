@@ -10,10 +10,10 @@ namespace VNXTLP {
                 TextBox.Text = ContentToReplace;
             else
                 TextBox.SelectedText = ContentToReplace;
-            if (UseTheme())
-                Program.StyleForm.TLBox_KeyDown(null, new KeyEventArgs(Keys.Enter));
-            else
-                Program.NoStyleForm.TLBox_KeyDown(null, new KeyEventArgs(Keys.Enter));
+
+
+            ((dynamic)Program.MainForm).TLBox_KeyDown(null, new KeyEventArgs(Keys.Enter));
+          
             return Found;
         }
         internal static int Search(string Content, string[] Script, int index, bool WithContains, bool Up, bool CaseSensentive, bool Loop) {

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace VNXTLP.NewStyle {
+namespace VNXTLP.BernStyle {
     internal partial class StyleProgram : Form {
 
         Engine.RadioToolStrip RadioEngine;
@@ -94,7 +94,7 @@ namespace VNXTLP.NewStyle {
 
             //Initalize TLBox
             TLBox.Font = ZTextBox.Font;
-            TLBox.LoadDictionary(AppDomain.CurrentDomain.BaseDirectory + "Dictionary.aff", AppDomain.CurrentDomain.BaseDirectory + "Dictionary.dic");
+            TLBox.LoadDictionary(AppDomain.CurrentDomain.BaseDirectory + "Dictionary");
             TLBox.BootUP();
 
             //Initialize Config
@@ -185,7 +185,9 @@ namespace VNXTLP.NewStyle {
 
         private void ChangeTheme(object sender, EventArgs e) {
             if (ZBasico.Checked)
-                Engine.ChangeTheme(new NoStyle(), this, false);
+                Engine.ChangeTheme("Basic");
+            else if (ZModerno.Checked)
+                Engine.ChangeTheme("Modern");
         }
 
         private void ZAbrir_Click(object sender, EventArgs e) {
@@ -501,6 +503,7 @@ namespace VNXTLP.NewStyle {
             if (ZAltoContraste.Checked) {
                 StrList.BackColor = Engine.LoadColor("ContrastBackColor", System.Drawing.Color.Black);
                 StrList.ForeColor = Engine.LoadColor("ContrastForeColor", System.Drawing.Color.Green);
+                StrList.ColorNumber = Engine.LoadColor("ContrastForeColor", System.Drawing.Color.Green);
 
                 StrList.Color1 = StrList.BackColor;
                 StrList.Color2 = Engine.LoadColor("ContrastAlternateColor", System.Drawing.Color.FromArgb(30, 30, 30));
@@ -508,6 +511,7 @@ namespace VNXTLP.NewStyle {
             else {
                 StrList.BackColor = System.Drawing.Color.FromArgb(235, 235, 235);
                 StrList.ForeColor = System.Drawing.Color.Black;
+                StrList.ColorNumber = System.Drawing.Color.Black;
 
                 StrList.Color1 = StrList.BackColor;
                 StrList.Color2 = System.Drawing.Color.White;
@@ -592,5 +596,6 @@ namespace VNXTLP.NewStyle {
         private void ZSaveWindowState_Click(object sender, EventArgs e) {
             Engine.SaveWindowState(this);
         }
+
     }
 }

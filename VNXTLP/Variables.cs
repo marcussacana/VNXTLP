@@ -61,12 +61,12 @@ namespace VNXTLP {
         private static List<string> Translation = new List<string>();
 
         //Variable Redirections
-        private static int Index { get { return Program.UsingTheme ? Program.StyleForm.Index : Program.NoStyleForm.Index; } set { if (Program.UsingTheme) Program.StyleForm.Index = value; else Program.NoStyleForm.Index = value; } }
-        internal static SpellTextBox TextBox { get { return Program.UsingTheme ? Program.StyleForm.TLBox : Program.NoStyleForm.TLBox; } }
-        internal static CheckedListBox StrList { get { try { return Program.UsingTheme ? Program.StyleForm.StrList : Program.NoStyleForm.StrList; } catch { return null; } } }
+        private static int Index { get { return ((dynamic)Program.MainForm).Index; } set { ((dynamic)Program.MainForm).Index = value; } }
+        internal static SpellTextBox TextBox { get { return ((dynamic)Program.MainForm).TLBox; } }
+        internal static CheckedListBox StrList { get { try { return ((dynamic)Program.MainForm).StrList; } catch { return null; } } }
 
-        internal static Form MainForm { get { return Program.UsingTheme ? Program.StyleForm as Form: Program.NoStyleForm as Form; } }
-        internal static bool FileOpen { get { return Program.UsingTheme ? Program.StyleForm.FileOpen : Program.NoStyleForm.FileOpen; } }
+        internal static Form MainForm { get { return Program.MainForm; } }
+        internal static bool FileOpen { get { return ((dynamic)Program.MainForm).FileOpen; } }
 
         internal static Commands ServerStatus = Commands.Closed;
         

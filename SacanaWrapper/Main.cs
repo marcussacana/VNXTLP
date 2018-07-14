@@ -1,4 +1,5 @@
 ﻿//#define DebugPlugin
+#define MONO
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,8 +25,11 @@ namespace SacanaWrapper
         }
         public string[] Import(byte[] Script, string Extension = null, bool PreventCorrupt = false, bool TryLastPluginFirst = false) {
             string[] Strings = null;
-            string PluginDir = DotNetVM.AssemblyDirectory + "\\Plugins";       
-
+#if MONO
+            string PluginDir = DotNetVM.AssemblyDirectory + "/Plugins";
+#else
+            string PluginDir = DotNetVM.AssemblyDirectory + "\\Plugins";
+#endif
             if (File.Exists(Lastest) && TryLastPluginFirst) {
 #if !DebugPlugin
                 try {
@@ -150,12 +154,17 @@ namespace SacanaWrapper
             ExportPath = Ini.GetConfig("Plugin", "Export;Exp;export;exp", Plugin, true);
             ImportPath = Ini.GetConfig("Plugin", "Import;Imp;import;imp", Plugin, true);
             string CustomSource = Ini.GetConfig("Plugin", "File;file;Archive;archive;Arc;arc", Plugin, false);
-
+#if MONO
+            string Path = System.IO.Path.GetDirectoryName(Plugin) + "/",
+             SourcePath = System.IO.Path.GetDirectoryName(Plugin) + "/",
+             SourcePath2 = System.IO.Path.GetDirectoryName(Plugin) + "/";
+#else
             string Path = System.IO.Path.GetDirectoryName(Plugin) + "\\",
              SourcePath = System.IO.Path.GetDirectoryName(Plugin) + "\\",
              SourcePath2 = System.IO.Path.GetDirectoryName(Plugin) + "\\";
-             
-            
+
+#endif
+
             if (!string.IsNullOrWhiteSpace(CustomSource)){
                 Path += CustomSource + ".dll";
                 SourcePath += CustomSource + ".cs";

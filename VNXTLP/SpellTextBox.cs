@@ -1,5 +1,4 @@
-﻿using NHunspell;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,8 +10,8 @@ using VNXTLP;
 internal class SpellTextBox : RichTextBox {
 #if !DEBUG
     private ContextMenuStrip CMS;
-    private Hunspell SpellChecker;    
-    internal bool DictionaryLoaded { get { return !Equals(SpellChecker, default(Hunspell)); } }
+    private Hunspell SpellChecker = null;    
+    internal bool DictionaryLoaded { get { return SpellChecker != null; } }
 
     internal char[] WordSeparators = new char[] { ' ', ',', '.', '?', '!', ';', ':', '\'', '"', '―', '*', '<', '>' };
 
@@ -29,6 +28,7 @@ internal class SpellTextBox : RichTextBox {
     private DateTime LastEdit = DateTime.Now;
     private Timer WaitEnds = new Timer() { Interval = 600 };
     private Dictionary<string, bool> WordCache = new Dictionary<string, bool>();
+    private List<string> ManualDictionary = new List<string>();
     private bool SpellChecking = false;
     private bool PaintTerms = false;
 
@@ -68,6 +68,11 @@ internal class SpellTextBox : RichTextBox {
                             if (!TL.Contains("="))
                                 continue;
                             bool IsCustomTerm = TL.Contains("==");
+                            if (TL.Contains("===")) {
+                                ManualDictionary.Add(TL.Split('=').First());
+                                continue;
+                            }
+
                             string[] WTL = TL.Split('=');
                             string[] TLS = WTL[IsCustomTerm ? 2 : 1].Split(';');
                             if (IsCustomTerm)
@@ -103,6 +108,12 @@ internal class SpellTextBox : RichTextBox {
                     string WTL = string.Format("{0}=={1}", PhraseCache.Keys.ElementAt(i), List);
                     SW.WriteLine(WTL);
                 }
+
+                for (int i = 0; i < ManualDictionary.Count; i++) {
+                    string WTL = string.Format("{0}==={1}", ManualDictionary[i], true);
+                    SW.WriteLine(WTL);
+                }
+
                 SW.Close();
             }
         }
@@ -112,6 +123,8 @@ internal class SpellTextBox : RichTextBox {
 
     internal void ResetCache() {
         WordCache = new Dictionary<string, bool>();
+        foreach (string Word in ManualDictionary)
+            WordCache.Add(Word, true);
     }
 
     private void StopWaiter(object sender, EventArgs e) {
@@ -305,24 +318,24 @@ internal class SpellTextBox : RichTextBox {
         base.OnMouseMove(e);
     }
 
-    internal void LoadDictionary(string Affix, string Dic) {
-        if (!File.Exists(Affix) || !File.Exists(Dic))
+    internal void LoadDictionary(string Dic) {
+        if (!File.Exists(Dic + ".aff") || !File.Exists(Dic + ".dic"))
             return;
-        SpellChecker = new Hunspell(Affix, Dic);
+        SpellChecker = Hunspell.GetHunspell(Dic);
     }
     protected override void OnMouseUp(MouseEventArgs e) {
         if (e.Button == MouseButtons.Right && SpellCheckEnable) {
             try {
                 int index = GetCharIndexFromPosition((e).Location);
-                while (index < Text.Length && !char.IsLetter(Text[index]))
+                while (index < Text.Length && WordSeparators.Contains(Text[index]))
                     index++;//Fix Rigth
-                while (index - 1 >= 0 && char.IsLetter(Text[index - 1]))
+                while (index - 1 >= 0 && !WordSeparators.Contains(Text[index - 1]))
                     index--;//Fix Left
 
                 if (index < Text.Length) {
                     string Word = string.Empty;
                     int len = 0;
-                    while (index + len < Text.Length && char.IsLetter(Text[index + len])) {
+                    while (index + len < Text.Length && !WordSeparators.Contains(Text[index + len])) {
                         Word += Text[index + len];
                         len++;
                     }
@@ -522,7 +535,11 @@ internal class SpellTextBox : RichTextBox {
 
     private void AddToDic(object sender, EventArgs e) {
         ToolStripMenuItem bnt = (ToolStripMenuItem)sender;
-        SpellChecker.Add(bnt.Name);
+        WordCache[bnt.Name] = true;
+        if (!ManualDictionary.Contains(bnt.Name)) {
+            ManualDictionary.Add(bnt.Name);
+            WaitEnds.Enabled = true;
+        }
     }
     
 #endif

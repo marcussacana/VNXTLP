@@ -54,7 +54,7 @@ namespace VNXTLP {
             ToolStripMenuItem[] BackupItems = new ToolStripMenuItem[] { BackupOnSaveItem, BackupOn200MenuItem, BackupOn100MenuItem, BackupOn50Item, BackupOn25Item, BackupOn10Item, NeverBackupItem };
             RadioEngine = new Engine.RadioToolStrip(ref BackupItems, 3);
 
-            ToolStripMenuItem[] ThemeItems = new ToolStripMenuItem[] { BasicThemeMenuItem, ModernThemeMenuItem };
+            ToolStripMenuItem[] ThemeItems = new ToolStripMenuItem[] { BasicThemeMenuItem, ModernThemeMenuItem, bernToolStripMenuItem };
             ThemeEngine = new Engine.RadioToolStrip(ref ThemeItems, 1);
             ThemeEngine.CheckedChange += ChangeTheme;
 
@@ -78,7 +78,7 @@ namespace VNXTLP {
             SaveScript.Filter = Engine.Filter;
 
             //Initalize SpellCheck Engine
-            TLBox.LoadDictionary(AppDomain.CurrentDomain.BaseDirectory + "Dictionary.aff", AppDomain.CurrentDomain.BaseDirectory + "Dictionary.dic");
+            TLBox.LoadDictionary(AppDomain.CurrentDomain.BaseDirectory + "Dictionary");
             TLBox.BootUP();
 
             //Initialize Config
@@ -170,7 +170,9 @@ namespace VNXTLP {
 
         private void ChangeTheme(object sender, EventArgs e) {
             if (ModernThemeMenuItem.Checked)
-                Engine.ChangeTheme(this, new NewStyle.StyleProgram(), true);
+                Engine.ChangeTheme("Modern");
+            else if (bernToolStripMenuItem.Checked)
+                Engine.ChangeTheme("Bern");
         }
 
         private void OpenItem_Click(object sender, EventArgs e) {

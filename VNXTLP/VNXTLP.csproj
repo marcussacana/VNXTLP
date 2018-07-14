@@ -33,6 +33,8 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -62,7 +64,8 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="NHunspell">
+    <Reference Include="NHunspell, Version=1.2.5372.690, Culture=neutral, PublicKeyToken=1ac793ea843b4366, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\NHunspell.dll</HintPath>
     </Reference>
     <Reference Include="PopupControl">
@@ -99,7 +102,35 @@
     <Compile Include="BallonToolTip.Designer.cs">
       <DependentUpon>BallonToolTip.cs</DependentUpon>
     </Compile>
+    <Compile Include="BernStyle\StyleBackup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BernStyle\StyleBackup.Designer.cs">
+      <DependentUpon>StyleBackup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BernStyle\StyleLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BernStyle\StyleLogin.Designer.cs">
+      <DependentUpon>StyleLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BernStyle\StyleProgram.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BernStyle\StyleProgram.Designer.cs">
+      <DependentUpon>StyleProgram.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BernStyle\StyleRegister.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BernStyle\StyleRegister.Designer.cs">
+      <DependentUpon>StyleRegister.cs</DependentUpon>
+    </Compile>
     <Compile Include="Configs.cs" />
+    <Compile Include="CStyle\Test.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CStyle\Theme.cs" />
     <Compile Include="Custom.cs" />
     <Compile Include="Encryption.cs" />
     <Compile Include="Engine.cs" />
@@ -118,28 +149,28 @@
     <Compile Include="Pipe.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="HLCP.cs" />
-    <Compile Include="NewStyle\StyleBackup.cs">
+    <Compile Include="ModernStyle\StyleBackup.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NewStyle\StyleBackup.Designer.cs">
+    <Compile Include="ModernStyle\StyleBackup.Designer.cs">
       <DependentUpon>StyleBackup.cs</DependentUpon>
     </Compile>
-    <Compile Include="NewStyle\StyleLogin.cs">
+    <Compile Include="ModernStyle\StyleLogin.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NewStyle\StyleLogin.Designer.cs">
+    <Compile Include="ModernStyle\StyleLogin.Designer.cs">
       <DependentUpon>StyleLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="NewStyle\StyleProgram.cs">
+    <Compile Include="ModernStyle\StyleProgram.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NewStyle\StyleProgram.Designer.cs">
+    <Compile Include="ModernStyle\StyleProgram.Designer.cs">
       <DependentUpon>StyleProgram.cs</DependentUpon>
     </Compile>
-    <Compile Include="NewStyle\StyleRegister.cs">
+    <Compile Include="ModernStyle\StyleRegister.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NewStyle\StyleRegister.Designer.cs">
+    <Compile Include="ModernStyle\StyleRegister.Designer.cs">
       <DependentUpon>StyleRegister.cs</DependentUpon>
     </Compile>
     <Compile Include="NoStyle - Backup.cs">
@@ -175,6 +206,7 @@
       <DependentUpon>CheckUpdate.cs</DependentUpon>
     </Compile>
     <Compile Include="Search.cs" />
+    <Compile Include="SpellCheck.cs" />
     <Compile Include="SpellTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -193,19 +225,31 @@
     <EmbeddedResource Include="BallonToolTip.resx">
       <DependentUpon>BallonToolTip.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="BernStyle\StyleBackup.resx">
+      <DependentUpon>StyleBackup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BernStyle\StyleLogin.resx">
+      <DependentUpon>StyleLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BernStyle\StyleProgram.resx">
+      <DependentUpon>StyleProgram.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BernStyle\StyleRegister.resx">
+      <DependentUpon>StyleRegister.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Input.resx">
       <DependentUpon>Input.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NewStyle\StyleBackup.resx">
+    <EmbeddedResource Include="ModernStyle\StyleBackup.resx">
       <DependentUpon>StyleBackup.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NewStyle\StyleLogin.resx">
+    <EmbeddedResource Include="ModernStyle\StyleLogin.resx">
       <DependentUpon>StyleLogin.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NewStyle\StyleProgram.resx">
+    <EmbeddedResource Include="ModernStyle\StyleProgram.resx">
       <DependentUpon>StyleProgram.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NewStyle\StyleRegister.resx">
+    <EmbeddedResource Include="ModernStyle\StyleRegister.resx">
       <DependentUpon>StyleRegister.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NoStyle - Backup.resx">
@@ -236,6 +280,7 @@
     <EmbeddedResource Include="CheckUpdate.resx">
       <DependentUpon>CheckUpdate.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Dictionary.aff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -284,6 +329,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Logo.png" />
     <None Include="FodyWeavers.xml" />
     <Content Include="icon.ico" />
     <None Include="Resources\InfoIco.png" />

@@ -8,18 +8,17 @@ na versão antiga do RTT no decorrer do projeto.
 */
 
 using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
 namespace VNXTLP {
     static class Program {
-        internal static NewStyle.StyleProgram StyleForm;
-        internal static NoStyle NoStyleForm;
+        internal static Form MainForm;
         internal static Search SearchForm;
         internal static bool SearchOpen = false;
         internal static bool OfflineMode = false;
         internal static bool InitializeForm = true;
-        internal static bool UsingTheme = false;
         internal static bool Connecting = false;
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace VNXTLP {
 
             if (System.IO.File.Exists(AppDomain.CurrentDomain.BaseDirectory + "Launcher.exe")) {
                 try {
-                    System.Threading.Thread.Sleep(500);
+                    Thread.Sleep(500);
                     System.IO.File.Delete(AppDomain.CurrentDomain.BaseDirectory + "Launcher.exe");
                 } catch { }
             }
@@ -68,18 +67,28 @@ namespace VNXTLP {
                 Connecting = false;
             }).Start();
 
-            UsingTheme = Engine.UseTheme();
-
             if (!OfflineMode) {
                 try {
                     (new CheckUpdate()).ShowDialog();
                 } catch { }
                 if (!Engine.FTP.Avaliable) {
                     MessageBox.Show(Engine.LoadTranslation(Engine.TLID.NoFTPServer), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
                     return;
                 }
                 if (!Engine.Authenticated) {
-                    Form Login = UsingTheme ? new NewStyle.StyleLogin() : (Form)new NoStyleLogin();
+                    Form Login;
+                    switch (Engine.UsingTheme()) {
+                        case "modern":
+                            Login = new NewStyle.StyleLogin();
+                            break;
+                        case "bern":
+                            Login = new BernStyle.StyleLogin();
+                            break;
+                        default:
+                            Login = new NoStyleLogin();
+                            break;
+                    }
 
                     Login.ShowDialog();
                     if (!Engine.Authenticated)
@@ -87,24 +96,53 @@ namespace VNXTLP {
                 }
             }
 
-            if (UsingTheme) {
-                StyleForm = new NewStyle.StyleProgram();
+            switch (Engine.UsingTheme()) {
+                case "modern":
+                    MainForm = new NewStyle.StyleProgram();
+                    break;
+                case "bern":
+                    MainForm = new BernStyle.StyleProgram();
+                    break;
+                default:
+                    MainForm = new NoStyle();
+                    break;
+            }
 
-                new Thread(() => {
-                    Engine.InitializePipe();
-                }).Start();
+            new Thread(() => {
+                Engine.InitializePipe();
+            }).Start();
 
-                Application.Run(StyleForm);
-            } else {
-                NoStyleForm = new NoStyle();
+            Application.Run(MainForm);
 
-                new Thread(() => {
-                    Engine.InitializePipe();
-                }).Start();
+        }
 
-                Application.Run(NoStyleForm);
+        #region Wine Support
+
+        [DllImport(@"kernel32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
+        internal static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+
+        [DllImport(@"kernel32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr GetModuleHandle(string lpModuleName);
+
+        static bool? isWine;
+
+        internal static bool IsWine {
+            get {
+                if (isWine.HasValue) return isWine.Value;
+
+                IntPtr hModule = GetModuleHandle(@"ntdll.dll");
+                if (hModule == IntPtr.Zero)
+                    isWine = false;
+                else {
+                    IntPtr fptr = GetProcAddress(hModule, @"wine_get_version");
+                    isWine = fptr != IntPtr.Zero;
+                }
+
+                return isWine.Value;
             }
         }
+
+        #endregion
 
     }
 }
