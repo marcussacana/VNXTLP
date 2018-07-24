@@ -116,7 +116,7 @@ namespace VNXTLP {
 
         }
 
-        #region Wine Support
+        #region Non-Windows Support
 
         [DllImport(@"kernel32.dll", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
         internal static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
@@ -124,21 +124,30 @@ namespace VNXTLP {
         [DllImport(@"kernel32.dll", CharSet = CharSet.Auto)]
         public static extern IntPtr GetModuleHandle(string lpModuleName);
 
-        static bool? isWine;
+        static bool? isWin;
 
-        internal static bool IsWine {
+        internal static bool IsWindows {
             get {
-                if (isWine.HasValue) return isWine.Value;
+                if (isWin.HasValue) return isWin.Value;
+
+                isWin = true;
+                if (Info.IsRunningOnLinux())
+                    isWin = false;
+                if (Info.IsRunningOnMac())
+                    isWin = false;
+
+                if (isWin == false)
+                    return false;
 
                 IntPtr hModule = GetModuleHandle(@"ntdll.dll");
                 if (hModule == IntPtr.Zero)
-                    isWine = false;
+                    isWin = true;
                 else {
                     IntPtr fptr = GetProcAddress(hModule, @"wine_get_version");
-                    isWine = fptr != IntPtr.Zero;
+                    isWin = fptr == IntPtr.Zero;
                 }
 
-                return isWine.Value;
+                return isWin.Value;
             }
         }
 

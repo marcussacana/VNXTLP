@@ -208,10 +208,10 @@ namespace VNXTLP.BernStyle {
             FileOpen = true;
             FileSaved = true;
 
-            //Clear Update Strings
+            //Update Strings
             StrList.Items.Clear();
-            foreach (string String in StringList)
-                StrList.Items.Add(String);
+            StrList.Items.AddRange(StringList);
+
             Engine.StartSelction();
             TLBox.Enabled = true;
             TLBox.ReadOnly = false;

@@ -216,10 +216,10 @@ namespace VNXTLP {
             FileOpen = true;
             string[] StringList = Engine.Open(OpenScript.FileName);
 
-            //Clear Update Strings
+            //Update Strings
             StrList.Items.Clear();
-            foreach (string String in StringList)
-                StrList.Items.Add(String);
+            StrList.Items.AddRange(StringList);
+
             Engine.StartSelction();
             TLBox.Enabled = true;
             FileSaved = true;

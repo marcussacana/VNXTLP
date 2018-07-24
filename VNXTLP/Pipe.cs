@@ -114,8 +114,12 @@ namespace VNXTLP {
 
        
         public static void InitializePipe() {
+            if (!Program.IsWindows)
+                return;
+
             while (true) {
                 try {
+                    Thread.Sleep(10);
                     if (StrList != null)
                         break;
                 } catch { }

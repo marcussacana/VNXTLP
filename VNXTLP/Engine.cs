@@ -72,7 +72,7 @@ namespace VNXTLP {
             Arr = NewArr;
         }
         internal static string UsingTheme() {
-            if (Program.IsWine)
+            if (!Program.IsWindows)
                 return "Basic";
             return GetConfig("VNXTLP", "Theme", false).ToLower();
         }
@@ -84,7 +84,7 @@ namespace VNXTLP {
                     continue;
                 int ID = int.Parse(Line.Split('=')[0]);
                 while (ID > Translation.Count)
-                    Translation.Add(string.Format("NO TRANSLATED ENTRY ID: {0}", Translation.Count));
+                    Translation.Add(string.Format("Missing Translation: {0} ({1})", Translation.Count, ((TLID)Translation.Count).ToString()));
                 Translation.Insert(ID, Line.Split('=')[1].Replace("\\n", "\n"));
             }
         }

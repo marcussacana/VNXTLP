@@ -1,4 +1,4 @@
-﻿#define MONO
+﻿//#define MONO
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -59,9 +59,15 @@ namespace VNXTLP
         }
         private void FindUpdates() {
 #if !MONO
+            if (!Program.IsWindows) {
+                FadeClose();
+                return;
+            }
+
             if (!CheckInternet()) {
                 Program.OfflineMode = true;
                 FadeClose();
+                return;
             }
 #endif
             try {
