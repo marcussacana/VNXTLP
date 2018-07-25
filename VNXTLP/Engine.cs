@@ -72,7 +72,7 @@ namespace VNXTLP {
             Arr = NewArr;
         }
         internal static string UsingTheme() {
-            if (!Program.IsWindows)
+            if (!Program.IsRealWindows)
                 return "Basic";
             return GetConfig("VNXTLP", "Theme", false).ToLower();
         }

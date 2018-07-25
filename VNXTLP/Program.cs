@@ -125,10 +125,31 @@ namespace VNXTLP {
         public static extern IntPtr GetModuleHandle(string lpModuleName);
 
         static bool? isWin;
+        static bool? isRWin;
 
+        internal static bool IsRealWindows {
+            get {
+                if (isRWin.HasValue)
+                    return isRWin.Value;
+
+                if (!IsWindows)
+                    return false;
+
+                IntPtr hModule = GetModuleHandle(@"ntdll.dll");
+                if (hModule == IntPtr.Zero)
+                    isRWin = false;
+                else {
+                    IntPtr fptr = GetProcAddress(hModule, @"wine_get_version");
+                    isRWin = fptr == IntPtr.Zero;
+                }
+
+                return isRWin.Value;
+            }
+        }
         internal static bool IsWindows {
             get {
-                if (isWin.HasValue) return isWin.Value;
+                if (isWin.HasValue)
+                    return isWin.Value;
 
                 isWin = true;
                 if (Info.IsRunningOnLinux())
@@ -139,15 +160,8 @@ namespace VNXTLP {
                 if (isWin == false)
                     return false;
 
-                IntPtr hModule = GetModuleHandle(@"ntdll.dll");
-                if (hModule == IntPtr.Zero)
-                    isWin = true;
-                else {
-                    IntPtr fptr = GetProcAddress(hModule, @"wine_get_version");
-                    isWin = fptr == IntPtr.Zero;
-                }
+            return true;
 
-                return isWin.Value;
             }
         }
 
