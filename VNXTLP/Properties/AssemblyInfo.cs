@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("VNX+ Translation Platform")]
-[assembly: AssemblyDescription("Translation Platform to VNX+ Projects")]
+[assembly: AssemblyDescription("Translation Platform to use on VNX+ Projects")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("VNX+")]
 [assembly: AssemblyProduct("VNXTLP")]
