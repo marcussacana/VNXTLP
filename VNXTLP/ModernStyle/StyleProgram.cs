@@ -196,14 +196,14 @@ namespace VNXTLP.NewStyle {
 
         private void ZSalvar_Click(object sender, EventArgs e) {
             if (!FileOpen) {
-                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.BeforeSaveOpenAScript), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.BeforeSaveOpenAScript), "VNX+ Translation Platform", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             SaveScript.ShowDialog();
         }
 
         private void OpenScript_FileOk(object sender, CancelEventArgs e) {
-            Text = "VNX+ Translation Plataform - " + System.IO.Path.GetFileName(OpenScript.FileName);
+            Text = "VNX+ Translation Platform - " + System.IO.Path.GetFileName(OpenScript.FileName);
             string[] StringList = Engine.Open(OpenScript.FileName);
             FileOpen = true;
             FileSaved = true;
@@ -471,7 +471,7 @@ namespace VNXTLP.NewStyle {
 
         private void ZScriptRef_Click(object sender, EventArgs e) {
             if (!FileOpen) {
-                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.BeforeSaveOpenAScript), "VNX+ Translation Plataform", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.BeforeSaveOpenAScript), "VNX+ Translation Platform", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             ZScriptRef.Checked = !ZScriptRef.Checked;

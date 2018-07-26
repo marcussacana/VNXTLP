@@ -115,7 +115,7 @@
             this.ZSKN.SmartBounds = true;
             this.ZSKN.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultLocation;
             this.ZSKN.TabIndex = 1;
-            this.ZSKN.Text = "VNX+ Translation Plataform";
+            this.ZSKN.Text = "VNX+ Translation Platform";
             // 
             // Scroll
             // 
@@ -672,7 +672,7 @@
             this.MainMenuStrip = this.ZMenu;
             this.MinimumSize = new System.Drawing.Size(645, 417);
             this.Name = "StyleProgram";
-            this.Text = "VNX+ Translation Plataform";
+            this.Text = "VNX+ Translation Platform";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.StyleFrmClosing);
             this.Shown += new System.EventHandler(this.StyleFrmOpen);
