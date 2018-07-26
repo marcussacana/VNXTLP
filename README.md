@@ -1,37 +1,13 @@
-### VNXTLP - VNX+ Translate Plataform
+### VNXTLP - VNX+ Translation Platform
 [![Build Status](https://ci.appveyor.com/api/projects/status/github/marcussacana/VNXTLP?branch=master&retina=true)](https://ci.appveyor.com/project/marcussacana/vnxtlp)
 
-This program is a Plataform to translate scripts, you need setup your build to your engine.
+This software is a platform used to translate scripts.
 
-#### Compatible with:
-- SiglusSceneManager - in my git
-
-- KrKrZSceneManager - in my git
-
-- EushullyEditor - in my git
- 
-- RLDManager (ExHIBIT) - in my git
-
-- More 3 (in this git)
-
-This program needs the LEC Power Transaltor 15 installed to works well offline.
+Offline mode requires [LEC Power Translator](https://www.lec.com/power-translator-software.asp) installed to work properly.
 
 #### Build Flags
 
-KiriKiri = PSB String Editor (KrKrZSceneManager)
-
-Eushully = BIN String Editor (EushullyEditor)
-
-ExHIBIT = RLD String Editor (RLDManager)
-
-SteinsGate = Script Filter
-
-KrKrFate = Script Filter
-
-Umineko = Script Filter
-
-
-VNX = Enable my custom algorithms to specifed games
+VNX = Enables my custom algorithms for these specified games:
 - Kamidori = Kamidori algorithm build
 - KNR = Kami no Rhapsody algorithm build
 - Sankai = Sankai Ou no Yubiwa algorithm build

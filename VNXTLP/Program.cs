@@ -1,5 +1,5 @@
 ﻿/*
-VNXTLP - Visual Novel X Translation Plataform
+VNXTLP - Visual Novel X Translation Platform
 Apesar de não baseado, substitui o RTT usado no
 projeto de tradução para Katawa Shoujo, que
 depois de 2 anos de trabalho teremos essa nova

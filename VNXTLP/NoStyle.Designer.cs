@@ -562,7 +562,7 @@
             this.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.Name = "NoStyle";
             this.ShowIcon = false;
-            this.Text = "VNX+ Translation Plataform";
+            this.Text = "VNX+ Translation Platform";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NoStyle_FormClosing);
             this.Shown += new System.EventHandler(this.NoStyle_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NoStyle_KeyDown);
