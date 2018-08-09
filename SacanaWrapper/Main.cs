@@ -1,5 +1,4 @@
 ﻿//#define DebugPlugin
-#define MONO
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,6 +14,7 @@ namespace SacanaWrapper
         string StrIP = string.Empty;
         string StrEP = string.Empty;
         private static string Lastest = string.Empty;
+        private static string LastExt = string.Empty;
         DotNetVM Plugin;
 
 
@@ -25,22 +25,7 @@ namespace SacanaWrapper
         }
         public string[] Import(byte[] Script, string Extension = null, bool PreventCorrupt = false, bool TryLastPluginFirst = false) {
             string[] Strings = null;
-#if MONO
-            string PluginDir = DotNetVM.AssemblyDirectory + "/Plugins";
-#else
-            string PluginDir = DotNetVM.AssemblyDirectory + "\\Plugins";
-#endif
-            if (File.Exists(Lastest) && TryLastPluginFirst) {
-#if !DebugPlugin
-                try {
-#endif
-                    Strings = TryImport(Lastest, Script);
-                    if (!Corrupted(Strings))
-                        return Strings;
-#if !DebugPlugin
-            } catch { }
-#endif
-            }
+            string PluginDir = DotNetVM.AssemblyDirectory + "\\Plugins";       
 
             string[] Plugins = GetFiles(PluginDir, "*.inf|*.ini|*.cfg");
 
@@ -52,6 +37,20 @@ namespace SacanaWrapper
             }
             if (Extension != null)
                 Extension = Extension.ToLower();
+
+            if (File.Exists(Lastest) && Extension == LastExt && TryLastPluginFirst) {
+#if !DebugPlugin
+                try {
+#endif
+                    Strings = TryImport(Lastest, Script);
+                    if (!Corrupted(Strings))
+                        return Strings;
+#if !DebugPlugin
+                } catch { }
+#endif
+            }
+
+            LastExt = Extension;
 
 
             //Initial Detection
@@ -132,6 +131,8 @@ namespace SacanaWrapper
             foreach (string str in Strings) {
                 if (str.Trim('\x0').Contains('\x0') || (from c in str.Trim('\x0') where (c & 0x7700) == 0x7700 || c < 10 || Corrupts.Contains(c) select c).Count() != 0)
                     Matchs++;
+				else if (string.IsNullOrWhiteSpace(str))
+					Matchs++;
             }
 
             if (Matchs > Strings.Length / 2)
@@ -154,17 +155,12 @@ namespace SacanaWrapper
             ExportPath = Ini.GetConfig("Plugin", "Export;Exp;export;exp", Plugin, true);
             ImportPath = Ini.GetConfig("Plugin", "Import;Imp;import;imp", Plugin, true);
             string CustomSource = Ini.GetConfig("Plugin", "File;file;Archive;archive;Arc;arc", Plugin, false);
-#if MONO
-            string Path = System.IO.Path.GetDirectoryName(Plugin) + "/",
-             SourcePath = System.IO.Path.GetDirectoryName(Plugin) + "/",
-             SourcePath2 = System.IO.Path.GetDirectoryName(Plugin) + "/";
-#else
+
             string Path = System.IO.Path.GetDirectoryName(Plugin) + "\\",
              SourcePath = System.IO.Path.GetDirectoryName(Plugin) + "\\",
              SourcePath2 = System.IO.Path.GetDirectoryName(Plugin) + "\\";
-
-#endif
-
+             
+            
             if (!string.IsNullOrWhiteSpace(CustomSource)){
                 Path += CustomSource + ".dll";
                 SourcePath += CustomSource + ".cs";
@@ -175,14 +171,35 @@ namespace SacanaWrapper
                 SourcePath2 += System.IO.Path.GetFileNameWithoutExtension(Plugin) + ".vb";
             }
 
+            DateTime Source1Time = DateTime.MinValue;
+            DateTime Source2Time = DateTime.MinValue;
+            DateTime DLLTime = DateTime.MinValue;
+            if (File.Exists(SourcePath)) {
+                Source1Time = new FileInfo(SourcePath).LastWriteTimeUtc;
+            }
+            if (File.Exists(SourcePath2)) {
+                Source2Time = new FileInfo(SourcePath2).LastWriteTimeUtc;
+            }
+            if (File.Exists(Path)) {
+                DLLTime = new FileInfo(Path).LastWriteTimeUtc;
+            }
+
+            string Source = null;
+
             //Initialize Plugin
             bool InitializeWithScript = Ini.GetConfig("Plugin", "Initialize;InputOnCreate;initialize;inputoncreate", Plugin, false).ToLower() == "true";
-            if (File.Exists(SourcePath))
+            if (File.Exists(SourcePath) && Source1Time > Source2Time && Source1Time > DLLTime) {
                 this.Plugin = new DotNetVM(File.ReadAllText(SourcePath, Encoding.UTF8), DotNetVM.Language.CSharp);
-            else if (File.Exists(SourcePath2))
+                Source = SourcePath;
+            } else if (File.Exists(SourcePath2) && Source2Time > Source1Time && Source2Time > DLLTime) {
                 this.Plugin = new DotNetVM(File.ReadAllText(SourcePath2, Encoding.UTF8), DotNetVM.Language.VisualBasic);
-            else
+                Source = SourcePath2;
+            } else
                 this.Plugin = new DotNetVM(File.ReadAllBytes(Path));
+
+            if (Source != null && File.Exists(this.Plugin.AssemblyPath)) {
+                File.Copy(this.Plugin.AssemblyPath, Path, true);
+            }
 
             //Import
             Lastest = Plugin;
