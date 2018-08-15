@@ -291,7 +291,7 @@ internal class SpellTextBox : RichTextBox {
             } catch { }
         } else if (TLClient == "2") {
             try {
-                return Bing.Translate(word, InputLang, TargetLang, true);
+                return Bing.Translate(word, InputLang, TargetLang);
             } catch { }
         }
         return word;
