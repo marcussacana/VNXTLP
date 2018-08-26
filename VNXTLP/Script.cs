@@ -76,25 +76,34 @@ namespace VNXTLP {
         private static void ClearStrings(ref string[] Strings) {
             Engine.Prefix = new Dictionary<uint, string>();
             Engine.Sufix = new Dictionary<uint, string>();
-            string Trim = GetConfig("Filter", "Trim", false);
-            if (string.IsNullOrWhiteSpace(Trim))
+            if (GetConfigStatus("Fitler", "Trim") != ConfigStatus.Ok)
                 return;
-
+            
+            string[] Trims = GetConfig("Filter", "Trim", false).Split(',');
             for (uint i = 0; i < Strings.LongLength; i++) {
-                string Result = string.Empty, Prefix = string.Empty, Sufix = string.Empty;
-                while (true) {
-                    Result = ClearPrefix(ref Strings[i], Trim);
-                    if (Result == null)
-                        break;
-                    Prefix += Result;
-                }
-
-                while (true) {
-                    Result = ClearSufix(ref Strings[i], Trim);
-                    if (Result == null)
-                        break;
-                    Sufix = Result + Sufix;
-                }
+                string Prefix = string.Empty, Sufix = string.Empty, Bak = Strings[i];
+                do {
+                    Bak = Strings[i];
+                    foreach (string Trim in Trims) {
+                        if (Trim.Length == 2) {
+                            char Open = Trim[0], Close = Trim[1];
+                            if (Strings[i].StartsWith(Open.ToString()) && Strings[i].EndsWith(Close.ToString())) {
+                                Strings[i] = Strings[i].Substring(1, Strings[i].Length - 2);
+                                Prefix += Open;
+                                Sufix = Close + Sufix;
+                            }
+                        } else {
+                            if (Strings[i].StartsWith(Trim)) {
+                                Strings[i] = Strings[i].Substring(Trim.Length);
+                                Prefix += Trim;
+                            }
+                            if (Strings[i].EndsWith(Trim)) {
+                                Strings[i] = Strings[i].Substring(0, Strings[i].Length - Trim.Length);
+                                Sufix = Trim + Sufix;
+                            }
+                        }
+                    }
+                } while (Bak != Strings[i]);
 
                 Engine.Prefix.Add(i, Prefix);
                 Engine.Sufix.Add(i, Sufix);
@@ -149,27 +158,6 @@ namespace VNXTLP {
             }
         }
 
-        private static string ClearPrefix(ref string String, string Trim) {
-            string[] Prefixs = Trim.Split(',');
-            foreach (string Prefix in Prefixs) {
-                if (String.StartsWith(Prefix)) {
-                    String = String.Substring(Prefix.Length, String.Length - Prefix.Length);
-                    return Prefix;
-                }
-            }
-            return null;
-        }
-
-        private static string ClearSufix(ref string String, string Trim) {
-            string[] Sufixs = Trim.Split(',');
-            foreach (string Sufix in Sufixs) {
-                if (String.EndsWith(Sufix)) {
-                    String = String.Substring(0, String.Length - Sufix.Length);
-                    return Sufix;
-                }
-            }
-            return null;
-        }
 
         private static void Remap(ref string[] Strings, string Remap) {
             StrMap = new Dictionary<uint, uint>();
