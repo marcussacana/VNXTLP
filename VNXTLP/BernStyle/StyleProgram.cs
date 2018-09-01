@@ -166,6 +166,7 @@ namespace VNXTLP.BernStyle {
             ZModoDianmico.Text = Engine.LoadTranslation(Engine.TLID.DynamicMode);
             ZOtherOptions.Text = Engine.LoadTranslation(Engine.TLID.MoreOptions);
             ZSaveWindowState.Text = Engine.LoadTranslation(Engine.TLID.SaveWindowState);
+            ZSaveItem.Text = Engine.LoadTranslation(Engine.TLID.Save);
 
             //Load Custom Resources from a VNXTL Build
             foreach (ToolStripMenuItem item in Engine.CustomResources(ref TLBox))

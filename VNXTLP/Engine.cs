@@ -77,16 +77,16 @@ namespace VNXTLP {
             return GetConfig("VNXTLP", "Theme", false).ToLower();
         }
         internal static void InitializeStrings() {
-            TextReader TR = (new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "Translation.ini", Encoding.UTF8));
-            while (TR.Peek() != -1) {
-                string Line = TR.ReadLine();
-                if (Line.StartsWith("//") || Line.StartsWith("[") || Line.StartsWith("!") || string.IsNullOrWhiteSpace(Line) || !Line.Contains("="))
-                    continue;
-                int ID = int.Parse(Line.Split('=')[0]);
-                while (ID > Translation.Count)
-                    Translation.Add(string.Format("Missing Translation: {0} ({1})", Translation.Count, ((TLID)Translation.Count).ToString()));
-                Translation.Insert(ID, Line.Split('=')[1].Replace("\\n", "\n"));
-            }
+            using (TextReader TR = (new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "Translation.ini", Encoding.UTF8)))
+                while (TR.Peek() != -1) {
+                    string Line = TR.ReadLine();
+                    if (Line.StartsWith("//") || Line.StartsWith("[") || Line.StartsWith("!") || string.IsNullOrWhiteSpace(Line) || !Line.Contains("="))
+                        continue;
+                    int ID = int.Parse(Line.Split('=')[0]);
+                    while (ID > Translation.Count)
+                        Translation.Add(string.Format("Missing Translation: {0} ({1})", Translation.Count, ((TLID)Translation.Count).ToString()));
+                    Translation.Insert(ID, Line.Split('=')[1].Replace("\\n", "\n"));
+                }
         }
 
         internal static string LoadTranslation(TLID ID, params object[] Format) {

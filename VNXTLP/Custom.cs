@@ -103,7 +103,7 @@ namespace VNXTLP {
                     throw new Exception();
 
                 string Lang = System.Threading.Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
-                //Lang = "ES";
+                //Lang = "EN";
                 Item6 = new ToolStripMenuItem(TLIB.Google.Translate("Switch to my Language", "EN", Lang));
                 Item6.Click += (a, e) => {
 

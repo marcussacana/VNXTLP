@@ -43,6 +43,7 @@
             this.temaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BasicThemeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ModernThemeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bernToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.períodoDeBackupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BackupOnSaveItem = new System.Windows.Forms.ToolStripMenuItem();
             this.BackupOn200MenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,7 +80,6 @@
             this.Scroll = new System.Windows.Forms.HScrollBar();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.SkipDelay = new System.Windows.Forms.Timer(this.components);
-            this.bernToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             this.MainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -246,6 +246,12 @@
             this.ModernThemeMenuItem.Size = new System.Drawing.Size(180, 22);
             this.ModernThemeMenuItem.Text = "Moderno";
             // 
+            // bernToolStripMenuItem
+            // 
+            this.bernToolStripMenuItem.Name = "bernToolStripMenuItem";
+            this.bernToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bernToolStripMenuItem.Text = "Bern";
+            // 
             // períodoDeBackupToolStripMenuItem
             // 
             this.períodoDeBackupToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -264,26 +270,26 @@
             // 
             this.BackupOnSaveItem.CheckOnClick = true;
             this.BackupOnSaveItem.Name = "BackupOnSaveItem";
-            this.BackupOnSaveItem.Size = new System.Drawing.Size(141, 22);
+            this.BackupOnSaveItem.Size = new System.Drawing.Size(180, 22);
             this.BackupOnSaveItem.Text = "Ao Salvar";
             // 
             // BackupOn200MenuItem
             // 
             this.BackupOn200MenuItem.Name = "BackupOn200MenuItem";
-            this.BackupOn200MenuItem.Size = new System.Drawing.Size(141, 22);
+            this.BackupOn200MenuItem.Size = new System.Drawing.Size(180, 22);
             this.BackupOn200MenuItem.Text = "200 Diálogos";
             // 
             // BackupOn100MenuItem
             // 
             this.BackupOn100MenuItem.Name = "BackupOn100MenuItem";
-            this.BackupOn100MenuItem.Size = new System.Drawing.Size(141, 22);
+            this.BackupOn100MenuItem.Size = new System.Drawing.Size(180, 22);
             this.BackupOn100MenuItem.Text = "100 Diálogos";
             // 
             // BackupOn50Item
             // 
             this.BackupOn50Item.CheckOnClick = true;
             this.BackupOn50Item.Name = "BackupOn50Item";
-            this.BackupOn50Item.Size = new System.Drawing.Size(141, 22);
+            this.BackupOn50Item.Size = new System.Drawing.Size(180, 22);
             this.BackupOn50Item.Text = "50 Diálogos";
             // 
             // BackupOn25Item
@@ -291,21 +297,21 @@
             this.BackupOn25Item.Checked = true;
             this.BackupOn25Item.CheckState = System.Windows.Forms.CheckState.Checked;
             this.BackupOn25Item.Name = "BackupOn25Item";
-            this.BackupOn25Item.Size = new System.Drawing.Size(141, 22);
+            this.BackupOn25Item.Size = new System.Drawing.Size(180, 22);
             this.BackupOn25Item.Text = "25 Diálogos";
             // 
             // BackupOn10Item
             // 
             this.BackupOn10Item.CheckOnClick = true;
             this.BackupOn10Item.Name = "BackupOn10Item";
-            this.BackupOn10Item.Size = new System.Drawing.Size(141, 22);
+            this.BackupOn10Item.Size = new System.Drawing.Size(180, 22);
             this.BackupOn10Item.Text = "10 Diálogos";
             // 
             // NeverBackupItem
             // 
             this.NeverBackupItem.CheckOnClick = true;
             this.NeverBackupItem.Name = "NeverBackupItem";
-            this.NeverBackupItem.Size = new System.Drawing.Size(141, 22);
+            this.NeverBackupItem.Size = new System.Drawing.Size(180, 22);
             this.NeverBackupItem.Text = "Nunca";
             // 
             // sistemaDeTraduçãoToolStripMenuItem
@@ -321,20 +327,20 @@
             // lECToolStripMenuItem
             // 
             this.lECToolStripMenuItem.Name = "lECToolStripMenuItem";
-            this.lECToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.lECToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.lECToolStripMenuItem.Text = "LEC";
             // 
             // googleToolStripMenuItem
             // 
             this.googleToolStripMenuItem.Name = "googleToolStripMenuItem";
-            this.googleToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.googleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.googleToolStripMenuItem.Text = "Google";
             // 
             // zBingToolStripMenuItem
             // 
             this.zBingToolStripMenuItem.Name = "zBingToolStripMenuItem";
-            this.zBingToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
-            this.zBingToolStripMenuItem.Text = "ZBing";
+            this.zBingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.zBingToolStripMenuItem.Text = "Bing";
             // 
             // SelecaoAutomaticaMenuItem1
             // 
@@ -542,12 +548,6 @@
             // 
             this.SkipDelay.Interval = 1000;
             this.SkipDelay.Tick += new System.EventHandler(this.DelayEnd);
-            // 
-            // bernToolStripMenuItem
-            // 
-            this.bernToolStripMenuItem.Name = "bernToolStripMenuItem";
-            this.bernToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.bernToolStripMenuItem.Text = "Bern";
             // 
             // NoStyle
             // 

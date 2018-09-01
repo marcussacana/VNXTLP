@@ -54,7 +54,7 @@ namespace VNXTLP {
 
         private static bool ConfirmPermission(string Nick) {
             byte[] Hash = GetHash(Nick);
-            uint Seed = (uint)(DateTime.Now.ToBinary() & 0xFFFFFFFFu);
+            uint Seed = (uint)(DateTime.UtcNow.ToBinary() & 0xFFFFFFFFu);
             for (int i = 0; i < Hash.Length; i++) {
                 Seed ^= (uint)Hash[i] << (8 * (i % 7));
             }
@@ -74,8 +74,8 @@ namespace VNXTLP {
         }
 
         internal static uint GetRefSeed(uint Key) {
-            uint Base = (uint)DateTime.Now.Year * (uint)DateTime.Now.DayOfYear;
-            Key *= (uint)DateTime.Now.Year;
+            uint Base = (uint)DateTime.UtcNow.Year * (uint)DateTime.UtcNow.DayOfYear;
+            Key *= (uint)DateTime.UtcNow.Year;
 
             for (int i = 0; i < 4; i++) {
                 Key ^= (Base << (i));
