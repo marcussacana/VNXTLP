@@ -203,6 +203,7 @@
       <DependentUpon>CheckUpdate.cs</DependentUpon>
     </Compile>
     <Compile Include="Search.cs" />
+    <Compile Include="Sinonimos.cs" />
     <Compile Include="SpellCheck.cs" />
     <Compile Include="SpellTextBox.cs">
       <SubType>Component</SubType>

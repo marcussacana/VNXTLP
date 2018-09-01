@@ -53,8 +53,8 @@ internal class SpellTextBox : RichTextBox {
     }
     internal void BootUP() {
         try {
-            InputLang = Engine.GetConfig("VNXTLP", "SourceLang", false);
-            TargetLang = Engine.GetConfig("VNXTLP", "TargetLang", false);
+            InputLang = Engine.GetConfig("VNXTLP", "SourceLang", false).ToUpper();
+            TargetLang = Engine.GetConfig("VNXTLP", "TargetLang", false).ToUpper();
             GetOnlineSynonyms = !Program.OfflineMode && (InputLang == "EN" || TargetLang == "EN");
             PaintTerms = Engine.GetConfig("VNXTLP", "AllwaysPaintTerms", false) == "true";
 
@@ -454,14 +454,21 @@ internal class SpellTextBox : RichTextBox {
 
             bool IsFromInputLang = TL != MI.Word;
             string Word = MI.Word;
+            bool BRWord = false;
             if (IsFromInputLang && InputLang != "EN") {
-                Word = DownloadTranslation(Word, InputLang, "EN");
+                if (InputLang.Split('-')[0].ToUpper() == "PT")
+                    BRWord = true;
+                else
+                    Word = DownloadTranslation(Word, InputLang, "EN");
             }
             if (!IsFromInputLang && TargetLang != "EN") {
-                Word = DownloadTranslation(Word, TargetLang, "EN");
+                if (TargetLang.Split('-')[0].ToUpper() == "PT")
+                    BRWord = true;
+                else
+                    Word = DownloadTranslation(Word, TargetLang, "EN");
             }
 
-            if (Word.Contains(" ")) {
+            if (Word.Contains(" ") && !BRWord) {
                 foreach (string w in Word.Split(' ')) {
                     string TTL = string.Empty;
                     if (IsFromInputLang && InputLang != "EN") {
@@ -475,11 +482,15 @@ internal class SpellTextBox : RichTextBox {
                 }
             }
 
-
+            string BRResult = string.Empty;
             string[] Suggestions = new string[0];
             System.Threading.Thread Thread = new System.Threading.Thread(() => {
                 try {
-                    Suggestions = WordAPI.DownloadSynonyms(Word);
+                    if (BRWord) {
+                        BRResult = BRSynonymous.SearchWord(Word);
+                        return;
+                    } else
+                        Suggestions = WordAPI.DownloadSynonyms(Word);
                 } catch { }
                 if (Suggestions == null)
                     Suggestions = new string[0];
@@ -494,20 +505,24 @@ internal class SpellTextBox : RichTextBox {
             ti.Tick += (sdr, ev) => {
                 if (Thread.ThreadState == System.Threading.ThreadState.Stopped) {
                     ti.Enabled = false;
-                    string WordList = string.Empty;
-                    if (Suggestions == null) {
+                    if (Suggestions == null && string.IsNullOrEmpty(BRResult)) {
                         Ballon = new BallonToolTip();
                         Ballon.Title = Engine.LoadTranslation(Engine.TLID.NoSynonymsFound);
                         Ballon.Message = Engine.LoadTranslation(Engine.TLID.TryManuallySearch);
                         Engine.UpdateToolTip(Ballon, true);
                         return;
                     }
-                    foreach (string Suggestion in Suggestions)
-                        if (!string.IsNullOrWhiteSpace(Suggestion))
-                            WordList += Suggestion + ", ";
-                    if (string.IsNullOrWhiteSpace(WordList))
-                        WordList = @"  ";
-                    WordList = WordList.Substring(0, WordList.Length - 2);
+                    string WordList = string.Empty;
+                    if (BRWord) {
+                        WordList = BRResult;
+                    } else {
+                        foreach (string Suggestion in Suggestions)
+                            if (!string.IsNullOrWhiteSpace(Suggestion))
+                                WordList += Suggestion + ", ";
+                        if (string.IsNullOrWhiteSpace(WordList))
+                            WordList = @"  ";
+                        WordList = WordList.Substring(0, WordList.Length - 2);
+                    }
                     Ballon = new BallonToolTip();
                     Ballon.Title = string.IsNullOrWhiteSpace(WordList) ? Engine.LoadTranslation(Engine.TLID.NoSynonymsFound) : string.Format(Engine.LoadTranslation(Engine.TLID.SynonymsFor), MI.Word);
                     Ballon.Message = string.IsNullOrWhiteSpace(WordList) ? Engine.LoadTranslation(Engine.TLID.TryManuallySearch) : WordList;
