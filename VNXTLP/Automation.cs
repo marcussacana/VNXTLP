@@ -16,6 +16,8 @@ namespace VNXTLP {
         }
         
         public static void FinishString(string Output) {
+            if (LastString == null)
+                return;
             if (!Database.ContainsKey(LastString))
                 Database.Add(LastString, Output);
         }
