@@ -58,6 +58,7 @@
             this.ZTema = new System.Windows.Forms.ToolStripMenuItem();
             this.ZBasico = new System.Windows.Forms.ToolStripMenuItem();
             this.ZModerno = new System.Windows.Forms.ToolStripMenuItem();
+            this.ZBernMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ZPeriodo = new System.Windows.Forms.ToolStripMenuItem();
             this.ZAoSalvar = new System.Windows.Forms.ToolStripMenuItem();
             this.Z200Dialogos = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,7 +89,6 @@
             this.OpenScript = new System.Windows.Forms.OpenFileDialog();
             this.SaveScript = new System.Windows.Forms.SaveFileDialog();
             this.SkipDelay = new System.Windows.Forms.Timer(this.components);
-            this.ZBernMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ZSKN.SuspendLayout();
             this.ZMenu.SuspendLayout();
             this.SuspendLayout();
@@ -400,7 +400,7 @@
             this.ZBasico.CheckOnClick = true;
             this.ZBasico.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZBasico.Name = "ZBasico";
-            this.ZBasico.Size = new System.Drawing.Size(180, 22);
+            this.ZBasico.Size = new System.Drawing.Size(123, 22);
             this.ZBasico.Text = "Básico";
             // 
             // ZModerno
@@ -410,8 +410,15 @@
             this.ZModerno.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ZModerno.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZModerno.Name = "ZModerno";
-            this.ZModerno.Size = new System.Drawing.Size(180, 22);
+            this.ZModerno.Size = new System.Drawing.Size(123, 22);
             this.ZModerno.Text = "Moderno";
+            // 
+            // ZBernMenu
+            // 
+            this.ZBernMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.ZBernMenu.Name = "ZBernMenu";
+            this.ZBernMenu.Size = new System.Drawing.Size(123, 22);
+            this.ZBernMenu.Text = "Bern";
             // 
             // ZPeriodo
             // 
@@ -652,13 +659,6 @@
             // 
             this.SkipDelay.Interval = 1000;
             this.SkipDelay.Tick += new System.EventHandler(this.DelayEnd);
-            // 
-            // ZBernMenu
-            // 
-            this.ZBernMenu.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
-            this.ZBernMenu.Name = "ZBernMenu";
-            this.ZBernMenu.Size = new System.Drawing.Size(180, 22);
-            this.ZBernMenu.Text = "Bern";
             // 
             // StyleProgram
             // 

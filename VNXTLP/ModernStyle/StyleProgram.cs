@@ -56,8 +56,9 @@ namespace VNXTLP.NewStyle {
             //Initialize Events
             Engine.Append(ref TLBox.TextChanged, TLBox_TextChanged);
             TLBox.KeyDown += new KeyEventHandler(TLBox_KeyDown);
+            TLBox.OnHintChanged += HintRecived;
             TLBox.Anchor = ((AnchorStyles.Bottom | AnchorStyles.Left) | AnchorStyles.Right);
-            ZTextBox.GotFocus += (sender, e) => { TLBox.Focus(); };
+            ZTextBox.GotFocus += (sender, e) => { TLBox.Focus(); };            
 
             #endregion
 
@@ -124,6 +125,7 @@ namespace VNXTLP.NewStyle {
             else if (cfg == "off")
                 ZTLClient.Visible = false;
 
+            #region Translation
             //Load Translation
             ZContinue.Text = Engine.LoadTranslation(Engine.TLID.Next);
             ZReturn.Text = Engine.LoadTranslation(Engine.TLID.Back);
@@ -167,6 +169,12 @@ namespace VNXTLP.NewStyle {
             ZOtherOptions.Text = Engine.LoadTranslation(Engine.TLID.MoreOptions);
             ZSaveWindowState.Text = Engine.LoadTranslation(Engine.TLID.SaveWindowState);
             ZSaveItem.Text = Engine.LoadTranslation(Engine.TLID.Save);
+            #endregion
+
+            Engine.EnableDragDrop(this, new Engine.ScriptDraged((a) => {
+                OpenScript.FileName = a;
+                OpenScript_FileOk(null, null);
+            }));
 
             //Load Custom Resources from a VNXTL Build
             foreach (ToolStripMenuItem item in Engine.CustomResources(ref TLBox))
@@ -174,6 +182,17 @@ namespace VNXTLP.NewStyle {
 
             Engine.LoadWindowState(this);
         }
+
+        private void HintRecived(string Text) {
+            if (Text == null) {
+                InfoLbl.ForeColor = System.Drawing.Color.FromArgb(142, 142, 142);
+                Index = Index;
+            } else {
+                InfoLbl.ForeColor = System.Drawing.Color.FromArgb(0xFF, 0xCC, 0x00);
+                InfoLbl.Text = string.Format(Engine.LoadTranslation(Engine.TLID.Atention, Text));
+            }
+        }
+
 
         private void SelEngine_CheckedChange(object sender, EventArgs e) {
             Engine.SetConfig("VNXTLP", "SelMode", SelEngine.SelectedIndex.ToString());

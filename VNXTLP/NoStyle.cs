@@ -49,6 +49,7 @@ namespace VNXTLP {
             TLBox.SizeChanged += new EventHandler(TLBox_SizeChanged);
             Engine.Append(ref TLBox.TextChanged, TLBox_TextChanged);
             TLBox.KeyDown += new KeyEventHandler(TLBox_KeyDown);
+            TLBox.OnHintChanged += HintRecived;
 
             //Initialize RadioToolStrip Engine 
             ToolStripMenuItem[] BackupItems = new ToolStripMenuItem[] { BackupOnSaveItem, BackupOn200MenuItem, BackupOn100MenuItem, BackupOn50Item, BackupOn25Item, BackupOn10Item, NeverBackupItem };
@@ -109,6 +110,7 @@ namespace VNXTLP {
             else if (cfg == "off")
                 sistemaDeTraduçãoToolStripMenuItem.Visible = false;
 
+            #region Translation
             //Load Translation
             SkipBnt.Text = Engine.LoadTranslation(Engine.TLID.Next);
             RetBnt.Text = Engine.LoadTranslation(Engine.TLID.Back);
@@ -150,6 +152,12 @@ namespace VNXTLP {
             modoDinâmicoToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.DynamicMode);
             outrasopçõesmenuitem.Text = Engine.LoadTranslation(Engine.TLID.MoreOptions);
             salvarEstadoDaJanelaToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.SaveWindowState);
+            #endregion
+
+            Engine.EnableDragDrop(this, new Engine.ScriptDraged((a) => {
+                OpenScript.FileName = a;
+                OpenScript_FileOk(null, null);
+            }));
 
             //Special Items
             foreach (ToolStripMenuItem item in Engine.CustomResources(ref TLBox))
@@ -157,6 +165,16 @@ namespace VNXTLP {
 
             Engine.LoadWindowState(this);
 #endif
+        }
+
+        private void HintRecived(string Text) {
+            if (Text == null) {
+                InfoLbl.ForeColor = System.Drawing.SystemColors.ControlText;
+                Index = Index;
+            } else {
+                InfoLbl.ForeColor = System.Drawing.Color.FromArgb(0xFF, 0xCC, 0x00);
+                InfoLbl.Text = string.Format(Engine.LoadTranslation(Engine.TLID.Atention, Text));
+            }
         }
 
         private void SelEngine_CheckedChange(object sender, EventArgs e) {

@@ -21,15 +21,16 @@ namespace VNXTLP {
         internal static bool InitializeForm = true;
         internal static bool Connecting = false;
 
+        internal static uint Retry;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main(string[] Args) {
             bool EndUpdate = false;
-            foreach (string str in Args) {
-                string Command = str.ToLower().Trim('-', '\\', '/');
-                switch (Command) {
+            for (int i = 0; i < Args.Length; i++) {
+                switch (Args[i].ToLower().Trim('-', '\\', '/')) {
                     default:
                         continue;
                     case "offline":
@@ -37,6 +38,11 @@ namespace VNXTLP {
                         continue;
                     case "endupdate":
                         EndUpdate = true;
+                        continue;
+                    case "retry":
+                        if (i + 1 >= Args.Length)
+                            continue;
+                        uint.TryParse(Args[++i], out Retry);
                         continue;
                 }
             }
@@ -57,17 +63,22 @@ namespace VNXTLP {
                 MessageBox.Show(Engine.LoadTranslation(Engine.TLID.UpdatesInstaled), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
-            new Thread(() => {
-                try {
-                    if (Engine.GetConfig("FTP", "AutoLogin", false) == "true") {
-                        Connecting = true;
-                        Engine.Login(Engine.GetConfig("FTP", "AutoUser", true), Engine.GetConfig("FTP", "AutoPass", true), false);
-                    }
-                } catch { }
-                Connecting = false;
-            }).Start();
+            if (Retry > 1) {
+                OfflineMode = true;
+                MessageBox.Show(Engine.LoadTranslation(Engine.TLID.FailedToConnect), "VNXTLP", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
 
-            if (!OfflineMode) {
+            if (!OfflineMode && !System.Diagnostics.Debugger.IsAttached) {
+                new Thread(() => {
+                    try {
+                        if (Engine.GetConfig("FTP", "AutoLogin", false) == "true") {
+                            Connecting = true;
+                            Engine.Login(Engine.GetConfig("FTP", "AutoUser", true), Engine.GetConfig("FTP", "AutoPass", true), false);
+                        }
+                    } catch { }
+                    Connecting = false;
+                }).Start();
+
                 try {
                     (new CheckUpdate()).ShowDialog();
                 } catch { }

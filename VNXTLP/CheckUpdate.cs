@@ -19,9 +19,11 @@ namespace VNXTLP
                 DateTime Begin = DateTime.Now;
 
                 while (Closed == false) {
-                    if ((DateTime.Now - Begin).TotalSeconds > 15) {
-                        Process.Start(Application.ExecutablePath);
-                        Process.GetCurrentProcess().Kill();
+                    if ((DateTime.Now - Begin).TotalSeconds > 20) {
+                        Invoke(new MethodInvoker(() => {
+                            Process.Start(Application.ExecutablePath, "-retry " + (Program.Retry + 1));
+                            Process.GetCurrentProcess().Kill();
+                        }));
                         break;
                     }
                     System.Threading.Thread.Sleep(100);

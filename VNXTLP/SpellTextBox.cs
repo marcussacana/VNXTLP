@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using TLIB;
@@ -10,7 +12,10 @@ using VNXTLP;
 internal class SpellTextBox : RichTextBox {
 #if !DEBUG
     private ContextMenuStrip CMS;
-    private Hunspell SpellChecker = null;    
+    private Hunspell SpellChecker = null;
+
+    internal delegate void HintMessage(string Text);
+    internal event HintMessage OnHintChanged;
     internal bool DictionaryLoaded { get { return SpellChecker != null; } }
 
     internal char[] WordSeparators = new char[] { ' ', ',', '.', '?', '!', ';', ':', '\'', '"', '―', '*', '<', '>' };
@@ -19,46 +24,59 @@ internal class SpellTextBox : RichTextBox {
 
     internal bool SpellCheckEnable = true;
     internal int ErrorCount { get; private set; } = 0;
-    private bool SuggestionLoaded = false;
-    private Suggestion[] TextSuggestions = new Suggestion[0];
+    internal int HintCount { get; private set; } = 0;
+
+    private Dictionary<string, VNXTLP.Result> QueryCache = new Dictionary<string, VNXTLP.Result>();
     private Dictionary<string, string[]> WordTL = new Dictionary<string, string[]>();
     private Dictionary<string, string[]> PhraseCache = new Dictionary<string, string[]>();
-    private string LEC_Port;
-    private int PortStatus;
-    private DateTime LastEdit = DateTime.Now;
-    private Timer WaitEnds = new Timer() { Interval = 600 };
     private Dictionary<string, bool> WordCache = new Dictionary<string, bool>();
-    private List<string> ManualDictionary = new List<string>();
-    private bool SpellChecking = false;
-    private bool PaintTerms = false;
 
-    internal string InputLang;
-    internal string TargetLang;
+
+    private string LEC_Port;
+    private string LastSpellCheck = string.Empty;
+    public  string InputLang;
+    public  string TargetLang;
+
+    private int PortStatus;
+    private bool SuggestionLoaded = false;
+    private bool PaintTerms = false;
     private bool GetOnlineSynonyms = false;
+    private bool CustomDic = false;
+
+    private  Suggestion[] TextSuggestions = new Suggestion[0];
+    internal new Action[] TextChanged = new Action[0];
+
+    private Timer WaitEnds = new Timer() { Interval = 600 };
+    private DateTime LastEdit = DateTime.Now;
+    private List<string> ManualDictionary = new List<string>();
+
     private string TLDicPath {
         get {
             string Cfg = Engine.GetConfig("VNXTLP", "CustomDicPath", false);
             return Cfg != string.Empty ? Cfg : AppDomain.CurrentDomain.BaseDirectory + "TLDic.ini";
         }
-    }
-
-    internal new Action[] TextChanged = new Action[0];
-    
-    private bool CustomDic = false;
-    
+    }  
     
     private struct Suggestion {
         internal string Word;
+        internal string Info;
+        internal int Pos;
+        internal int Len;
         internal List<string> Suggestions;
     }
+
     internal void BootUP() {
         try {
             InputLang = Engine.GetConfig("VNXTLP", "SourceLang", false).ToUpper();
             TargetLang = Engine.GetConfig("VNXTLP", "TargetLang", false).ToUpper();
             GetOnlineSynonyms = !Program.OfflineMode && (InputLang == "EN" || TargetLang == "EN");
             PaintTerms = Engine.GetConfig("VNXTLP", "AllwaysPaintTerms", false) == "true";
-
+           
             WaitEnds.Tick += StopWaiter;
+            MouseMove += MouseMoveEvent;
+            MouseUp += MouseUpEvent;
+            base.TextChanged += TextChangedEvent;
+
             CustomDic = Engine.GetConfig("VNXTLP", "CustomDic", false) == "true";
             if (CustomDic) {
                 if (File.Exists(TLDicPath))
@@ -69,7 +87,7 @@ internal class SpellTextBox : RichTextBox {
                                 continue;
                             bool IsCustomTerm = TL.Contains("==");
                             if (TL.Contains("===")) {
-                                ManualDictionary.Add(TL.Split('=').First());
+                                ManualDictionary.Add(TL.Split('=').First().ToLower());
                                 continue;
                             }
 
@@ -124,13 +142,15 @@ internal class SpellTextBox : RichTextBox {
     internal void ResetCache() {
         WordCache = new Dictionary<string, bool>();
         foreach (string Word in ManualDictionary)
-            WordCache.Add(Word, true);
+            WordCache.Add(Word.ToLower(), true);
     }
 
     private void StopWaiter(object sender, EventArgs e) {
         if ((DateTime.Now - LastEdit).Milliseconds > 500) {
             WaitEnds.Enabled = false;
-            SpellCheck();
+            BeginInvoke(new MethodInvoker(() => {
+                SpellCheck();
+            }));
         }
     }
     private bool IsLoaded() {
@@ -143,39 +163,39 @@ internal class SpellTextBox : RichTextBox {
         }
     }
     private void SpellCheck() {
-        if (Text == string.Empty)
-            WordCache = new Dictionary<string, bool>();
         if (!IsLoaded())
             return;
-        if (SpellChecking || !SpellCheckEnable)
+        if (!SpellCheckEnable)
             return;
-        SpellChecking = true;
+        if (Text == string.Empty) {
+            WordCache = new Dictionary<string, bool>();
+            LastSpellCheck = null;
+        }
+
+        if (LastSpellCheck == Text)
+            return;
+        else
+            LastSpellCheck = Text;
 
         //Backup and Reset values
-        int SS = SelectionStart;
-        int SL = SelectionLength;
         ErrorCount = 0;
         SuggestionLoaded = false;
         TextSuggestions = new Suggestion[0];
 
         string[] Words = Text.Split(WordSeparators);
 
-        //Reformat All Text
-        string tmp = Text;
-        Clear();
-        Text = tmp;
-        //SetColorTable();
+        this.ClearAllFormatting(Font);
 
         //SpellCheck
         for (int i = 0, WIndex = 0; i < Words.Length; WIndex += Words[i].Length, i++) {
-            if (!WordCache.ContainsKey(Words[i]))
-                WordCache.Add(Words[i], SpellChecker.Spell(Words[i]));
+            if (!WordCache.ContainsKey(Words[i].ToLower()))
+                WordCache.Add(Words[i].ToLower(), SpellChecker.Spell(Words[i]));
             if (WordTL.ContainsKey(Words[i])) {
                 if (WordTL[Words[i]].Length > 0 && WordTL[Words[i]][0] == IGNORE)
                     continue;
                 ErrorCount++;
                 WaveWord(WIndex + i, Words[i].Length);
-            } else if (!WordCache[Words[i]]) {
+            } else if (!WordCache[Words[i].ToLower()]) {
                 ErrorCount++;
                 WaveWord(WIndex + i, Words[i].Length);
             } 
@@ -193,67 +213,73 @@ internal class SpellTextBox : RichTextBox {
                         WaveWord(i, Phrase.Length);
                         if (PaintTerms) {
                             Select(i, Phrase.Length);
-                            SelectionColor = System.Drawing.Color.Green;
+                            SelectionColor = Color.Green;
                         }
                     }
                 }
             }
-        Select(SS, SL);
-        SpellChecking = false;
-    }
-    /*
-    private void SetColorTable() {
-        //Generate ColorTable
-        const string ColorMask = "\\red{0}\\green{1}\\blue{2};";
-        string DefColor = string.Format(ColorMask, BaseTB.ForeColor.R, BaseTB.ForeColor.G, BaseTB.ForeColor.B);
-        string ErrColor = string.Format(ColorMask, 255, 0, 0);
-        string HinColor = string.Format(ColorMask, 0, 255, 0);
-        string ColorTable = DefColor + ErrColor + HinColor;
 
-        //Update or Insert ColorTable
-        string RTF = BaseTB.Rtf;
-        int TableStart = RTF.IndexOf("colortbl;");
-        if (TableStart != -1) {
-            int TableEnd = RTF.IndexOf('}', TableStart);
-            RTF = RTF.Remove(TableStart, TableEnd - TableStart);
-            RTF = RTF.Insert(TableStart, "colortbl;" + ColorTable + "}");
-        } else {
-            int RTFLoc = RTF.IndexOf("\\rtf");
-            int InsertLoc = RTF.IndexOf('{', RTFLoc);
-            if (InsertLoc == -1)
-                InsertLoc = RTF.IndexOf('}', RTFLoc) - 1;
-            RTF = RTF.Insert(InsertLoc, "{\\colortbl;" + ColorTable + "}");
+        if (!Program.OfflineMode) {
+            new System.Threading.Thread((Str) => {
+                try {
+                    string Text = (string)Str;
+                    VNXTLP.Result Result;
+                    if (QueryCache.ContainsKey(Text))
+                        Result = QueryCache[Text];
+                    else {
+                        Result = LanguageTool.Check(Text, TargetLang, ProxyHelper.Proxy);
+                        QueryCache[Text] = Result;
+                    }
+                    HintCount = Result.matches.Length;
+                    List<Suggestion> Suggetions = new List<Suggestion>();
+                    foreach (Match match in Result.matches) {
+                        int Pos = match.offset;
+                        while (Text[Pos] == ' ')
+                            Pos++;
+                        int Len = match.length - (Pos - match.offset);
+                        if (Len != match.length)
+                            continue;
+                        string Word = Text.Substring(Pos, Len);
+                        if (WordCache.ContainsKey(Word) && WordCache[Word])
+                            continue;
+                        WaveWord(Pos, Len);
+                        Suggetions.Add(new Suggestion() {
+                            Word = Word,
+                            Suggestions = (from x in match.replacements select x.value).ToList(),
+                            Info = match.message,
+                            Pos = Pos,
+                            Len = Len
+                        });
+                    }
+                    TextSuggestions = Suggetions.ToArray();
+                } catch { }
+            }).Start(Text);
         }
-        BaseTB.Rtf = RTF;
-    }*/
-    private void WaveWord(int Start, int Len) {
-        Select(Start, Len);
-
-        string RTF = SelectedRtf.Replace("\r\n", "");
-        int LastTag = RTF.IndexOf("\\fs") + 3;
-        while (char.IsNumber(RTF[LastTag]))
-            LastTag++;
-
-        int StringPos = LastTag;
-        if (RTF[StringPos] == ' ')
-            StringPos++;
-
-        string Word = RTF.Substring(StringPos, RTF.Length - StringPos - 1);
-        string SubRTF = RTF.Substring(0, LastTag);
-
-        SubRTF += "\\ulwave " + Word + "\\ulnone}";
-        SelectedRtf = SubRTF;
     }
-    protected override void OnTextChanged(EventArgs e) {
-        if (SpellChecking)
+    private void WaveWord(int Start, int Len) {
+        if (InvokeRequired) {
+            Invoke(new MethodInvoker(() => {
+                WaveWord(Start, Len);
+            }));
             return;
+        }
+        int OriStart = SelectionStart;
+        int OriLen = SelectionLength;
+        Select(Start, Len);
+        this.SetUnderline(true);
+        Select(OriStart, OriLen);
+        Application.DoEvents();
+        return;
+    }
+    void TextChangedEvent(object sender, EventArgs e) {
         int SS = SelectionStart;
         int SL = SelectionLength;
         foreach (Action act in TextChanged)
             act?.Invoke();
         Select(SS, SL);
-        WaitEnds.Enabled = true;
         LastEdit = DateTime.Now;
+        WaitEnds.Enabled = false;
+        WaitEnds.Enabled = true;
     }
 
     private string DownloadTranslation(string word, string InputLang = null, string TargetLang = null) {
@@ -297,7 +323,7 @@ internal class SpellTextBox : RichTextBox {
         return word;
     }
 
-    protected override void OnMouseMove(MouseEventArgs e) {
+    void MouseMoveEvent(object sender, MouseEventArgs e) {
         try {
             if (ErrorCount > 0 && PreprocessSuggestions && !SuggestionLoaded && DictionaryLoaded && SpellCheckEnable) {
                 SuggestionLoaded = true;
@@ -313,9 +339,36 @@ internal class SpellTextBox : RichTextBox {
                     len += Words[i].Length;
                 }
             }
+            if (HintCount > 0 && SpellCheckEnable) {
+                int index = GetCharIndexFromPosition((e).Location);
+                Suggestion Suggestion = (from x in TextSuggestions where index >= x.Pos && index <= x.Pos + x.Len select x).FirstOrDefault();
+
+                while (index < Text.Length && WordSeparators.Contains(Text[index]))
+                    index++;//Fix Rigth
+                while (index - 1 >= 0 && !WordSeparators.Contains(Text[index - 1]))
+                    index--;//Fix Left
+
+                if (index < Text.Length) {
+                    string Word = string.Empty;
+                    int len = 0;
+                    while (index + len < Text.Length && !WordSeparators.Contains(Text[index + len])) {
+                        Word += Text[index + len];
+                        len++;
+                    }
+                    if (ManualDictionary.Contains(Word.ToLower()))
+                        Suggestion = new Suggestion();
+                }
+
+                if (Suggestion.Len != 0) {
+                    OnHintChanged?.Invoke(Suggestion.Info);
+                } else {
+                    OnHintChanged?.Invoke(null);
+                }
+            } else {
+                OnHintChanged?.Invoke(null);
+            }
         }
         catch { }
-        base.OnMouseMove(e);
     }
 
     internal void LoadDictionary(string Dic) {
@@ -323,10 +376,12 @@ internal class SpellTextBox : RichTextBox {
             return;
         SpellChecker = Hunspell.GetHunspell(Dic);
     }
-    protected override void OnMouseUp(MouseEventArgs e) {
+    void MouseUpEvent(object sender, MouseEventArgs e) {
         if (e.Button == MouseButtons.Right && SpellCheckEnable) {
             try {
                 int index = GetCharIndexFromPosition((e).Location);
+                Suggestion Hint = (from x in TextSuggestions where index >= x.Pos && index <= x.Pos + x.Len select x).FirstOrDefault();
+
                 while (index < Text.Length && WordSeparators.Contains(Text[index]))
                     index++;//Fix Rigth
                 while (index - 1 >= 0 && !WordSeparators.Contains(Text[index - 1]))
@@ -396,6 +451,7 @@ internal class SpellTextBox : RichTextBox {
                         }
 
                     CMS = new ContextMenuStrip();
+                    bool Blank = true;
                     if (!CantSugest) {
                         for (int i = 0; i < Suggestions.Count; i++) {
                             WordMeuItem MI = new WordMeuItem();
@@ -405,8 +461,24 @@ internal class SpellTextBox : RichTextBox {
                             MI.Length = len;
                             MI.Click += MenuItem_Click;
                             CMS.Items.Add(MI);
+                            Blank = false;
                         }
+                    }
 
+                    if (Hint.Len != 0) {
+                        for (int i = 0; i < Hint.Suggestions.Count; i++) {
+                            WordMeuItem MI = new WordMeuItem();
+                            MI.Word = Hint.Word;
+                            MI.Text = Hint.Suggestions[i];
+                            MI.Index = Hint.Pos;
+                            MI.Length = Hint.Len;
+                            MI.Click += MenuItem_Click;
+                            CMS.Items.Add(MI);
+                            Blank = false;
+                        }
+                    }
+
+                    if (!CantSugest) {
                         if (CMS.Items.Count == 0)
                             CMS.Items.Add(new ToolStripMenuItem(Engine.LoadTranslation(Engine.TLID.NoSuggestions)) { Enabled = false });
 
@@ -419,17 +491,24 @@ internal class SpellTextBox : RichTextBox {
                             CMS.Items.Add(NWItem);
                         }
                     }
+
+                    if (WordCache.ContainsKey(Word.ToLower()) && WordCache[Word.ToLower()]) {
+                        CantSugest = true;
+                        Blank = true;
+                        CMS = new ContextMenuStrip();
+                    }
+
                     WordMeuItem SSM = new WordMeuItem();
                     SSM.Text = Engine.LoadTranslation(Engine.TLID.ShowSynonyms);
                     SSM.Word = Word;
                     SSM.Location = e.Location;
                     SSM.Click += ShowSynounyms;
                     if (GetOnlineSynonyms) {
-                        if (!isWrong)
+                        if (!Blank && !(!CantSugest && isWrong))
                             CMS.Items.Add(new ToolStripSeparator());
                         CMS.Items.Add(SSM);
                     } else {
-                        if (CantSugest)
+                        if (CantSugest && Blank)
                             return;
                     }
 
@@ -438,7 +517,6 @@ internal class SpellTextBox : RichTextBox {
             } catch {
             }
         }
-        base.OnMouseUp(e);
     }
 
     private void ShowSynounyms(object sender, EventArgs e) {
@@ -550,9 +628,10 @@ internal class SpellTextBox : RichTextBox {
 
     private void AddToDic(object sender, EventArgs e) {
         ToolStripMenuItem bnt = (ToolStripMenuItem)sender;
-        WordCache[bnt.Name] = true;
-        if (!ManualDictionary.Contains(bnt.Name)) {
-            ManualDictionary.Add(bnt.Name);
+        WordCache[bnt.Name.ToLower()] = true;
+        if (!ManualDictionary.Contains(bnt.Name.ToLower())) {
+            ManualDictionary.Add(bnt.Name.ToLower());
+            WaitEnds.Enabled = false;
             WaitEnds.Enabled = true;
         }
     }
@@ -562,4 +641,184 @@ internal class SpellTextBox : RichTextBox {
     internal SpellTextBox(){
     }
 #endif
+}
+
+//From: https://stackoverflow.com/questions/1268009/reset-rtf-in-richtextbox
+static class RichTextExtensions {
+    public static void ClearAllFormatting(this RichTextBox te, Font font) {
+        CHARFORMAT2 fmt = new CHARFORMAT2();
+
+        fmt.cbSize = Marshal.SizeOf(fmt);
+        fmt.dwMask = CFM_ALL2;
+        fmt.dwEffects = CFE_AUTOCOLOR | CFE_AUTOBACKCOLOR;
+        fmt.szFaceName = font.FontFamily.Name;
+
+        double size = font.Size;
+        size /= 72;//logical dpi (pixels per inch)
+        size *= 1440.0;//twips per inch
+
+        fmt.yHeight = (int)size;//165
+        fmt.yOffset = 0;
+        fmt.crTextColor = 0;
+        fmt.bCharSet = 1;// DEFAULT_CHARSET;
+        fmt.bPitchAndFamily = 0;// DEFAULT_PITCH;
+        fmt.wWeight = 400;// FW_NORMAL;
+        fmt.sSpacing = 0;
+        fmt.crBackColor = 0;
+        //fmt.lcid = ???
+        fmt.dwMask &= ~CFM_LCID;//don't know how to get this...
+        fmt.dwReserved = 0;
+        fmt.sStyle = 0;
+        fmt.wKerning = 0;
+        fmt.bUnderlineType = 0;
+        fmt.bAnimation = 0;
+        fmt.bRevAuthor = 0;
+        fmt.bReserved1 = 0;
+
+        SendMessage(te.Handle, EM_SETCHARFORMAT, SCF_ALL, ref fmt);
+    }
+
+    public static void SetUnderline(this RichTextBox te, bool Underline) {
+        var CharFormat = new CHARFORMAT2();
+        CharFormat.cbSize = Marshal.SizeOf(CharFormat);
+        SendMessage(te.Handle, EM_GETCHARFORMAT, SCF_SELECTION, ref CharFormat);
+
+
+        CHARFORMAT2 fmt = new CHARFORMAT2();
+        fmt.cbSize = Marshal.SizeOf(fmt);
+        fmt.dwMask = CFM_UNDERLINETYPE;
+        fmt.bUnderlineType = Underline ? CFU_UNDERLINEWAVE : CFU_UNDERLINENONE;
+        SendMessage(te.Handle, EM_SETCHARFORMAT, SCF_SELECTION, ref fmt);
+    }
+
+    public static bool IsUnderlined(this RichTextBox te) {
+        var CharFormat = new CHARFORMAT2();
+        CharFormat.cbSize = Marshal.SizeOf(CharFormat);
+        SendMessage(te.Handle, EM_GETCHARFORMAT, SCF_SELECTION, ref CharFormat);
+        return ((CharFormat.dwMask & CFM_UNDERLINETYPE) != 0 && CharFormat.bUnderlineType == CFU_UNDERLINEWAVE);
+    }
+
+    private const UInt32 WM_USER = 0x0400;
+    private const UInt32 EM_GETCHARFORMAT = (WM_USER + 58);
+    private const UInt32 EM_SETCHARFORMAT = (WM_USER + 68);
+    private const UInt32 SCF_ALL = 0x0004;
+    private const UInt32 SCF_SELECTION = 0x0001;
+
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+    static extern IntPtr SendMessage(IntPtr hWnd, UInt32 Msg, UInt32 wParam, ref CHARFORMAT2 lParam);
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Auto)]
+    struct CHARFORMAT2 {
+        public int cbSize;
+        public uint dwMask;
+        public uint dwEffects;
+        public int yHeight;
+        public int yOffset;
+        public int crTextColor;
+        public byte bCharSet;
+        public byte bPitchAndFamily;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+        public string szFaceName;
+        public short wWeight;
+        public short sSpacing;
+        public int crBackColor;
+        public int lcid;
+        public int dwReserved;
+        public short sStyle;
+        public short wKerning;
+        public byte bUnderlineType;
+        public byte bAnimation;
+        public byte bRevAuthor;
+        public byte bReserved1;
+    }
+
+    #region CFE_
+    // CHARFORMAT effects 
+    const UInt32 CFE_BOLD = 0x0001;
+    const UInt32 CFE_ITALIC = 0x0002;
+    const UInt32 CFE_UNDERLINE = 0x0004;
+    const UInt32 CFE_STRIKEOUT = 0x0008;
+    const UInt32 CFE_PROTECTED = 0x0010;
+    const UInt32 CFE_LINK = 0x0020;
+    const UInt32 CFE_AUTOCOLOR = 0x40000000;            // NOTE: this corresponds to 
+    // CFM_COLOR, which controls it 
+    // Masks and effects defined for CHARFORMAT2 -- an (*) indicates
+    // that the data is stored by RichEdit 2.0/3.0, but not displayed
+    const UInt32 CFE_SMALLCAPS = CFM_SMALLCAPS;
+    const UInt32 CFE_ALLCAPS = CFM_ALLCAPS;
+    const UInt32 CFE_HIDDEN = CFM_HIDDEN;
+    const UInt32 CFE_OUTLINE = CFM_OUTLINE;
+    const UInt32 CFE_SHADOW = CFM_SHADOW;
+    const UInt32 CFE_EMBOSS = CFM_EMBOSS;
+    const UInt32 CFE_IMPRINT = CFM_IMPRINT;
+    const UInt32 CFE_DISABLED = CFM_DISABLED;
+    const UInt32 CFE_REVISED = CFM_REVISED;
+
+
+
+    // CFE_AUTOCOLOR and CFE_AUTOBACKCOLOR correspond to CFM_COLOR and
+    // CFM_BACKCOLOR, respectively, which control them
+    const UInt32 CFE_AUTOBACKCOLOR = CFM_BACKCOLOR;
+    #endregion
+    #region CFU_
+    const byte CFU_UNDERLINEHEAVYWAVE = 0x0C;
+    const byte CFU_UNDERLINEDOUBLEWAVE = 0x0B;
+    const byte CFU_UNDERLINEWAVE = 0x08;
+    const byte CFU_UNDERLINENONE = 0x00;
+    #endregion
+    #region CFM_
+    // CHARFORMAT masks 
+    const UInt32 CFM_BOLD = 0x00000001;
+    const UInt32 CFM_ITALIC = 0x00000002;
+    const UInt32 CFM_UNDERLINE = 0x00000004;
+    const UInt32 CFM_STRIKEOUT = 0x00000008;
+    const UInt32 CFM_PROTECTED = 0x00000010;
+    const UInt32 CFM_LINK = 0x00000020;         // Exchange hyperlink extension 
+    const UInt32 CFM_SIZE = 0x80000000;
+    const UInt32 CFM_COLOR = 0x40000000;
+    const UInt32 CFM_FACE = 0x20000000;
+    const UInt32 CFM_OFFSET = 0x10000000;
+    const UInt32 CFM_CHARSET = 0x08000000;
+
+    const UInt32 CFM_SMALLCAPS = 0x0040;            // (*)  
+    const UInt32 CFM_ALLCAPS = 0x0080;          // Displayed by 3.0 
+    const UInt32 CFM_HIDDEN = 0x0100;           // Hidden by 3.0 
+    const UInt32 CFM_OUTLINE = 0x0200;          // (*)  
+    const UInt32 CFM_SHADOW = 0x0400;           // (*)  
+    const UInt32 CFM_EMBOSS = 0x0800;           // (*)  
+    const UInt32 CFM_IMPRINT = 0x1000;          // (*)  
+    const UInt32 CFM_DISABLED = 0x2000;
+    const UInt32 CFM_REVISED = 0x4000;
+
+    const UInt32 CFM_BACKCOLOR = 0x04000000;
+    const UInt32 CFM_LCID = 0x02000000;
+    const UInt32 CFM_UNDERLINETYPE = 0x00800000;        // Many displayed by 3.0 
+    const UInt32 CFM_WEIGHT = 0x00400000;
+    const UInt32 CFM_SPACING = 0x00200000;      // Displayed by 3.0 
+    const UInt32 CFM_KERNING = 0x00100000;      // (*)  
+    const UInt32 CFM_STYLE = 0x00080000;        // (*)  
+    const UInt32 CFM_ANIMATION = 0x00040000;        // (*)  
+    const UInt32 CFM_REVAUTHOR = 0x00008000;
+
+    const UInt32 CFE_SUBSCRIPT = 0x00010000;        // Superscript and subscript are 
+    const UInt32 CFE_SUPERSCRIPT = 0x00020000;      //  mutually exclusive           
+
+    const UInt32 CFM_SUBSCRIPT = (CFE_SUBSCRIPT | CFE_SUPERSCRIPT);
+    const UInt32 CFM_SUPERSCRIPT = CFM_SUBSCRIPT;
+
+    // CHARFORMAT "ALL" masks
+    const UInt32 CFM_EFFECTS = (CFM_BOLD | CFM_ITALIC | CFM_UNDERLINE | CFM_COLOR |
+                         CFM_STRIKEOUT | CFE_PROTECTED | CFM_LINK);
+    const UInt32 CFM_ALL = (CFM_EFFECTS | CFM_SIZE | CFM_FACE | CFM_OFFSET | CFM_CHARSET);
+
+    const UInt32 CFM_EFFECTS2 = (CFM_EFFECTS | CFM_DISABLED | CFM_SMALLCAPS | CFM_ALLCAPS
+                        | CFM_HIDDEN | CFM_OUTLINE | CFM_SHADOW | CFM_EMBOSS
+                        | CFM_IMPRINT | CFM_DISABLED | CFM_REVISED
+                        | CFM_SUBSCRIPT | CFM_SUPERSCRIPT | CFM_BACKCOLOR);
+
+    const UInt32 CFM_ALL2 = (CFM_ALL | CFM_EFFECTS2 | CFM_BACKCOLOR | CFM_LCID
+                        | CFM_UNDERLINETYPE | CFM_WEIGHT | CFM_REVAUTHOR
+                        | CFM_SPACING | CFM_KERNING | CFM_STYLE | CFM_ANIMATION);
+    #endregion
+    
 }

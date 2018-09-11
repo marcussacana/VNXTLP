@@ -15,6 +15,10 @@ namespace VNXTLP {
 
         #region LabelInfoEngine
         internal static void UpdateInfo(int value, ref Label InfoLbl, int BackupFreq, ref int Changes, bool TestIndex) {
+            if (StrList.Items.Count == 0) {
+                InfoLbl.Text = string.Empty;
+                return;
+            }
             if (value < 0) {
                 InfoLbl.Text = LoadTranslation(TLID.NoChangeDialogueNow);
                 return;
@@ -44,9 +48,24 @@ namespace VNXTLP {
                 } else
                     return;
             }
+
+            bool Changing = StrList.SelectedIndex != value;
             StrList.SelectedIndex = value;
-            TextBox.Text = ReloadString(StrList.Items[value].ToString());
-            TextBox.ResetCache();
+
+
+            //Prevent Spellcheck reset without changes
+            if (Changing) {
+                string OriDialogue = StrList.Items[value].ToString();
+                if (CanReload(OriDialogue)) {
+                    string NewDialogue = ReloadString(OriDialogue);
+                    if (NewDialogue != OriDialogue) {
+                        TextBox.Text = NewDialogue;
+                        TextBox.ResetCache();
+                    }
+                } else if (TextBox.Text != OriDialogue)
+                    TextBox.Text = OriDialogue;
+            }
+
             int Pos = TestIndex ? GetPos(StrList, value) : value;
             int Total = TestIndex ? StrList.CheckedItems.Count : StrList.Items.Count;
             int Progress = (Pos * 100) / Total;

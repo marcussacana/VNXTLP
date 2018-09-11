@@ -5,7 +5,7 @@ using SacanaWrapper;
 namespace VNXTLP {
     internal static partial class Engine {
 
-        internal static string Filter = "Todos os Arquivos|*.*";
+        internal static string Filter = "Todos os Arquivos Supportados|" + Wrapper.EnumSupportedExtensions() + "|Todos os Arquivos|*.*";
         internal static Wrapper Editor;
 
         internal static string UpdateScript = "VNXTLP.cs";

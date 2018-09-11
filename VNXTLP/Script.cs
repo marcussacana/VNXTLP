@@ -3,6 +3,7 @@ using SacanaWrapper;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace VNXTLP {
     internal static partial class Engine {
@@ -23,7 +24,7 @@ namespace VNXTLP {
             try {
                 byte[] Script = Decrypt(File.ReadAllBytes(Path));
                 Editor = new Wrapper();
-                ReturnContent = Editor.Import(Script, System.IO.Path.GetExtension(Path), true, true);
+                ReturnContent = Editor.Import(Script, System.IO.Path.GetExtension(Path), true);
 
                 StringCount = 0;
                 if (File.Exists(Path + ".map"))
@@ -199,7 +200,8 @@ namespace VNXTLP {
                 }
                 uint[] StrMap = Map.ToArray();
 
-                if (StrMap.LongLength == 0) {                    Writer.Close();
+                if (StrMap.LongLength == 0) {
+                    Writer.Close();
                     File.Delete(OriPath + ".map");
                     return false;
                 }
@@ -223,6 +225,22 @@ namespace VNXTLP {
             }
 
             Strings = Result;
+        }
+
+        internal delegate void ScriptDraged(string File);
+        internal static void EnableDragDrop(this Form Form, ScriptDraged Invoker) {
+            Form.AllowDrop = true;
+            Form.DragEnter += (a, e) => {
+                if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                    e.Effect = DragDropEffects.Copy;
+                }
+            };
+            Form.DragDrop += (a, e) => {
+                if (e.Data.GetDataPresent(DataFormats.FileDrop)) {
+                    string File = ((string[])e.Data.GetData(DataFormats.FileDrop)).First();
+                    Invoker(File);
+                }
+            };
         }
     }
 }

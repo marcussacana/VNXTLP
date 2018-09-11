@@ -74,6 +74,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -137,6 +139,7 @@
     <Compile Include="Input.Designer.cs">
       <DependentUpon>Input.cs</DependentUpon>
     </Compile>
+    <Compile Include="LanguageTool.cs" />
     <Compile Include="NoStyle - RegKey.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -213,8 +216,9 @@
     </Compile>
     <Compile Include="Style\Theme.cs" />
     <Compile Include="KRKR.cs" />
-    <Compile Include="SubClass.cs" />
+    <Compile Include="Types.cs" />
     <Compile Include="TextRecognition.cs" />
+    <Compile Include="Proxy.cs" />
     <Compile Include="Variables.cs" />
     <Compile Include="WordAPI.cs" />
     <EmbeddedResource Include="BackupViewer.resx">

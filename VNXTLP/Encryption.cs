@@ -38,6 +38,10 @@ namespace VNXTLP {
         private static byte[] Encrypt(byte[] Script) {
             if (IsEncrypted(Script))
                 return Script;
+
+            //If the user Isn't in the offline mode, we have a online backup of the script
+            if (!Program.OfflineMode || DebugMode)
+                return Script;
 #if ShareKey
             byte[] Sig = EncKey;
 #else

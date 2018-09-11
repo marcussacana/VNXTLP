@@ -7,7 +7,7 @@ namespace VNXTLP {
     internal static partial class Engine {
         #region BackupSystem
         internal static string[] LoadBackup(int ID) {
-            string BackupPath = UserDir + FTP.TreeDir(UserDir)[ID];
+            string BackupPath = UserDir + ListBackups()[ID].Replace("/", "$");
             byte[] Backup = FTP.Download(BackupPath);
             if (!BitConverter.IsLittleEndian)
                 Array.Reverse(Backup, 0, 4);

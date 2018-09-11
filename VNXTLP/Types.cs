@@ -25,14 +25,16 @@ namespace VNXTLP {
         }
 
         internal static class FTP {
-            private static NetworkCredential ServerAcess { get {
+            private static NetworkCredential ServerAcess {
+                get {
                     string User = GetConfig("FTP", "Login", false);
                     if (string.IsNullOrWhiteSpace(User))
                         throw new UnauthorizedAccessException();
                     string Pass = ParsePass(GetConfig("FTP", "Pass"));
                     return new NetworkCredential(User, Pass);
-                } }
-            private static string Server  {
+                }
+            }
+            private static string Server {
                 get {
                     string Ip = GetConfig("FTP", "Host", false);
                     if (string.IsNullOrWhiteSpace(Ip))
@@ -147,15 +149,13 @@ namespace VNXTLP {
             private int Default = 0;
             internal event EventHandler CheckedChange;
             internal int SelectedIndex {
-                get
-                {
+                get {
                     for (int i = 0; i < Items.Length; i++)
                         if (Items[i].Checked)
                             return i;
                     return -1;
                 }
-                set
-                {
+                set {
                     for (int i = 0; i < Items.Length; i++)
                         if (i == value)
                             Items[i].Checked = true;
@@ -178,8 +178,7 @@ namespace VNXTLP {
                             Items[i].Checked = false;
                         else
                             CheckedChange?.Invoke(this, new EventArgs());
-                }
-                else {
+                } else {
                     bool HaveSelection = false;
                     for (int i = 0; i < Items.Length; i++)
                         if (Items[i].Checked)
@@ -211,21 +210,18 @@ namespace VNXTLP {
                         if (OPoint != Point) {
                             OPoint = Point;
                             Time = 0;
-                        }
-                        else if (Time == 2) {
+                        } else if (Time == 2) {
                             MouseEventArgs MEA = new MouseEventArgs(MouseButtons.None, 0, OPoint.X, OPoint.Y, 0);
                             MouseStopOver?.Invoke(sender, MEA);
                         }
                         Time++;
-                    }
-                    else {
+                    } else {
                         Time = 0;
                     }
                 };
                 t.Enabled = true;
             }
-        }
-
+        }        
 
         internal enum Commands : sbyte {
             GetCount, GetSel, SetSel, GetTop, SetTop, Closing, Closed, Running, Connected
@@ -362,7 +358,9 @@ namespace VNXTLP {
             UsersLoaded = 130,
             BrowseUser = 131,
             MoreOptions = 132,
-            SaveWindowState = 133
+            SaveWindowState = 133,
+            Atention = 134,
+            FailedToConnect = 135
         }
     }
 }

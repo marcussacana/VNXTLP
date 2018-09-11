@@ -10,6 +10,10 @@ namespace VNXTLP {
 
             return Dialogue;
         }
+
+        public static bool CanReload(string Dialogue) {
+            return Database.ContainsKey(Dialogue);
+        }
         
         public static void FinishString(string Output) {
             if (!Database.ContainsKey(LastString))
