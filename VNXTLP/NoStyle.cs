@@ -23,8 +23,9 @@ namespace VNXTLP {
             }
             set
             {
-                Engine.UpdateInfo(value, ref InfoLbl, GetBackupFrequence(), ref Changes, IndexTestEnableMenuItem.Checked);
-                SelectedIndex = StrList.SelectedIndex;
+                Engine.UpdateInfo(value, ref InfoLbl, GetBackupFrequence(), ref Changes, IndexTestEnableMenuItem.Checked, out int DialogueIndex);
+                if (DialogueIndex > -1)
+                    SelectedIndex = DialogueIndex;
             }
         }
 
@@ -90,7 +91,7 @@ namespace VNXTLP {
             altoContrasteToolStripMenuItem.Checked = Engine.GetConfig("VNXTLP", "BlackTheme", false).ToLower() == "true";
             delimitarAvançoToolStripMenuItem.Checked = Engine.GetConfig("VNXTLP", "SkipDelay", false).ToLower() == "true";
             modoDinâmicoToolStripMenuItem.Checked = Engine.GetConfig("VNXTLP", "DynamicMode", false).ToLower() == "true";
-
+            backupLocalToolStripMenuItem.Checked = Engine.GetConfig("VNXTLP", "OfflineBackup", false).ToLower() == "true";
 
             //get int
             string cfg = Engine.GetConfig("VNXTLP", "BackupSpeed", false);
@@ -152,6 +153,7 @@ namespace VNXTLP {
             modoDinâmicoToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.DynamicMode);
             outrasopçõesmenuitem.Text = Engine.LoadTranslation(Engine.TLID.MoreOptions);
             salvarEstadoDaJanelaToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.SaveWindowState);
+            backupLocalToolStripMenuItem.Text = Engine.LoadTranslation(Engine.TLID.LocalBackup);
             #endregion
 
             Engine.EnableDragDrop(this, new Engine.ScriptDraged((a) => {
@@ -562,6 +564,10 @@ namespace VNXTLP {
 
         private void salvarEstadoDaJanelaToolStripMenuItem_Click(object sender, EventArgs e) {
             Engine.SaveWindowState(this);
+        }
+
+        private void backupLocalToolStripMenuItem_Click(object sender, EventArgs e) {
+            Engine.SetConfig("VNXTLP", "OfflineBackup", backupLocalToolStripMenuItem.Checked ? "True" : "False");
         }
     }
 

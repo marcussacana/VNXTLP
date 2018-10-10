@@ -14,7 +14,8 @@ namespace VNXTLP {
     internal static partial class Engine {
 
         #region LabelInfoEngine
-        internal static void UpdateInfo(int value, ref Label InfoLbl, int BackupFreq, ref int Changes, bool TestIndex) {
+        internal static void UpdateInfo(int value, ref Label InfoLbl, int BackupFreq, ref int Changes, bool TestIndex, out int DialogueIndex) {
+            DialogueIndex = -1;
             if (StrList.Items.Count == 0) {
                 InfoLbl.Text = string.Empty;
                 return;
@@ -62,8 +63,10 @@ namespace VNXTLP {
                         TextBox.Text = NewDialogue;
                         TextBox.ResetCache();
                     }
-                } else if (TextBox.Text != OriDialogue)
+                } else if (TextBox.Text != OriDialogue) {
                     TextBox.Text = OriDialogue;
+                    DialogueIndex = value;
+                }
             }
 
             int Pos = TestIndex ? GetPos(StrList, value) : value;

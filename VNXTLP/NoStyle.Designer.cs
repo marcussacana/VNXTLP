@@ -62,6 +62,7 @@
             this.latimToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.outrasopçõesmenuitem = new System.Windows.Forms.ToolStripMenuItem();
             this.salvarEstadoDaJanelaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.backupLocalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.altoContrasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.altaResoluçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -270,26 +271,26 @@
             // 
             this.BackupOnSaveItem.CheckOnClick = true;
             this.BackupOnSaveItem.Name = "BackupOnSaveItem";
-            this.BackupOnSaveItem.Size = new System.Drawing.Size(180, 22);
+            this.BackupOnSaveItem.Size = new System.Drawing.Size(141, 22);
             this.BackupOnSaveItem.Text = "Ao Salvar";
             // 
             // BackupOn200MenuItem
             // 
             this.BackupOn200MenuItem.Name = "BackupOn200MenuItem";
-            this.BackupOn200MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.BackupOn200MenuItem.Size = new System.Drawing.Size(141, 22);
             this.BackupOn200MenuItem.Text = "200 Diálogos";
             // 
             // BackupOn100MenuItem
             // 
             this.BackupOn100MenuItem.Name = "BackupOn100MenuItem";
-            this.BackupOn100MenuItem.Size = new System.Drawing.Size(180, 22);
+            this.BackupOn100MenuItem.Size = new System.Drawing.Size(141, 22);
             this.BackupOn100MenuItem.Text = "100 Diálogos";
             // 
             // BackupOn50Item
             // 
             this.BackupOn50Item.CheckOnClick = true;
             this.BackupOn50Item.Name = "BackupOn50Item";
-            this.BackupOn50Item.Size = new System.Drawing.Size(180, 22);
+            this.BackupOn50Item.Size = new System.Drawing.Size(141, 22);
             this.BackupOn50Item.Text = "50 Diálogos";
             // 
             // BackupOn25Item
@@ -297,21 +298,21 @@
             this.BackupOn25Item.Checked = true;
             this.BackupOn25Item.CheckState = System.Windows.Forms.CheckState.Checked;
             this.BackupOn25Item.Name = "BackupOn25Item";
-            this.BackupOn25Item.Size = new System.Drawing.Size(180, 22);
+            this.BackupOn25Item.Size = new System.Drawing.Size(141, 22);
             this.BackupOn25Item.Text = "25 Diálogos";
             // 
             // BackupOn10Item
             // 
             this.BackupOn10Item.CheckOnClick = true;
             this.BackupOn10Item.Name = "BackupOn10Item";
-            this.BackupOn10Item.Size = new System.Drawing.Size(180, 22);
+            this.BackupOn10Item.Size = new System.Drawing.Size(141, 22);
             this.BackupOn10Item.Text = "10 Diálogos";
             // 
             // NeverBackupItem
             // 
             this.NeverBackupItem.CheckOnClick = true;
             this.NeverBackupItem.Name = "NeverBackupItem";
-            this.NeverBackupItem.Size = new System.Drawing.Size(180, 22);
+            this.NeverBackupItem.Size = new System.Drawing.Size(141, 22);
             this.NeverBackupItem.Text = "Nunca";
             // 
             // sistemaDeTraduçãoToolStripMenuItem
@@ -327,19 +328,19 @@
             // lECToolStripMenuItem
             // 
             this.lECToolStripMenuItem.Name = "lECToolStripMenuItem";
-            this.lECToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.lECToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.lECToolStripMenuItem.Text = "LEC";
             // 
             // googleToolStripMenuItem
             // 
             this.googleToolStripMenuItem.Name = "googleToolStripMenuItem";
-            this.googleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.googleToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.googleToolStripMenuItem.Text = "Google";
             // 
             // zBingToolStripMenuItem
             // 
             this.zBingToolStripMenuItem.Name = "zBingToolStripMenuItem";
-            this.zBingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.zBingToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.zBingToolStripMenuItem.Text = "Bing";
             // 
             // SelecaoAutomaticaMenuItem1
@@ -357,25 +358,26 @@
             this.AutomaticoToolStripMenuItem.Checked = true;
             this.AutomaticoToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.AutomaticoToolStripMenuItem.Name = "AutomaticoToolStripMenuItem";
-            this.AutomaticoToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.AutomaticoToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.AutomaticoToolStripMenuItem.Text = "Auto Detectar";
             // 
             // asiaticaToolStripMenuItem
             // 
             this.asiaticaToolStripMenuItem.Name = "asiaticaToolStripMenuItem";
-            this.asiaticaToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.asiaticaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.asiaticaToolStripMenuItem.Text = "Asiática";
             // 
             // latimToolStripMenuItem
             // 
             this.latimToolStripMenuItem.Name = "latimToolStripMenuItem";
-            this.latimToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.latimToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.latimToolStripMenuItem.Text = "Latim";
             // 
             // outrasopçõesmenuitem
             // 
             this.outrasopçõesmenuitem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.salvarEstadoDaJanelaToolStripMenuItem});
+            this.salvarEstadoDaJanelaToolStripMenuItem,
+            this.backupLocalToolStripMenuItem});
             this.outrasopçõesmenuitem.Name = "outrasopçõesmenuitem";
             this.outrasopçõesmenuitem.Size = new System.Drawing.Size(194, 22);
             this.outrasopçõesmenuitem.Text = "Outras Opções";
@@ -386,6 +388,14 @@
             this.salvarEstadoDaJanelaToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.salvarEstadoDaJanelaToolStripMenuItem.Text = "Salvar Estado da Janela";
             this.salvarEstadoDaJanelaToolStripMenuItem.Click += new System.EventHandler(this.salvarEstadoDaJanelaToolStripMenuItem_Click);
+            // 
+            // backupLocalToolStripMenuItem
+            // 
+            this.backupLocalToolStripMenuItem.CheckOnClick = true;
+            this.backupLocalToolStripMenuItem.Name = "backupLocalToolStripMenuItem";
+            this.backupLocalToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.backupLocalToolStripMenuItem.Text = "Backup Local";
+            this.backupLocalToolStripMenuItem.Click += new System.EventHandler(this.backupLocalToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -631,6 +641,7 @@
         private System.Windows.Forms.ToolStripMenuItem outrasopçõesmenuitem;
         private System.Windows.Forms.ToolStripMenuItem salvarEstadoDaJanelaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bernToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem backupLocalToolStripMenuItem;
     }
 }
 

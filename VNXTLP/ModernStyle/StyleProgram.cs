@@ -28,8 +28,9 @@ namespace VNXTLP.NewStyle {
             }
             set
             {
-                Engine.UpdateInfo(value, ref InfoLbl, GetBackupFrequence(), ref Changes, ZValidar.Checked);
-                SelectedIndex = StrList.SelectedIndex;
+                Engine.UpdateInfo(value, ref InfoLbl, GetBackupFrequence(), ref Changes, ZValidar.Checked, out int DialogueIndex);
+                if (DialogueIndex > -1)
+                    SelectedIndex = DialogueIndex;
             }
         }
 
@@ -106,6 +107,7 @@ namespace VNXTLP.NewStyle {
             ZAltoContraste.Checked = Engine.GetConfig("VNXTLP", "BlackTheme", false).ToLower() == "true";
             ZLimiteAvanco.Checked = Engine.GetConfig("VNXTLP", "SkipDelay", false).ToLower() == "true";
             ZModoDianmico.Checked = Engine.GetConfig("VNXTLP", "DynamicMode", false).ToLower() == "true";
+            ZLocalBackup.Checked = Engine.GetConfig("VNXTLP", "OfflineBackup", false).ToLower() == "true";
 
             //get int
             string cfg = Engine.GetConfig("VNXTLP", "BackupSpeed", false);
@@ -169,6 +171,7 @@ namespace VNXTLP.NewStyle {
             ZOtherOptions.Text = Engine.LoadTranslation(Engine.TLID.MoreOptions);
             ZSaveWindowState.Text = Engine.LoadTranslation(Engine.TLID.SaveWindowState);
             ZSaveItem.Text = Engine.LoadTranslation(Engine.TLID.Save);
+            ZLocalBackup.Text = Engine.LoadTranslation(Engine.TLID.LocalBackup);
             #endregion
 
             Engine.EnableDragDrop(this, new Engine.ScriptDraged((a) => {
@@ -614,6 +617,10 @@ namespace VNXTLP.NewStyle {
 
         private void ZSaveWindowState_Click(object sender, EventArgs e) {
             Engine.SaveWindowState(this);
+        }
+
+        private void ZLocalBackup_Click(object sender, EventArgs e) {
+            Engine.SetConfig("VNXTLP", "OfflineBackup", ZLocalBackup.Checked ? "True" : "False");
         }
     }
 }

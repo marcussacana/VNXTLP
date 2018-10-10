@@ -360,7 +360,8 @@ namespace VNXTLP {
             MoreOptions = 132,
             SaveWindowState = 133,
             Atention = 134,
-            FailedToConnect = 135
+            FailedToConnect = 135,
+            LocalBackup = 136
         }
     }
 }

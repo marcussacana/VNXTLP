@@ -77,6 +77,7 @@
             this.ZLatimSel = new System.Windows.Forms.ToolStripMenuItem();
             this.ZOtherOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.ZSaveWindowState = new System.Windows.Forms.ToolStripMenuItem();
+            this.ZLocalBackup = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ZAltoContraste = new System.Windows.Forms.ToolStripMenuItem();
             this.ZAltaRel = new System.Windows.Forms.ToolStripMenuItem();
@@ -404,7 +405,7 @@
             this.ZBasico.CheckOnClick = true;
             this.ZBasico.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZBasico.Name = "ZBasico";
-            this.ZBasico.Size = new System.Drawing.Size(123, 22);
+            this.ZBasico.Size = new System.Drawing.Size(180, 22);
             this.ZBasico.Text = "Básico";
             // 
             // ZModerno
@@ -412,7 +413,7 @@
             this.ZModerno.CheckOnClick = true;
             this.ZModerno.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZModerno.Name = "ZModerno";
-            this.ZModerno.Size = new System.Drawing.Size(123, 22);
+            this.ZModerno.Size = new System.Drawing.Size(180, 22);
             this.ZModerno.Text = "Moderno";
             // 
             // bernToolStripMenuItem
@@ -421,7 +422,7 @@
             this.bernToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.bernToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.bernToolStripMenuItem.Name = "bernToolStripMenuItem";
-            this.bernToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.bernToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.bernToolStripMenuItem.Text = "Bern";
             // 
             // ZPeriodo
@@ -544,27 +545,28 @@
             this.ZAutoSelMode.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ZAutoSelMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZAutoSelMode.Name = "ZAutoSelMode";
-            this.ZAutoSelMode.Size = new System.Drawing.Size(137, 22);
+            this.ZAutoSelMode.Size = new System.Drawing.Size(180, 22);
             this.ZAutoSelMode.Text = "Automático";
             // 
             // ZAsianSel
             // 
             this.ZAsianSel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZAsianSel.Name = "ZAsianSel";
-            this.ZAsianSel.Size = new System.Drawing.Size(137, 22);
+            this.ZAsianSel.Size = new System.Drawing.Size(180, 22);
             this.ZAsianSel.Text = "Asiático";
             // 
             // ZLatimSel
             // 
             this.ZLatimSel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZLatimSel.Name = "ZLatimSel";
-            this.ZLatimSel.Size = new System.Drawing.Size(137, 22);
+            this.ZLatimSel.Size = new System.Drawing.Size(180, 22);
             this.ZLatimSel.Text = "Latim";
             // 
             // ZOtherOptions
             // 
             this.ZOtherOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ZSaveWindowState});
+            this.ZSaveWindowState,
+            this.ZLocalBackup});
             this.ZOtherOptions.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
             this.ZOtherOptions.Name = "ZOtherOptions";
             this.ZOtherOptions.Size = new System.Drawing.Size(194, 22);
@@ -577,6 +579,15 @@
             this.ZSaveWindowState.Size = new System.Drawing.Size(194, 22);
             this.ZSaveWindowState.Text = "Salvar estado da Janela";
             this.ZSaveWindowState.Click += new System.EventHandler(this.ZSaveWindowState_Click);
+            // 
+            // ZLocalBackup
+            // 
+            this.ZLocalBackup.CheckOnClick = true;
+            this.ZLocalBackup.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(80)))), ((int)(((byte)(80)))));
+            this.ZLocalBackup.Name = "ZLocalBackup";
+            this.ZLocalBackup.Size = new System.Drawing.Size(194, 22);
+            this.ZLocalBackup.Text = "Backup Local";
+            this.ZLocalBackup.Click += new System.EventHandler(this.ZLocalBackup_Click);
             // 
             // toolStripSeparator1
             // 
@@ -749,5 +760,6 @@
         private System.Windows.Forms.ToolStripMenuItem ZSaveWindowState;
         private System.Windows.Forms.ToolStripMenuItem bernToolStripMenuItem;
         private CTema.Thema_ControlBox thema_ControlBox1;
+        private System.Windows.Forms.ToolStripMenuItem ZLocalBackup;
     }
 }

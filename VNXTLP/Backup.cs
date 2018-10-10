@@ -7,7 +7,7 @@ namespace VNXTLP {
     internal static partial class Engine {
         #region BackupSystem
         internal static string[] LoadBackup(int ID) {
-            string BackupPath = UserDir + ListBackups()[ID].Replace("/", "$");
+            string BackupPath = UserDir + ListBackups(false)[ID];
             byte[] Backup = FTP.Download(BackupPath);
             if (!BitConverter.IsLittleEndian)
                 Array.Reverse(Backup, 0, 4);
@@ -22,7 +22,7 @@ namespace VNXTLP {
             }
             return StringList;
         }
-        internal static string[] ListBackups() {
+        internal static string[] ListBackups(bool Decode = true) {
             if (!UserDirExist || !BackupDirExist) {
                 if (!Exist("Backup"))
                     return new string[0];
@@ -31,7 +31,7 @@ namespace VNXTLP {
             }
 
             string[] List = FTP.TreeDir(UserDir);
-            return (from x in List where x != "VNX+ - Backup Trash" select x.Replace("§", "/")).ToArray();
+            return (from x in List where x != "VNX+ - Backup Trash" select Decode ? x.Replace("§", "/") : x).ToArray();
         }       
 
         private static string BackupFileName {
@@ -63,7 +63,7 @@ namespace VNXTLP {
         }
         internal static bool Backup(string[] Strings, bool IsSave = false) {
             try {
-                if (GetConfig("VNXTLP", "OfflineBackup", false) == "true" && !IsSave) {
+                if (GetConfig("VNXTLP", "OfflineBackup", false).ToLower() == "true" && !IsSave) {
                     Save(BackupFileName, Strings, true);                    
                 }
 
